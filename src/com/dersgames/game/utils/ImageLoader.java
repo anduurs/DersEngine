@@ -1,0 +1,34 @@
+package com.dersgames.game.utils;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+
+public class ImageLoader {
+	
+	private static HashMap<String, BufferedImage> m_ImageLib;
+	
+	public ImageLoader(){
+		m_ImageLib = new HashMap<String, BufferedImage>();
+		
+		m_ImageLib.put("atlas", loadImage("textureatlas.png"));
+	}
+	
+	private synchronized BufferedImage loadImage(String path){
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(ImageLoader.class.getResource("/textures/" + path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return img;
+	}
+	
+	public static BufferedImage getImage(String name){
+		return m_ImageLib.get(name);
+	}
+
+}

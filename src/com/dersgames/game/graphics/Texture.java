@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.game.utils.TextureLoader;
+import com.dersgames.game.utils.ImageLoader;
 
 public class Texture {
 	
@@ -33,7 +33,7 @@ public class Texture {
 	private int m_Width, m_Height;
 	
 	public Texture(String name){
-		BufferedImage img = TextureLoader.getTexture(name);
+		BufferedImage img = ImageLoader.getImage(name);
 		
 		m_Width  = img.getWidth();
 		m_Height = img.getHeight();
