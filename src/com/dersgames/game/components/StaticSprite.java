@@ -5,8 +5,8 @@ import com.dersgames.game.core.Vector3f;
 import com.dersgames.game.core.Vertex;
 import com.dersgames.game.graphics.BatchRenderer;
 import com.dersgames.game.graphics.Mesh;
-import com.dersgames.game.graphics.Shader;
 import com.dersgames.game.graphics.TextureRegion;
+import com.dersgames.game.graphics.shaders.Shader;
 
 public class StaticSprite extends Renderable{
 	
