@@ -8,6 +8,10 @@ public class BasicShader extends Shader{
 		super("basicVert", "basicFrag");
 		
 		addUniform("projection_matrix");
+		addUniform("model_matrix");
+		addUniform("view_matrix");
+		addUniform("is_Static");
+		
 		addUniform("sampler");
 		
 		enable();

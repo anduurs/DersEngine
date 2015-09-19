@@ -75,10 +75,11 @@ public class BatchRenderer {
 	
 	/**
 	 * Default constructor which initilaizes a new BatchRenderer with a size
-	 * of 10 000 sprites.
+	 * of 50 000 sprites. The recommended maximum size for a vbo is around 4 MB
+	 * , which means that 50 000 is the maximum nr of sprites that can be in the batch
 	 */
 	public BatchRenderer(){
-		this(10000);
+		this(50000);
 	}
 	
 	/**

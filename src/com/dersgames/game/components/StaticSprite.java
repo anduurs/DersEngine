@@ -16,6 +16,8 @@ public class StaticSprite extends Renderable{
 	public StaticSprite(String tag, Vector3f pos, Shader shader, TextureRegion region){
 		super(tag);
 		
+		m_Static = true;
+		
 		m_Shader = shader;
 		
 		m_Width = (int)region.width;
@@ -39,7 +41,8 @@ public class StaticSprite extends Renderable{
 		m_Mesh = new Mesh(vertices, indices);
 	}
 	
-	public void render(BatchRenderer batch){
+	public void render(){
+		m_Shader.setUniformi("is_Static", 1);
 		m_Shader.setUniform("model_matrix", m_GameObject.getTransform().getModelMatrix());
 		m_Mesh.render();
 	}

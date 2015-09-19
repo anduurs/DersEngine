@@ -14,6 +14,8 @@ public class Sprite extends Renderable{
 	public Sprite(String tag, Vector3f pos, TextureRegion region){
 		super(tag);
 		
+		m_Static = false;
+		
 		m_Width = (int)region.width;
 		m_Height = (int)region.height;
 		

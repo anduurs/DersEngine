@@ -4,7 +4,7 @@ import com.dersgames.game.graphics.BatchRenderer;
 
 public class SceneGraph {
 	
-	private GameObject m_Root;
+	private static GameObject m_Root;
 
 	public SceneGraph(){
 		m_Root = new GameObject("Root");
@@ -27,7 +27,11 @@ public class SceneGraph {
 		m_Root.renderAll(batch);
 	}
 	
-	public GameObject getRoot() {
+	public static GameObject findChildByTag(String tag){
+		return m_Root.findChildByTag(tag);
+	}
+	
+	public static GameObject getRoot() {
 		return m_Root;
 	}
 

@@ -7,10 +7,18 @@ out vec2 texCoord;
 out vec3 outColor;
 
 uniform mat4 projection_matrix;
+uniform mat4 view_matrix;
+uniform mat4 model_matrix;
 
-void main() 
-{
+uniform int is_Static;
+
+void main(){
 	texCoord = texCoordIn;
 	outColor = vec3(1,1,1.6);
-	gl_Position = projection_matrix  * vec4(position, 1);
+	
+	if(is_Static == 1){
+		gl_Position = projection_matrix * view_matrix * model_matrix * vec4(position, 1);
+	}else {
+		gl_Position = projection_matrix * view_matrix * vec4(position, 1);
+	}
 }

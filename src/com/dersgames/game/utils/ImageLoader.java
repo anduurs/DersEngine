@@ -8,12 +8,11 @@ import javax.imageio.ImageIO;
 
 public class ImageLoader {
 	
-	private static HashMap<String, BufferedImage> m_ImageLib;
+	private static HashMap<String, BufferedImage> m_ImageLib = 
+			new HashMap<String, BufferedImage>();
 	
 	public ImageLoader(){
-		m_ImageLib = new HashMap<String, BufferedImage>();
-		
-		m_ImageLib.put("atlas", loadImage("textureatlas.png"));
+		m_ImageLib.put("atlas", loadImage("texture_atlas.png"));
 	}
 	
 	private synchronized BufferedImage loadImage(String path){

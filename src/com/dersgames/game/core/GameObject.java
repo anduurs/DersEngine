@@ -75,10 +75,12 @@ public class GameObject {
 	}
 	
 	public GameObject findChildByTag(String tag){
-		if(m_Tag.equals(tag))
-			return this;
-		for(GameObject go : m_Children)
-			go.findChildByTag(tag);
+		for(GameObject go : m_Children){
+			if(go.getTag().equals(tag))
+				return this;
+			else go.findChildByTag(tag);
+		}
+			
 		return null;
 	}
 	
@@ -96,8 +98,11 @@ public class GameObject {
 	
 	public void renderComponents(BatchRenderer batch){
 		for(Renderable rc : m_RenderComponents)
-			if(rc.isEnabled())
-				rc.render(batch);
+			if(rc.isEnabled()){
+				if(rc.isStatic())
+					rc.render();
+				else rc.render(batch);
+			}
 	}
 	
 	public void renderAll(BatchRenderer batch){

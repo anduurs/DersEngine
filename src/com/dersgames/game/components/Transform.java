@@ -7,7 +7,9 @@ import com.dersgames.game.graphics.Window;
 public class Transform extends Component{
 	
 	private Vector3f m_Position, m_Rotation, m_Scaling;
-	private static Matrix4f m_Ortho = new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -1f, 1f);
+	
+	private static Matrix4f m_Ortho = 
+			new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -10f, 10f);
 	
 	private Matrix4f m_TranslationMatrix;
 	private Matrix4f m_RotationMatrix;
@@ -90,5 +92,8 @@ public class Transform extends Component{
 	public void setScalingVector(Vector3f scaling) {
 		m_Scaling = scaling;
 	}
+
+	@Override
+	public void update(float dt) {}
 
 }

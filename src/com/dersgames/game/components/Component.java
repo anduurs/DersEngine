@@ -19,7 +19,7 @@ public abstract class Component {
 	}
 	
 	public void init(){}
-	public void update(float dt){}
+	public abstract void update(float dt);
 	
 	public GameObject getGameObject() {
 		return m_GameObject;
