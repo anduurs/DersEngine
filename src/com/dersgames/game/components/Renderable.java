@@ -3,7 +3,7 @@ package com.dersgames.game.components;
 import com.dersgames.game.core.Vertex;
 import com.dersgames.game.graphics.BatchRenderer;
 
-public class Renderable extends Component{
+public class Renderable extends GameComponent{
 	
 	protected boolean m_Static;
 	

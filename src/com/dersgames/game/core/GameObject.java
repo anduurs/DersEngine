@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.dersgames.game.components.Component;
+import com.dersgames.game.components.GameComponent;
 import com.dersgames.game.components.Renderable;
 import com.dersgames.game.components.Transform;
 import com.dersgames.game.graphics.BatchRenderer;
 
 public class GameObject {
 	
-	private List<Component> m_Components;
+	private List<GameComponent> m_Components;
 	private List<Renderable> m_RenderComponents;
 	private List<GameObject> m_Children;
 	
@@ -38,7 +38,7 @@ public class GameObject {
 		m_Alive = true;
 		
 		m_Children = new ArrayList<GameObject>();
-		m_Components = new ArrayList<Component>();
+		m_Components = new ArrayList<GameComponent>();
 		m_RenderComponents = new ArrayList<Renderable>();
 		
 		m_Transform = new Transform();
@@ -48,7 +48,7 @@ public class GameObject {
 		addComponent(m_Transform);
 	}
 	
-	public Component addComponent(Component component){
+	public GameComponent addComponent(GameComponent component){
 		component.setGameObject(this);
 		
 		if(component instanceof Renderable){
@@ -61,8 +61,8 @@ public class GameObject {
 		return component;
 	}
 	
-	public Component findComponentByTag(String tag){
-		for(Component c : m_Components)
+	public GameComponent findComponentByTag(String tag){
+		for(GameComponent c : m_Components)
 			if(c.getTag().equals(tag))
 				return c;
 		return null;
@@ -85,7 +85,7 @@ public class GameObject {
 	}
 	
 	public void updateComponents(float dt){
-		for(Component c : m_Components)
+		for(GameComponent c : m_Components)
 			if(c.isEnabled())
 				c.update(dt);
 	}

@@ -16,7 +16,7 @@ public class BasicShader extends Shader{
 		
 		enable();
 		setUniformi("sampler", 0);
-		setUniform("projection_matrix", Transform.getOrthoProjection());
+		
 		disable();
 	}
 

@@ -2,14 +2,10 @@ package com.dersgames.game.components;
 
 import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Vector3f;
-import com.dersgames.game.graphics.Window;
 
-public class Transform extends Component{
+public class Transform extends GameComponent{
 	
 	private Vector3f m_Position, m_Rotation, m_Scaling;
-	
-	private static Matrix4f m_Ortho = 
-			new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -10f, 10f);
 	
 	private Matrix4f m_TranslationMatrix;
 	private Matrix4f m_RotationMatrix;
@@ -47,10 +43,6 @@ public class Transform extends Component{
 		return modelMatrix;
 	}
 	
-	public Matrix4f getOrthoWorldProjection(){
-		return m_Ortho.mul(getModelMatrix());
-	}
-
 	public void translate(float x, float y, float z) {
 		m_Position.setX(x);
 		m_Position.setY(y);
@@ -67,14 +59,6 @@ public class Transform extends Component{
 		m_Scaling.setX(x);
 		m_Scaling.setY(y);
 		m_Scaling.setZ(z);
-	}
-	
-	public static Matrix4f getOrthoProjection(){
-		return m_Ortho;
-	}
-	
-	public void setOrthoProjection(float left, float right, float bottom, float top, float near, float far) {
-		m_Ortho = m_Ortho.setOrthographicProjection(left, right, bottom, top, near, far);
 	}
 	
 	public Vector3f getPosition() {return m_Position;}

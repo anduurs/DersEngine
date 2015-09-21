@@ -25,11 +25,15 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glGetString;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
@@ -56,7 +60,7 @@ public class Window {
 		if(glfwInit() != GL_TRUE)
 			System.err.println("GLFW initialization failed!");
 		
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 				
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
 
@@ -80,7 +84,11 @@ public class Window {
 		
 		GLContext.createFromCurrent();
 		
+		System.out.println("OpenGL: " + glGetString(GL_VERSION));
+		
 		glClearColor(0f,0f,0f,0f);
+		
+		glViewport(0, 0, width, height);
 		
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_ALPHA);

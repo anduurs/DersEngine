@@ -2,7 +2,7 @@ package com.dersgames.game.components;
 
 import com.dersgames.game.graphics.Window;
 
-public class BasicMovement extends Component{
+public class BasicMovement extends GameComponent{
 	
 	private float m_Speed;
 	

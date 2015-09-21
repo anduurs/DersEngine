@@ -13,12 +13,24 @@ public class ImageLoader {
 	
 	public ImageLoader(){
 		m_ImageLib.put("atlas", loadImage("texture_atlas.png"));
+		m_ImageLib.put("tilemap", loadBitmap("tilemap0.png"));
 	}
 	
 	private synchronized BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(ImageLoader.class.getResource("/textures/" + path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return img;
+	}
+	
+	private synchronized BufferedImage loadBitmap(String path){
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(ImageLoader.class.getResource("/bitmaps/" + path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

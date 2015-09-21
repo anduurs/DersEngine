@@ -38,7 +38,7 @@ public class StaticLayer extends Renderable{
 		m_Pixels = new int[width * height];
 		
 		for(int i = 0; i < m_Pixels.length; i++)
-			m_Pixels[i] = ColorRGBA.RED;
+			m_Pixels[i] = ColorRGBA.GREEN;
 	}
 	
 	public StaticLayer(String tag, String name, int textureSize, Shader shader){
@@ -62,11 +62,16 @@ public class StaticLayer extends Renderable{
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		
+		float xOffset = 7f;
+		float yOffset = 5f;
+		
 		for(int y = 0; y < m_Height; y++){
 			for(int x = 0; x < m_Width; x++){
 				int index = x + y * m_Width;
 				
-				if(m_Pixels[index] == ColorRGBA.BLACK) continue;
+				if(m_Pixels[index] == -16777216) continue;
+				
+			
 				
 				float xLow  = m_ColorToTextureMap.get(m_Pixels[index]).u1;
 				float xHigh = m_ColorToTextureMap.get(m_Pixels[index]).u2;
@@ -83,10 +88,11 @@ public class StaticLayer extends Renderable{
 				indices.add(vertices.size() + 3);
 				indices.add(vertices.size() + 0);
 				
-				vertices.add(new Vertex(new Vector3f(xPos, yPos , 0), 								 new Vector2f(xLow, yLow)));
-				vertices.add(new Vertex(new Vector3f(xPos, yPos + m_TextureSize, 0), 				 new Vector2f(xLow, yHigh)));
-				vertices.add(new Vertex(new Vector3f(xPos + m_TextureSize, yPos + m_TextureSize, 0), new Vector2f(xHigh, yHigh)));
-				vertices.add(new Vertex(new Vector3f(xPos + m_TextureSize, yPos, 0), 				 new Vector2f(xHigh, yLow)));
+				vertices.add(new Vertex(new Vector3f(xPos, yPos , 0), new Vector2f(xLow, yLow)));
+				vertices.add(new Vertex(new Vector3f(xPos, yPos + m_TextureSize + yOffset, 0), new Vector2f(xLow, yHigh)));
+				vertices.add(new Vertex(new Vector3f(xPos + m_TextureSize + xOffset, 
+						yPos + m_TextureSize + yOffset, 0), new Vector2f(xHigh, yHigh)));
+				vertices.add(new Vertex(new Vector3f(xPos + m_TextureSize + xOffset, yPos, 0), new Vector2f(xHigh, yLow)));
 			}
 		}
 		
@@ -106,6 +112,7 @@ public class StaticLayer extends Renderable{
 	}
 	
 	public void render(){
+		//m_GameObject.getTransform().translate(0, 0, 0);
 		m_Shader.setUniformi("is_Static", 1);
 		m_Shader.setUniform("model_matrix", m_GameObject.getTransform().getModelMatrix());
 		m_Mesh.render();

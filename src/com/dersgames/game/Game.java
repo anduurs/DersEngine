@@ -18,7 +18,7 @@ public class Game implements Runnable{
 	}
 	
 	private void init(){
-		m_Window = new Window(1200, 675, "DersEngine Alpha v0.01", true);
+		m_Window = new Window(800, 600, "DersEngine Alpha v0.01", true);
 		m_StateManager = new GameStateManager();
 		m_StateManager.push(new PlayState(m_StateManager));
 	}

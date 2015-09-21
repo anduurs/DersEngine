@@ -2,17 +2,17 @@ package com.dersgames.game.components;
 
 import com.dersgames.game.core.GameObject;
 
-public abstract class Component {
+public abstract class GameComponent {
 	
 	protected GameObject m_GameObject;
 	protected boolean m_Enabled;
 	protected String m_Tag;
 	
-	public Component(){
+	public GameComponent(){
 		this("Component");
 	}
 	
-	public Component(String tag){
+	public GameComponent(String tag){
 		m_Tag = tag;
 		m_Enabled = true;
 		m_GameObject = null;
