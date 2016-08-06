@@ -36,7 +36,7 @@ import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Vector2f;
 import com.dersgames.game.core.Vector3f;
 
-public class Shader {
+public abstract class Shader {
 	
 	private int m_ShaderProgram;
 	private HashMap<String, Integer> m_Uniforms;
@@ -47,7 +47,14 @@ public class Shader {
 		
 		addVertexShader(vertShader);
 		addFragmentShader(fragShader);
+		bindAttributes();
 		createShaderProgram();
+	}
+	
+	protected abstract void bindAttributes();
+	
+	protected void bindAttribute(int attribute, String name){
+		glBindAttribLocation(m_ShaderProgram, attribute, name);
 	}
 	
 	private void addVertexShader(String fileName){
@@ -83,10 +90,6 @@ public class Shader {
 	}
 	
 	private void createShaderProgram(){
-		glBindAttribLocation(m_ShaderProgram, 0, "position");
-		glBindAttribLocation(m_ShaderProgram, 1, "texCoordIn");
-		//glBindAttribLocation(m_ShaderProgram, 2, "v_Normal");
-
 		glLinkProgram(m_ShaderProgram);
 		glValidateProgram(m_ShaderProgram);
 	}

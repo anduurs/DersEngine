@@ -3,7 +3,7 @@ package com.dersgames.game;
 import com.dersgames.game.core.GameStateManager;
 import com.dersgames.game.graphics.Window;
 import com.dersgames.game.states.PlayState;
-import com.dersgames.game.utils.ImageLoader;
+import com.dersgames.game.utils.ImageManager;
 
 public class Game implements Runnable{
 	
@@ -14,11 +14,12 @@ public class Game implements Runnable{
 	private GameStateManager m_StateManager;
 	
 	public Game(){
-		new ImageLoader();
+		ImageManager assets = new ImageManager();
+		assets.addImage("test", "test.png");
 	}
 	
 	private void init(){
-		m_Window = new Window(800, 600, "DersEngine Alpha v0.01", true);
+		m_Window = new Window(800, 600, "DersEngine v0.01", true);
 		m_StateManager = new GameStateManager();
 		m_StateManager.push(new PlayState(m_StateManager));
 	}
@@ -91,7 +92,7 @@ public class Game implements Runnable{
 				m_Running = false;
 			
 		}
-		
+		m_StateManager.getCurrentState().cleanUp();
 		m_Window.destroy();
 	}
 	

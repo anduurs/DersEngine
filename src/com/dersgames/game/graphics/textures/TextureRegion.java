@@ -1,4 +1,6 @@
-package com.dersgames.game.graphics;
+package com.dersgames.game.graphics.textures;
+
+import com.dersgames.game.graphics.textures.Texture;
 
 public class TextureRegion {
 	
@@ -11,7 +13,7 @@ public class TextureRegion {
 	private final Texture m_Texture;
 	
 	/**
-	 * Defines a region in a given texture with a starting x and y coordinate (which are in pixels) 
+	 * Defines a region in a given texture with a starting x and y coordinate (in pixels) 
 	 * and the width and height of the region
 	 * @param texture the texture atlas
 	 * @param x the starting x coordinate of the region in pixels 

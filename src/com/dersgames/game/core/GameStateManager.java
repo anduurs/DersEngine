@@ -1,10 +1,8 @@
 package com.dersgames.game.core;
 
-import javax.swing.Renderer;
-
 public class GameStateManager {
 	
-private LinkedStack<GameState> states;
+	private LinkedStack<GameState> states;
 	
 	public GameStateManager(){
 		states = new LinkedStack<GameState>();
@@ -32,7 +30,7 @@ private LinkedStack<GameState> states;
 	/**
 	 * Returns the current state
 	 */
-	public GameState peek(){
+	public GameState getCurrentState(){
 		return states.peek();
 	}
 	

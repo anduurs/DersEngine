@@ -1,9 +1,9 @@
-package com.dersgames.game.components;
+package com.dersgames.game.core;
 
 import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Vector3f;
 
-public class Transform extends GameComponent{
+public class Transform{
 	
 	private Vector3f m_Position, m_Rotation, m_Scaling;
 	
@@ -33,37 +33,37 @@ public class Transform extends GameComponent{
 		return m_ScalingMatrix.setScalingMatrix(m_Scaling.x, m_Scaling.y, m_Scaling.z);
 	}
 	
-	public Matrix4f getModelMatrix(){
+	public Matrix4f getTransformationMatrix(){
 		Matrix4f T = getTranslationMatrix();
 		Matrix4f R = getRotationMatrix();
 		Matrix4f S = getScalingMatrix();
 		
-		Matrix4f modelMatrix = T.mul(R.mul(S));
+		Matrix4f transformationMatrix = T.mul(R.mul(S));
 		
-		return modelMatrix;
+		return transformationMatrix;
 	}
 	
 	public void translate(float x, float y, float z) {
-		m_Position.setX(x);
-		m_Position.setY(y);
-		m_Position.setZ(z);
+		m_Position.x = x;
+		m_Position.y = y;
+		m_Position.z = z;
 	}
 	
 	public void rotate(float x, float y, float z) {
-		m_Rotation.setX(x);
-		m_Rotation.setY(y);
-		m_Rotation.setZ(z);
+		m_Rotation.x = x;
+		m_Rotation.y = y;
+		m_Rotation.z = z;
 	}
 	
 	public void scale(float x, float y, float z) {
-		m_Scaling.setX(x);
-		m_Scaling.setY(y);
-		m_Scaling.setZ(z);
+		m_Scaling.x = x;
+		m_Scaling.y = y;
+		m_Scaling.z = z;
 	}
 	
 	public Vector3f getPosition() {return m_Position;}
-	public Vector3f getRotationVector() {return m_Rotation;}
-	public Vector3f getScalingVector() {return m_Scaling;}
+	public Vector3f getRotation() {return m_Rotation;}
+	public Vector3f getScaling() {return m_Scaling;}
 	
 	public void setTranslationVector(Vector3f translation) {
 		m_Position = translation;
@@ -76,8 +76,4 @@ public class Transform extends GameComponent{
 	public void setScalingVector(Vector3f scaling) {
 		m_Scaling = scaling;
 	}
-
-	@Override
-	public void update(float dt) {}
-
 }

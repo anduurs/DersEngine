@@ -1,24 +1,15 @@
-#version 130
+#version 400 core
 
 in vec3 position;
-in vec2 texCoordIn;
+in vec2 textureCoords;
 
-out vec2 texCoord; 
-out vec3 outColor;
+out vec2 out_TexCoords;
 
-uniform mat4 projection_matrix;
-uniform mat4 view_matrix = mat4(1.0);
-uniform mat4 model_matrix; 
-
-uniform int is_Static;
+uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
 
 void main(){
-	texCoord = texCoordIn;
-	outColor = vec3(1,1,1.6);
-	
-	if(is_Static == 1){
-		gl_Position = projection_matrix * model_matrix * vec4(position, 1);
-	}else {
-		gl_Position = projection_matrix * vec4(position, 1);
-	}
+	out_TexCoords = textureCoords;
+	gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
 }

@@ -115,6 +115,44 @@ public class Matrix4f {
 		return this;
 	}
 	
+	public Matrix4f setPerspectiveProjection(float fov, float aspectRatio, float zNear, float zFar){
+		float tanHalfFOV = (float)Math.tan(fov / 2);
+		float zRange = zNear - zFar;
+		
+		m_Matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);	m_Matrix[0][1] = 0;		m_Matrix[0][2] = 0;	m_Matrix[0][3] = 0;
+		m_Matrix[1][0] = 0;						m_Matrix[1][1] = 1.0f / tanHalfFOV;	m_Matrix[1][2] = 0;	m_Matrix[1][3] = 0;
+		m_Matrix[2][0] = 0;						m_Matrix[2][1] = 0;					m_Matrix[2][2] = (-zNear -zFar)/zRange;	m_Matrix[2][3] = 2 * zFar * zNear / zRange;
+		m_Matrix[3][0] = 0;						m_Matrix[3][1] = 0;					m_Matrix[3][2] = 1;	m_Matrix[3][3] = 0;
+		
+		
+		return this;
+	}
+	
+	public Matrix4f setRotationMatrix(Vector3f forward, Vector3f up){
+		Vector3f f = forward.normalize();
+		
+		Vector3f r = up.normalize();
+		r = r.cross(f);
+		
+		Vector3f u = f.cross(r);
+
+		return setRotationMatrix(f, u, r);
+	}
+
+	public Matrix4f setRotationMatrix(Vector3f forward, Vector3f up, Vector3f right){
+		Vector3f f = forward;
+		Vector3f r = right;
+		Vector3f u = up;
+
+		m_Matrix[0][0] = r.x;	m_Matrix[0][1] = r.y;	m_Matrix[0][2] = r.z;	m_Matrix[0][3] = 0;
+		m_Matrix[1][0] = u.x;	m_Matrix[1][1] = u.y;	m_Matrix[1][2] = u.z;	m_Matrix[1][3] = 0;
+		m_Matrix[2][0] = f.x;	m_Matrix[2][1] = f.y;	m_Matrix[2][2] = f.z;	m_Matrix[2][3] = 0;
+		m_Matrix[3][0] = 0;		m_Matrix[3][1] = 0;		m_Matrix[3][2] = 0;		m_Matrix[3][3] = 1;
+
+		return this;
+	}
+
+	
 	/**
 	 * Performs matrix multiplication between this matrix and the given
 	 * @param m the matrix which will be multiplied with this matrix

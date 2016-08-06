@@ -6,20 +6,27 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-public class ImageLoader {
+public class ImageManager {
 	
 	private static HashMap<String, BufferedImage> m_ImageLib = 
 			new HashMap<String, BufferedImage>();
 	
-	public ImageLoader(){
-		m_ImageLib.put("atlas", loadImage("texture_atlas.png"));
-		m_ImageLib.put("tilemap", loadBitmap("tilemap0.png"));
+	public ImageManager(){
+		
+	}
+	
+	public void addImage(String tag, String fileName){
+		m_ImageLib.put(tag, loadImage(fileName));
+	}
+	
+	public void addBitmap(String tag, String fileName){
+		m_ImageLib.put(tag, loadBitmap(fileName));
 	}
 	
 	private synchronized BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(ImageLoader.class.getResource("/textures/" + path));
+			img = ImageIO.read(ImageManager.class.getResource("/textures/" + path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -30,7 +37,7 @@ public class ImageLoader {
 	private synchronized BufferedImage loadBitmap(String path){
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(ImageLoader.class.getResource("/bitmaps/" + path));
+			img = ImageIO.read(ImageManager.class.getResource("/bitmaps/" + path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

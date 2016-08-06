@@ -1,23 +1,22 @@
 package com.dersgames.game.graphics.shaders;
 
-import com.dersgames.game.components.Transform;
-
 public class BasicShader extends Shader{
 
 	public BasicShader() {
 		super("basicVert", "basicFrag");
-		
-		addUniform("projection_matrix");
-		addUniform("model_matrix");
-		addUniform("view_matrix");
-		addUniform("is_Static");
-		
-		addUniform("sampler");
-		
 		enable();
-		setUniformi("sampler", 0);
-		
+		addUniform("textureSampler");
+		addUniform("transformationMatrix");
+		addUniform("projectionMatrix");
+		addUniform("viewMatrix");
+		setUniformi("textureSampler", 0);
 		disable();
+	}
+
+	@Override
+	protected void bindAttributes() {
+		super.bindAttribute(0, "position");
+		super.bindAttribute(1, "textureCoords");
 	}
 
 }

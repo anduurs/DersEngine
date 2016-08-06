@@ -8,11 +8,13 @@ public abstract class GameState {
 	
 	public GameState(GameStateManager gsm){
 		this.gsm = gsm;
+		init();
 	}
 	
 	public abstract void init();
 	public abstract void update(float dt);
 	public abstract void render();
+	public abstract void cleanUp();
 	
 	public boolean isUpdatingBlocked() {
 		return m_BlockUpdating;
