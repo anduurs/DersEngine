@@ -72,6 +72,12 @@ public class ModelLoader {
 		glBindVertexArray(0);
 	}
 	
+	private Model loadObjFile(String fileName){
+		
+		
+		return null;
+	}
+	
 	private void storeDataInAttributeList(int attributeNumber, int numOfFloats, float[] data){
 		int vboID = glGenBuffers();
 		m_vboIDs.add(vboID);
