@@ -1,8 +1,8 @@
 package com.dersgames.game.core;
 
-import com.dersgames.game.input.Input;
-
 import org.lwjgl.glfw.GLFW;
+
+import com.dersgames.game.input.Input;
 
 public class Camera{
 	

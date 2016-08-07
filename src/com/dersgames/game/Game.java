@@ -15,6 +15,7 @@ public class Game implements Runnable{
 	
 	public Game(){
 		ImageManager assets = new ImageManager();
+		assets.addImage("stall", "stallTexture.png");
 		assets.addImage("test", "test.png");
 	}
 	

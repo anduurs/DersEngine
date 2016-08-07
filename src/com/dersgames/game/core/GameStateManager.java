@@ -1,5 +1,7 @@
 package com.dersgames.game.core;
 
+import com.dersgames.game.graphics.Renderer3D;
+
 public class GameStateManager {
 	
 	private LinkedStack<GameState> states;

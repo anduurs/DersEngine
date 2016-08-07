@@ -20,10 +20,8 @@ import com.dersgames.game.graphics.textures.ModelTexture;
 public class PlayState extends GameState{
 	
 	Renderer3D renderer;
-	Model model;
 	Shader shader;
 	ModelLoader loader;
-	TexturedModel texturedModel;
 	EntityManager entityManager;
 	Camera camera;
 	
@@ -39,88 +37,12 @@ public class PlayState extends GameState{
 		camera = new Camera();
 		renderer = new Renderer3D(shader, projection, camera);
 		loader = new ModelLoader();
-		
 		entityManager = new EntityManager();
 		
-		float[] vertices = {			
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,0.5f,-0.5f,		
-				
-				-0.5f,0.5f,0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				0.5f,0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				-0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,0.5f,
-				-0.5f,0.5f,-0.5f,
-				0.5f,0.5f,-0.5f,
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,-0.5f,0.5f,
-				-0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,0.5f
-		};
+		TexturedModel texturedModel = new TexturedModel(loader.loadObjModel("stall"), 
+				new ModelTexture(loader.loadTexture("stall")));
 		
-		float[] textureCoords = {
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0	
-		};
-		
-		int[] indices = {
-				0,1,3,	
-				3,1,2,	
-				4,5,7,
-				7,5,6,
-				8,9,11,
-				11,9,10,
-				12,13,15,
-				15,13,14,	
-				16,17,19,
-				19,17,18,
-				20,21,23,
-				23,21,22
-		};
-		
-		model = loader.loadToVAO(vertices, textureCoords, indices);
-		texturedModel = new TexturedModel(model, 
-				new ModelTexture(loader.loadTexture("test")));
-		
-		Entity entity = new Entity();
+		Entity entity = new Entity("Entity1", 0, -5, 20);
 		entity.addComponent(new StaticMesh("StaticMesh1", texturedModel));
 		entity.addComponent(new MovementComponent("MovementTest"));
 		entityManager.addEntity(entity);
