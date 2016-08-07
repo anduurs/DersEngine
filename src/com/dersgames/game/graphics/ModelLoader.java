@@ -42,11 +42,12 @@ public class ModelLoader {
 		m_TextureIDs = new ArrayList<Integer>();
 	}
 	
-	public Model loadToVAO(float[] positions, float[] textureCoords, int[] indices){
+	public Model loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
 		bindIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
+		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
 		return new Model(vaoID, indices.length);
 	}
@@ -139,7 +140,7 @@ public class ModelLoader {
 		for(int i = 0; i < indicesArray.length; i++)
 			indicesArray[i] = indices.get(i);
 		
-		return loadToVAO(verticesArray, texCoordsArray, indicesArray);
+		return loadToVAO(verticesArray, texCoordsArray, normalsArray, indicesArray);
 	}
 	
 	private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,

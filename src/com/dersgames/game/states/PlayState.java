@@ -43,28 +43,23 @@ public class PlayState extends GameState{
 		TexturedModel texturedModel = new TexturedModel(loader.loadObjModel("stall"), 
 				new ModelTexture(loader.loadTexture("stall")));
 		
-		for(int i = 0; i < 50; i++){
-			Entity entity = new Entity("Entity1", 0, -5 + i *10, 20);
-			entity.addComponent(new StaticMesh("StaticMesh1", texturedModel));
-			entity.addComponent(new MovementComponent("MovementTest"));
-			entityManager.addEntity(entity);
-		}
+//		for(int i = 0; i < 50; i++){
+//			Entity entity = new Entity("Entity1", 0, -5 + i *10, 20);
+//			entity.addComponent(new StaticMesh("StaticMesh1", texturedModel));
+//			entity.addComponent(new MovementComponent("MovementTest"));
+//			entityManager.addEntity(entity);
+//		}
 		
+		Entity entity = new Entity("Entity1", 0, -5, 20);
+		entity.addComponent(new StaticMesh("StaticMesh1", texturedModel));
+		//entity.addComponent(new MovementComponent("MovementTest"));
+		entityManager.addEntity(entity);
 	}
-	
-	int timer = 0;
 	
 	@Override
 	public void update(float dt) {
 		camera.update(dt);
 		entityManager.update(dt);
-		
-		timer ++;
-		
-		if(timer >= 60){
-			Debug.log("Number of entities: " + entityManager.getEntityCount());
-			timer = 0;
-		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dersgames.game.components.Component;
 import com.dersgames.game.core.Transform;
+import com.dersgames.game.core.Vector3f;
 import com.dersgames.game.graphics.Renderable3D;
 import com.dersgames.game.graphics.Renderer3D;
 
@@ -89,6 +90,10 @@ public class Entity {
 
 	public Transform getTransform() {
 		return m_Transform;
+	}
+	
+	public Vector3f getPosition(){
+		return m_Transform.getPosition();
 	}
 	
 	public boolean isAlive(){

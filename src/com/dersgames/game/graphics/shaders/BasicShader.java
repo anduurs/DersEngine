@@ -9,6 +9,8 @@ public class BasicShader extends Shader{
 		addUniform("transformationMatrix");
 		addUniform("projectionMatrix");
 		addUniform("viewMatrix");
+		addUniform("lightPosition");
+		addUniform("lightColor");
 		setUniformi("textureSampler", 0);
 		disable();
 	}
@@ -17,6 +19,7 @@ public class BasicShader extends Shader{
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
+		super.bindAttribute(2, "normal");
 	}
 
 }
