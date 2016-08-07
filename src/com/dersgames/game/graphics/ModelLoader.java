@@ -83,8 +83,6 @@ public class ModelLoader {
 		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 
 		List<Vector3f> normals = new ArrayList<Vector3f>(); 
 		List<Integer> indices = new ArrayList<Integer>();
-		List<Vector2f> texCoordsOrdered = new ArrayList<Vector2f>(); 
-		List<Vector3f> normalsOrdered = new ArrayList<Vector3f>();
 		
 		float[] texCoordsArray = null;
 		float[] normalsArray = null;

@@ -10,13 +10,6 @@ public class Randomizer {
 		return rnd.nextInt(2);
 	}
 
-	/**
-	 * Returns a float value between min and max.
-	 * 
-	 * @param min
-	 * @param max
-	 * @return
-	 */
 	public static float getFloat(float min, float max) {
 		return rnd.nextFloat() * (max - min) + min;
 	}

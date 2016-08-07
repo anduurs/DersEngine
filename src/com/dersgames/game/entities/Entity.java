@@ -80,10 +80,7 @@ public class Entity {
 	
 	public void destroy(){
 		m_Alive = false;
-		if(getComponents().size() != 0)
-			getComponents().clear();
-		if(getRenderables().size() != 0)
-			getRenderables().clear();
+		
 	}
 
 	public String getTag() {

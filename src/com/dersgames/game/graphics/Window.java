@@ -8,7 +8,9 @@ import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -28,11 +30,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
-import com.dersgames.game.input.Input;
+import com.dersgames.game.input.KeyInput;
+import com.dersgames.game.input.Mouse;
+import com.dersgames.game.input.MouseCursor;
 
 public class Window {
 	
@@ -42,6 +49,8 @@ public class Window {
 	private long window;
 	
 	private GLFWKeyCallback keyCallback;
+	private GLFWMouseButtonCallback mouseCallback;
+	private GLFWCursorPosCallback mouseCursorCallback;
 	
 	public Window(int width, int height, String title, boolean vsync){
 		m_Width  = width;
@@ -62,7 +71,10 @@ public class Window {
 		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - width) / 2,
 		          (GLFWvidmode.height(vidmode) - height) / 2);
 		
-		glfwSetKeyCallback(window, keyCallback = new Input());
+		glfwSetKeyCallback(window, keyCallback = new KeyInput());
+		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
+		glfwSetCursorPosCallback(window, mouseCursorCallback = new MouseCursor());
+		//GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 		
 		glfwMakeContextCurrent(window);
 		
@@ -100,6 +112,8 @@ public class Window {
 	public void destroy(){
 		glfwDestroyWindow(window);
 		keyCallback.release();
+		mouseCallback.release();
+		mouseCursorCallback.release();
 		glfwTerminate();
 	}
 	

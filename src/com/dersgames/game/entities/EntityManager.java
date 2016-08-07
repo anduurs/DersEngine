@@ -1,6 +1,7 @@
 package com.dersgames.game.entities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.dersgames.game.graphics.Renderer3D;
@@ -14,7 +15,7 @@ public class EntityManager {
 	}
 	
 	public void addEntity(Entity entity){
-		getEntities().add(entity);
+		m_EntityList.add(entity);
 	}
 	
 	public void update(float dt){
@@ -33,8 +34,10 @@ public class EntityManager {
 	}
 	
 	private void refreshEntityList(){
-		for(Entity e : getEntities())
-			if(!e.isAlive()) getEntities().remove(e);
+		for(Iterator<Entity> it = m_EntityList.iterator(); it.hasNext();){
+			Entity e = it.next();
+			if(!e.isAlive()) it.remove();
+		}
 	}
 	
 	private synchronized List<Entity> getEntities(){

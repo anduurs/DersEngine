@@ -83,7 +83,7 @@ public class Game implements Runnable{
 			fps++;
 					
 			if(frameCounter >= 1){
-				System.out.println(ups + " ups , " + fps + " fps");
+				//System.out.println(ups + " ups , " + fps + " fps");
 				fps = 0;
 				ups = 0;
 				frameCounter = 0;

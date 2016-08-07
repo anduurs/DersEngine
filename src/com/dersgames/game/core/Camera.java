@@ -2,7 +2,10 @@ package com.dersgames.game.core;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.game.input.Input;
+import com.dersgames.game.graphics.Window;
+import com.dersgames.game.input.KeyInput;
+import com.dersgames.game.input.Mouse;
+import com.dersgames.game.input.MouseCursor;
 
 public class Camera{
 	
@@ -11,6 +14,13 @@ public class Camera{
 	private Vector3f m_Position;
 	private Vector3f m_Forward;
 	private Vector3f m_Up;
+	
+	private Vector2f m_CenterPosition;
+	private float m_Sensitivity;
+	
+	private boolean m_MouseLocked = false;
+	private int m_ClickCounter = 0;
+	private int m_Timer = 0;
 	
 	public Camera(){
 		this(new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -23,46 +33,68 @@ public class Camera{
 		
 		m_Forward.normalize();
 		m_Up.normalize();
+		
+		m_CenterPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+		m_Sensitivity = 5.0f;
 	}
 	
 	public void update(float dt){
 		float movAmt = (float)(10.0f * dt);
-		float rotAmt = (float)(100.0f * dt);
 		
+		if(m_Timer >= 7000) m_Timer = 0;
+		else m_Timer++;
+
 		//TRANSLATION
-		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_W)){
+
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
 			move(m_Forward, movAmt);
 		}
 		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_S)){
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S)){
 			move(m_Forward, -movAmt);
 		}
 		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_D)){
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
 			move(getRight(), movAmt);
 		}
 		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_A)){
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A)){
 			move(getLeft(), movAmt);
 		}
 		
-		//ROTATION
-		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_UP)){
-			rotateX(-rotAmt);
-		}
-
-		if(Input.isKeyDown(GLFW.GLFW_KEY_DOWN)){
-			rotateX(rotAmt);
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_SPACE)){
+			m_MouseLocked = false;
+			MouseCursor.setVisibility(true);
 		}
 		
-		if(Input.isKeyDown(GLFW.GLFW_KEY_LEFT)){
-			rotateY(-rotAmt);
+		//FREE LOOK
+		if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT) && !m_MouseLocked){
+//			if(m_ClickCounter == 0){
+//				m_MouseLocked = true;
+//				MouseCursor.setVisibility(false);
+//				MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
+//				m_ClickCounter++;
+//			}else if(m_ClickCounter == 1){
+//				m_MouseLocked = false;
+//				MouseCursor.setVisibility(true);
+//				m_ClickCounter = 0;
+//			}
+			
+			m_MouseLocked = true;
+			MouseCursor.setVisibility(false);
+			MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
+			
 		}
-
-		if(Input.isKeyDown(GLFW.GLFW_KEY_RIGHT)){
-			rotateY(rotAmt);
+		
+		if(m_MouseLocked){
+			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
+			
+			boolean rotY = deltaPos.x != 0;
+			boolean rotX = deltaPos.y != 0;
+			
+			if(rotY) rotateY((float)Math.toRadians(deltaPos.x * m_Sensitivity));
+			if(rotX) rotateX((float)Math.toRadians(deltaPos.y * m_Sensitivity));
+			if(rotY || rotX) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 		}
 	}
 	
