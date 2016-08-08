@@ -13,9 +13,7 @@ public class Game implements Runnable{
 	private Window m_Window;
 	private GameStateManager m_StateManager;
 	
-	public Game(){
-		
-	}
+	public Game(){}
 	
 	private void init(){
 		m_Window = new Window(800, 600, "DersEngine", true);
@@ -84,9 +82,10 @@ public class Game implements Runnable{
 				render();
 				fps++;
 			}
-					
+				
 			if(frameCounter >= 1){
-				Debug.log(fps + " fps");
+				m_Window.setTitle("DersEngine || " + fps + " fps");
+				//Debug.log(fps + " fps");
 				fps = 0;
 				frameCounter = 0;
 			}

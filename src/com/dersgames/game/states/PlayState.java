@@ -37,7 +37,7 @@ public class PlayState extends GameState{
 		ImageManager.addImage("test", "test.png");
 		ImageManager.addImage("dragon", "dragontexture.png");
 		ImageManager.addImage("grass", "grass.png");
-		
+		ImageManager.addImage("tree", "tree.png");
 		
 		m_Renderer = new Renderer3D();
 		m_Loader = new ModelLoader();
@@ -47,8 +47,6 @@ public class PlayState extends GameState{
 				new ModelTexture(m_Loader.loadTexture("dragon")));
 		
 		ModelTexture grassTexture = new ModelTexture(m_Loader.loadTexture("grass"));
-//		grassTexture.setShineDamper(1.0f);
-//		grassTexture.setReflectivity(1.0f);
 		
 		Entity terrainEntity = new Entity("Terrain1");
 		Terrain terrain = new Terrain("TerrainComponent1", 0, 0, m_Loader, grassTexture);
@@ -60,14 +58,14 @@ public class PlayState extends GameState{
 		terrainEntity.addComponent(terrain2);
 		m_Scene.addEntity(terrainEntity2);
 		
-		Entity entity = new Entity("Entity0", 200, 0, 200);
+		Entity entity = new Entity("Player", 200, 0, 200);
 		texturedModel.getModelTexture().setShineDamper(10.0f);
 		texturedModel.getModelTexture().setReflectivity(1.0f);
 		entity.addComponent(new StaticMesh("StaticMesh0", texturedModel));
 		entity.addComponent(new MovementComponent("MovementTest"));
 		m_Scene.addEntity(entity);
 		
-//		stressTest(200);
+		stressTest(100);
 		
 		Entity lightSource = new Entity("LightSource", 200, 200, 100);
 		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
@@ -83,10 +81,10 @@ public class PlayState extends GameState{
 				new ModelTexture(m_Loader.loadTexture("dragon")));
 		Random random = new Random();
 		for(int i = 0; i < numOfEntities; i++){
-			float x = random.nextFloat() * 100 - 50;
-			float y = random.nextFloat() * 100 - 50;
-			float z = random.nextFloat() * -300;
-			Entity entity = new Entity("Entity" + i, x, y, z);
+			float x = random.nextFloat() * 800;
+			//float y = random.nextFloat() * 1000 - 50;
+			float z = random.nextFloat() * 800;
+			Entity entity = new Entity("Entity" + i, x, 0, z);
 			texturedModel.getModelTexture().setShineDamper(10.0f);
 			texturedModel.getModelTexture().setReflectivity(1.0f);
 			entity.addComponent(new StaticMesh("StaticMesh" + i, texturedModel));

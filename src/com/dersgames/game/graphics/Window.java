@@ -62,7 +62,7 @@ public class Window {
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 				
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
-
+		
 		if(window == NULL)
 			System.err.println("Could not create our Window!");
 		 
@@ -89,6 +89,10 @@ public class Window {
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		
 		glClearColor(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f, 0f);
+	}
+	
+	public void setTitle(String title){
+		GLFW.glfwSetWindowTitle(window, title);
 	}
 	
 	public void clearBuffers(){
