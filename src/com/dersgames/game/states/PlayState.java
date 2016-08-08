@@ -60,7 +60,7 @@ public class PlayState extends GameState{
 		terrainEntity.addComponent(terrain2);
 		m_Scene.addEntity(terrainEntity2);
 		
-		Entity entity = new Entity("Entity0", 0, 0, 20);
+		Entity entity = new Entity("Entity0", 200, 0, 200);
 		texturedModel.getModelTexture().setShineDamper(10.0f);
 		texturedModel.getModelTexture().setReflectivity(1.0f);
 		entity.addComponent(new StaticMesh("StaticMesh0", texturedModel));
@@ -75,7 +75,7 @@ public class PlayState extends GameState{
 		m_Scene.addSun(light);
 		m_Scene.addEntity(lightSource);
 		
-		m_Scene.addCamera(new Camera(new Vector3f(200,20,200)));
+		m_Scene.addCamera(new Camera(new Vector3f(200,20,100)));
 	}
 	
 	private void stressTest(int numOfEntities){
