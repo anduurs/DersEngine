@@ -34,8 +34,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
 import com.dersgames.game.input.KeyInput;
 import com.dersgames.game.input.Mouse;
@@ -56,7 +56,7 @@ public class Window {
 		m_Width  = width;
 		m_Height = height;
 		
-		if(glfwInit() != GL_TRUE)
+		if(!glfwInit())
 			System.err.println("GLFW initialization failed!");
 		
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -66,10 +66,10 @@ public class Window {
 		if(window == NULL)
 			System.err.println("Could not create our Window!");
 		 
-		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		GLFWVidMode  vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		
-		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - width) / 2,
-		          (GLFWvidmode.height(vidmode) - height) / 2);
+		glfwSetWindowPos(window, (vidmode.width() - width) / 2,
+		          (vidmode.height() - height) / 2);
 		
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
@@ -84,7 +84,7 @@ public class Window {
 		
 		glfwShowWindow(window);
 		
-		GLContext.createFromCurrent();
+		GL.createCapabilities();
 		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		
@@ -108,16 +108,16 @@ public class Window {
 	}
 	
 	public boolean isWindowClosed(){
-		if(glfwWindowShouldClose(window) == GL_TRUE)
+		if(glfwWindowShouldClose(window))
 			return true;
 		return false;
 	}
 	
 	public void destroy(){
 		glfwDestroyWindow(window);
-		keyCallback.release();
-		mouseCallback.release();
-		mouseCursorCallback.release();
+		keyCallback.free();
+		mouseCallback.free();
+		mouseCursorCallback.free();
 		glfwTerminate();
 	}
 	

@@ -3,9 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="res"/>
-	<classpathentry kind="lib" path="C:/Users/Anders/Documents/lwjgl3/jar/lwjgl.jar" sourcepath="C:/Users/Anders/Documents/lwjgl3/src.zip">
+	<classpathentry kind="lib" path="C:/Users/Anders/Desktop/jar/lwjgl.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Anders/Documents/lwjgl3/native"/>
+			<attribute name="javadoc_location" value="file:/C:/Users/Anders/Desktop/doc/3rdparty/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Anders/Desktop/native"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>

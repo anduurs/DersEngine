@@ -13,10 +13,12 @@ public class Game implements Runnable{
 	private Window m_Window;
 	private GameStateManager m_StateManager;
 	
+	boolean vsync = true;
+	
 	public Game(){}
 	
 	private void init(){
-		m_Window = new Window(800, 600, "DersEngine", true);
+		m_Window = new Window(800, 600, "DersEngine", vsync);
 		m_StateManager = new GameStateManager();
 		m_StateManager.push(new PlayState(m_StateManager));
 	}
@@ -57,10 +59,10 @@ public class Game implements Runnable{
 		final double SEC_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SEC_PER_UPDATE;
 		
-		boolean shouldRender = false;
+		boolean shouldRender = !vsync;
 	
 		while(m_Running){
-			shouldRender = false;
+			shouldRender = !vsync;
 			currentTime = System.nanoTime();
 			passedTime = (currentTime - previousTime) / 1000000000.0;
 			

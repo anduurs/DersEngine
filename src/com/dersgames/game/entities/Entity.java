@@ -41,6 +41,11 @@ public class Entity {
 		m_Transform.translate(x, y, z);
 	}
 	
+	public Entity(String tag, float x, float y, float z, float scale){
+		this(tag, x, y, z);
+		m_Transform.scale(scale, scale, scale);
+	}
+	
 	public Component addComponent(Component component){
 		component.setEntity(this);
 		

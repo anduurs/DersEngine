@@ -17,6 +17,8 @@ public class StaticShader extends Shader{
 		addUniform("lightColor");
 		addUniform("shineDamper");
 		addUniform("reflectivity");
+		addUniform("useFakeLighting");
+		
 		loadInteger("textureSampler", 0);
 		disable();
 	}
@@ -26,6 +28,12 @@ public class StaticShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+	}
+	
+	public void loadUseFakeLighting(boolean useFakelighting){
+		if(useFakelighting)
+			loadFloat("useFakeLighting", 1.0f);
+		else loadFloat("useFakeLighting", 0.0f);
 	}
 	
 	public void loadShineVariables(float damper, float reflectivity){

@@ -8,9 +8,18 @@ public class ModelTexture {
 	private float m_Reflectivity = 0.0f;
 	
 	private boolean m_HasTransparency = false;
+	private boolean m_UseFakeLighting = false;
 	
 	public ModelTexture(int textureID){
 		m_TextureID = textureID;
+	}
+	
+	public void setUseFakeLighting(boolean fakelight){
+		m_UseFakeLighting = fakelight;
+	}
+	
+	public boolean getUseFakeLighting(){
+		return m_UseFakeLighting;
 	}
 	
 	public int getID(){

@@ -37,14 +37,17 @@ public class PlayState extends GameState{
 		ImageManager.addImage("test", "test.png");
 		ImageManager.addImage("dragon", "dragontexture.png");
 		ImageManager.addImage("grass", "grass.png");
+		
+		ImageManager.addImage("grassTexture", "grassTexture.png");
+		ImageManager.addImage("fern", "fern.png");
 		ImageManager.addImage("tree", "tree.png");
 		
 		m_Renderer = new Renderer3D();
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
 		
-		TexturedModel texturedModel = new TexturedModel(m_Loader.loadObjModel("dragon"), 
-				new ModelTexture(m_Loader.loadTexture("dragon")));
+//		TexturedModel texturedModel = new TexturedModel(m_Loader.loadObjModel("dragon"), 
+//				new ModelTexture(m_Loader.loadTexture("dragon")));
 		
 		ModelTexture grassTexture = new ModelTexture(m_Loader.loadTexture("grass"));
 		
@@ -58,12 +61,12 @@ public class PlayState extends GameState{
 		terrainEntity.addComponent(terrain2);
 		m_Scene.addEntity(terrainEntity2);
 		
-		Entity entity = new Entity("Player", 200, 0, 200);
-		texturedModel.getModelTexture().setShineDamper(10.0f);
-		texturedModel.getModelTexture().setReflectivity(1.0f);
-		entity.addComponent(new StaticMesh("StaticMesh0", texturedModel));
-		entity.addComponent(new MovementComponent("MovementTest"));
-		m_Scene.addEntity(entity);
+//		Entity entity = new Entity("Player", 200, 0, 200);
+//		texturedModel.getModelTexture().setShineDamper(10.0f);
+//		texturedModel.getModelTexture().setReflectivity(1.0f);
+//		entity.addComponent(new StaticMesh("StaticMesh0", texturedModel));
+//		entity.addComponent(new MovementComponent("MovementTest"));
+//		m_Scene.addEntity(entity);
 		
 		stressTest(100);
 		
@@ -77,19 +80,41 @@ public class PlayState extends GameState{
 	}
 	
 	private void stressTest(int numOfEntities){
-		TexturedModel texturedModel = new TexturedModel(m_Loader.loadObjModel("dragon"), 
-				new ModelTexture(m_Loader.loadTexture("dragon")));
+		TexturedModel treeModel = new TexturedModel(m_Loader.loadObjModel("tree"), 
+				new ModelTexture(m_Loader.loadTexture("tree")));
+		
+		TexturedModel grassModel = new TexturedModel(m_Loader.loadObjModel("grassModel"), 
+				new ModelTexture(m_Loader.loadTexture("grassTexture")));
+		grassModel.getModelTexture().setTransparency(true);
+		grassModel.getModelTexture().setUseFakeLighting(true);
+		
+		TexturedModel fernModel = new TexturedModel(m_Loader.loadObjModel("fern"), 
+				new ModelTexture(m_Loader.loadTexture("fern")));
+		fernModel.getModelTexture().setTransparency(true);
+		
 		Random random = new Random();
 		for(int i = 0; i < numOfEntities; i++){
-			float x = random.nextFloat() * 800;
-			//float y = random.nextFloat() * 1000 - 50;
-			float z = random.nextFloat() * 800;
-			Entity entity = new Entity("Entity" + i, x, 0, z);
-			texturedModel.getModelTexture().setShineDamper(10.0f);
-			texturedModel.getModelTexture().setReflectivity(1.0f);
-			entity.addComponent(new StaticMesh("StaticMesh" + i, texturedModel));
-			entity.addComponent(new MovementComponent("MovementTest" + i));
-			m_Scene.addEntity(entity);
+//			float x = random.nextFloat() * 800;
+//			float z = random.nextFloat() * 800;
+			
+			Entity tree = new Entity("Tree" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800, 10);
+			treeModel.getModelTexture().setShineDamper(10.0f);
+			treeModel.getModelTexture().setReflectivity(1.0f);
+			tree.addComponent(new StaticMesh("treemesh" + i, treeModel));
+			m_Scene.addEntity(tree);
+			
+			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			grassModel.getModelTexture().setShineDamper(1.0f);
+			grassModel.getModelTexture().setReflectivity(0.0f);
+			grass.addComponent(new StaticMesh("grassmesh" + i, grassModel));
+			m_Scene.addEntity(grass);
+			
+			Entity fern = new Entity("Fern" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			fernModel.getModelTexture().setShineDamper(1.0f);
+			fernModel.getModelTexture().setReflectivity(0.0f);
+			fern.addComponent(new StaticMesh("fernmesh" + i, fernModel));
+			m_Scene.addEntity(fern);
+			
 		}
 	}
 	
