@@ -16,8 +16,9 @@ import com.dersgames.game.graphics.ModelLoader;
 import com.dersgames.game.graphics.Renderer3D;
 import com.dersgames.game.graphics.Window;
 import com.dersgames.game.graphics.models.TexturedModel;
-import com.dersgames.game.graphics.shaders.PhongShader;
+import com.dersgames.game.graphics.shaders.StaticShader;
 import com.dersgames.game.graphics.textures.ModelTexture;
+import com.dersgames.game.terrains.Terrain;
 import com.dersgames.game.utils.ImageManager;
 
 public class PlayState extends GameState{
@@ -35,15 +36,29 @@ public class PlayState extends GameState{
 		ImageManager.addImage("stall", "stallTexture.png");
 		ImageManager.addImage("test", "test.png");
 		ImageManager.addImage("dragon", "dragontexture.png");
+		ImageManager.addImage("grass", "grass.png");
 		
-		Matrix4f projection = new Matrix4f().setPerspectiveProjection(70.0f, (float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 1000.0f);
 		
-		m_Renderer = new Renderer3D(new PhongShader(), projection);
+		m_Renderer = new Renderer3D();
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
 		
 		TexturedModel texturedModel = new TexturedModel(m_Loader.loadObjModel("dragon"), 
 				new ModelTexture(m_Loader.loadTexture("dragon")));
+		
+		ModelTexture grassTexture = new ModelTexture(m_Loader.loadTexture("grass"));
+//		grassTexture.setShineDamper(1.0f);
+//		grassTexture.setReflectivity(1.0f);
+		
+		Entity terrainEntity = new Entity("Terrain1");
+		Terrain terrain = new Terrain("TerrainComponent1", 0, 0, m_Loader, grassTexture);
+		terrainEntity.addComponent(terrain);
+		m_Scene.addEntity(terrainEntity);
+		
+		Entity terrainEntity2 = new Entity("Terrain2");
+		Terrain terrain2 = new Terrain("TerrainComponent2", 1, 0, m_Loader, grassTexture);
+		terrainEntity.addComponent(terrain2);
+		m_Scene.addEntity(terrainEntity2);
 		
 		Entity entity = new Entity("Entity0", 0, 0, 20);
 		texturedModel.getModelTexture().setShineDamper(10.0f);
@@ -60,7 +75,7 @@ public class PlayState extends GameState{
 		m_Scene.addSun(light);
 		m_Scene.addEntity(lightSource);
 		
-		m_Scene.addCamera(new Camera());
+		m_Scene.addCamera(new Camera(new Vector3f(200,20,200)));
 	}
 	
 	private void stressTest(int numOfEntities){

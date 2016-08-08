@@ -32,7 +32,6 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Vector2f;
 import com.dersgames.game.core.Vector3f;
@@ -100,23 +99,23 @@ public abstract class Shader {
 		m_Uniforms.put(uniform, uniformLocation);
 	}
 	
-	public void setUniformi(String uniformName, int value){
+	public void loadInteger(String uniformName, int value){
 		glUniform1i(m_Uniforms.get(uniformName), value);
 	}
 	
-	public void setUniformf(String uniformName, float value){
+	public void loadFloat(String uniformName, float value){
 		glUniform1f(m_Uniforms.get(uniformName), value);
 	}
 	
-	public void setUniform2f(String uniformName, Vector2f v){
+	public void loadVector2f(String uniformName, Vector2f v){
 		glUniform2f(m_Uniforms.get(uniformName), v.x, v.y);
 	}
 	
-	public void setUniformf(String uniformName, Vector3f v){
+	public void loadVector3f(String uniformName, Vector3f v){
 		glUniform3f(m_Uniforms.get(uniformName), v.x, v.y, v.z);
 	}
 	
-	public void setUniform(String uniformName, Matrix4f value){
+	public void loadMatrix4f(String uniformName, Matrix4f value){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
 		
 		for(int i = 0; i < 4; i++)

@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glCullFace;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -28,34 +29,52 @@ import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.graphics.models.Model;
 import com.dersgames.game.graphics.models.TexturedModel;
 import com.dersgames.game.graphics.shaders.Shader;
-import com.dersgames.game.graphics.shaders.PhongShader;
+import com.dersgames.game.graphics.shaders.StaticShader;
+import com.dersgames.game.graphics.shaders.TerrainShader;
 import com.dersgames.game.graphics.textures.ModelTexture;
+import com.dersgames.game.terrains.Terrain;
 
 public class Renderer3D {
 	
-	private PhongShader m_Shader;
+	private StaticShader m_Shader;
+	private TerrainShader m_TerrainShader;
 	private Matrix4f m_Projection;
 	private Map<TexturedModel, List<Renderable3D>> m_Renderables;
+	private List<Terrain> m_Terrains;
 
-	public Renderer3D(PhongShader shader, Matrix4f projection){
-		m_Shader = shader;
-		m_Projection = projection;
+	public Renderer3D(){
+		m_Shader = new StaticShader();
+		m_TerrainShader = new TerrainShader();
+		m_Projection = new Matrix4f().setPerspectiveProjection(70.0f, (float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 1000.0f);
 		m_Renderables = new HashMap<TexturedModel, List<Renderable3D>>();
+		m_Terrains = new ArrayList<Terrain>();
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
+		enableCulling();
+	}
+	
+	public static void enableCulling(){
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
 	}
 	
+	public static void disableCulling(){
+		glDisable(GL_CULL_FACE);
+	}
+	
 	public void submit(Renderable3D renderable){
-		TexturedModel model = renderable.getTexturedModel();
-		if(m_Renderables.containsKey(model))
-			m_Renderables.get(model).add(renderable);
-		else{
-			List<Renderable3D> batch = new ArrayList<Renderable3D>();
-			batch.add(renderable);
-			m_Renderables.put(model, batch);
+		if(renderable instanceof Terrain){
+			m_Terrains.add((Terrain)renderable);
+		}else{
+			TexturedModel model = renderable.getTexturedModel();
+			if(m_Renderables.containsKey(model))
+				m_Renderables.get(model).add(renderable);
+			else{
+				List<Renderable3D> batch = new ArrayList<Renderable3D>();
+				batch.add(renderable);
+				m_Renderables.put(model, batch);
+			}
 		}
 	}
 	
@@ -67,6 +86,24 @@ public class Renderer3D {
 		render(m_Renderables);
 		m_Shader.disable();
 		m_Renderables.clear();
+		
+		m_TerrainShader.enable();
+		m_TerrainShader.loadLightSource(sun);
+		m_TerrainShader.loadViewMatrix(camera);
+		m_TerrainShader.loadProjectionMatrix(m_Projection);
+		render(m_Terrains);
+		m_TerrainShader.disable();
+		
+		m_Terrains.clear();
+	}
+	
+	private void render(List<Terrain> terrains){
+		for(Terrain terrain : terrains){
+			prepareTexturedModel(terrain.getTexturedModel());
+			prepareRenderable(terrain);
+			glDrawElements(GL_TRIANGLES, terrain.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			unbindTexturedModel();
+		}
 	}
 	
 	private void render(Map<TexturedModel, List<Renderable3D>> renderables){
@@ -91,6 +128,7 @@ public class Renderer3D {
 		glEnableVertexAttribArray(2);
 		
 		ModelTexture texture = texturedModel.getModelTexture();
+		if(texture.hasTransparency()) disableCulling();
 		m_Shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		
 		glActiveTexture(GL_TEXTURE0);
@@ -98,11 +136,12 @@ public class Renderer3D {
 	}
 	
 	private void prepareRenderable(Renderable3D renderable){
-		m_Shader.setUniform("transformationMatrix", 
+		m_Shader.loadMatrix4f("transformationMatrix", 
 				renderable.getEntity().getTransform().getTransformationMatrix());
 	}
 	
 	private void unbindTexturedModel(){
+		enableCulling();
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);

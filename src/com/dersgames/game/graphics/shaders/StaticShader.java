@@ -4,10 +4,10 @@ import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
 
-public class PhongShader extends Shader{
+public class StaticShader extends Shader{
 
-	public PhongShader() {
-		super("basicVert", "basicFrag");
+	public StaticShader() {
+		super("vertexShader", "fragmentShader");
 		enable();
 		addUniform("textureSampler");
 		addUniform("transformationMatrix");
@@ -17,7 +17,7 @@ public class PhongShader extends Shader{
 		addUniform("lightColor");
 		addUniform("shineDamper");
 		addUniform("reflectivity");
-		setUniformi("textureSampler", 0);
+		loadInteger("textureSampler", 0);
 		disable();
 	}
 
@@ -29,21 +29,21 @@ public class PhongShader extends Shader{
 	}
 	
 	public void loadShineVariables(float damper, float reflectivity){
-		setUniformf("shineDamper", damper);
-		setUniformf("reflectivity", reflectivity);
+		loadFloat("shineDamper", damper);
+		loadFloat("reflectivity", reflectivity);
 	}
 	
 	public void loadLightSource(Light light){
-		setUniformf("lightPosition", light.getPosition());
-		setUniformf("lightColor", light.getColor());
+		loadVector3f("lightPosition", light.getPosition());
+		loadVector3f("lightColor", light.getColor());
 	}
 	
 	public void loadViewMatrix(Camera camera){
-		setUniform("viewMatrix", camera.getViewMatrix());
+		loadMatrix4f("viewMatrix", camera.getViewMatrix());
 	}
 	
 	public void loadProjectionMatrix(Matrix4f projection){
-		setUniform("projectionMatrix", projection);
+		loadMatrix4f("projectionMatrix", projection);
 	}
 
 }

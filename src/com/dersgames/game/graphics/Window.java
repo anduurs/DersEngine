@@ -88,7 +88,7 @@ public class Window {
 		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		
-		glClearColor(0f,0f,0f,0f);
+		glClearColor(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f, 0f);
 	}
 	
 	public void clearBuffers(){

@@ -17,10 +17,15 @@ public class Camera{
 	private Vector2f m_CenterPosition;
 	
 	private float m_Sensitivity;
+	private float m_Speed;
 	private boolean m_MouseLocked = false;
 	
 	public Camera(){
 		this(new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
+	}
+	
+	public Camera(Vector3f position){
+		this(position, new Vector3f(0,0,1), new Vector3f(0,1,0));
 	}
 	
 	public Camera(Vector3f position, Vector3f forward, Vector3f up){
@@ -33,10 +38,11 @@ public class Camera{
 		
 		m_CenterPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 		m_Sensitivity = 2.0f;
+		m_Speed = 50.0f;
 	}
 	
 	public void update(float dt){
-		float movAmt = (float)(10.0f * dt);
+		float movAmt = (float)(m_Speed * dt);
 
 		//TRANSLATION
 
