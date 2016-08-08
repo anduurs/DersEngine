@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.game.components.lights.BaseLight;
+import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Vector2f;
 import com.dersgames.game.core.Vector3f;
@@ -53,7 +53,6 @@ public abstract class Shader {
 	}
 	
 	protected abstract void bindAttributes();
-	public abstract void loadLightSource(BaseLight light);
 	
 	protected void bindAttribute(int attribute, String name){
 		glBindAttribLocation(m_ShaderProgram, attribute, name);

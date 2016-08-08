@@ -3,16 +3,14 @@ package com.dersgames.game.components.lights;
 import com.dersgames.game.components.Component;
 import com.dersgames.game.core.Vector3f;
 
-public class BaseLight extends Component{
+public class Light extends Component{
 	
 	private Vector3f m_Color;
-	private float m_Intensity;
 	
-	public BaseLight(String tag, Vector3f color, float intensity) {
+	public Light(String tag, Vector3f color) {
 		super(tag);
 		
 		m_Color = color;
-		m_Intensity = intensity;
 	}
 	
 	@Override

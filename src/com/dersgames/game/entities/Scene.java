@@ -4,14 +4,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.dersgames.game.components.lights.Light;
+import com.dersgames.game.core.Camera;
 import com.dersgames.game.graphics.Renderer3D;
 
-public class EntityManager {
+public class Scene {
 	
 	private static List<Entity> m_EntityList;
+	private Camera m_Camera;
+	private Light m_Sun;
 	
-	public EntityManager(){
+	public Scene(){
 		m_EntityList = new ArrayList<Entity>();
+	}
+	
+	public void addCameraToScene(Camera camera){
+		m_Camera = camera;
+	}
+	
+	public void addSunToScene(Light sun){
+		m_Sun = sun;
 	}
 	
 	public void addEntity(Entity entity){
@@ -19,6 +31,7 @@ public class EntityManager {
 	}
 	
 	public void update(float dt){
+		m_Camera.update(dt);
 		refreshEntityList();
 		for(Entity e : getEntities())
 			e.updateComponents(dt);
@@ -27,6 +40,8 @@ public class EntityManager {
 	public void render(Renderer3D renderer){
 		for(Entity e : getEntities())
 			e.renderComponents(renderer);
+		
+		renderer.render(m_Sun, m_Camera);
 	}
 	
 	public int getEntityCount(){

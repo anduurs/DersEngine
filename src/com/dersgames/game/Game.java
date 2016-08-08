@@ -17,6 +17,7 @@ public class Game implements Runnable{
 		ImageManager assets = new ImageManager();
 		assets.addImage("stall", "stallTexture.png");
 		assets.addImage("test", "test.png");
+		assets.addImage("dragon", "dragontexture.png");
 	}
 	
 	private void init(){
@@ -60,8 +61,11 @@ public class Game implements Runnable{
 		final double TARGET_UPS = 60.0;
 		final double SEC_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SEC_PER_UPDATE;
+		
+		boolean shouldRender = false;
 	
 		while(m_Running){
+			shouldRender = false;
 			currentTime = System.nanoTime();
 			passedTime = (currentTime - previousTime) / 1000000000.0;
 			
@@ -77,13 +81,16 @@ public class Game implements Runnable{
 				update(dt);
 				ups++;
 				lag -= SEC_PER_UPDATE;
+				shouldRender = true;
 			}
 
-			render();
-			fps++;
+			if(shouldRender){
+				render();
+				fps++;
+			}
 					
 			if(frameCounter >= 1){
-				System.out.println(ups + " ups , " + fps + " fps");
+				System.out.println(fps + " fps");
 				fps = 0;
 				ups = 0;
 				frameCounter = 0;
