@@ -1,9 +1,9 @@
 package com.dersgames.game;
 
+import com.dersgames.game.core.Debug;
 import com.dersgames.game.core.GameStateManager;
 import com.dersgames.game.graphics.Window;
 import com.dersgames.game.states.PlayState;
-import com.dersgames.game.utils.ImageManager;
 
 public class Game implements Runnable{
 	
@@ -14,14 +14,11 @@ public class Game implements Runnable{
 	private GameStateManager m_StateManager;
 	
 	public Game(){
-		ImageManager assets = new ImageManager();
-		assets.addImage("stall", "stallTexture.png");
-		assets.addImage("test", "test.png");
-		assets.addImage("dragon", "dragontexture.png");
+		
 	}
 	
 	private void init(){
-		m_Window = new Window(800, 600, "DersEngine v0.01", true);
+		m_Window = new Window(1200, 675, "DersEngine v0.01", true);
 		m_StateManager = new GameStateManager();
 		m_StateManager.push(new PlayState(m_StateManager));
 	}
@@ -56,7 +53,7 @@ public class Game implements Runnable{
 		double lag = 0;
 		double frameCounter = 0;
 		
-		int ups = 0, fps = 0;
+		int fps = 0;
 		
 		final double TARGET_UPS = 60.0;
 		final double SEC_PER_UPDATE = 1.0 / TARGET_UPS;
@@ -79,7 +76,6 @@ public class Game implements Runnable{
 			
 			while(lag >= SEC_PER_UPDATE){
 				update(dt);
-				ups++;
 				lag -= SEC_PER_UPDATE;
 				shouldRender = true;
 			}
@@ -90,9 +86,8 @@ public class Game implements Runnable{
 			}
 					
 			if(frameCounter >= 1){
-				System.out.println(fps + " fps");
+				Debug.log(fps + " fps");
 				fps = 0;
-				ups = 0;
 				frameCounter = 0;
 			}
 			
@@ -103,10 +98,4 @@ public class Game implements Runnable{
 		m_StateManager.getCurrentState().cleanUp();
 		m_Window.destroy();
 	}
-	
-	public static void main(String[] args){
-		Game game = new Game();
-		game.start();
-	}
-
 }

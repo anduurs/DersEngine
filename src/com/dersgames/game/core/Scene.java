@@ -1,11 +1,11 @@
-package com.dersgames.game.entities;
+package com.dersgames.game.core;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.dersgames.game.components.lights.Light;
-import com.dersgames.game.core.Camera;
+import com.dersgames.game.entities.Entity;
 import com.dersgames.game.graphics.Renderer3D;
 
 public class Scene {
@@ -18,11 +18,11 @@ public class Scene {
 		m_EntityList = new ArrayList<Entity>();
 	}
 	
-	public void addCameraToScene(Camera camera){
+	public void addCamera(Camera camera){
 		m_Camera = camera;
 	}
 	
-	public void addSunToScene(Light sun){
+	public void addSun(Light sun){
 		m_Sun = sun;
 	}
 	

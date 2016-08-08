@@ -4,9 +4,9 @@ import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
 
-public class StaticShader extends Shader{
+public class PhongShader extends Shader{
 
-	public StaticShader() {
+	public PhongShader() {
 		super("basicVert", "basicFrag");
 		enable();
 		addUniform("textureSampler");
@@ -33,7 +33,7 @@ public class StaticShader extends Shader{
 		setUniformf("reflectivity", reflectivity);
 	}
 	
-	public void loadLight(Light light){
+	public void loadLightSource(Light light){
 		setUniformf("lightPosition", light.getPosition());
 		setUniformf("lightColor", light.getColor());
 	}

@@ -25,20 +25,19 @@ import com.dersgames.game.components.Renderable3D;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
-import com.dersgames.game.entities.Entity;
 import com.dersgames.game.graphics.models.Model;
 import com.dersgames.game.graphics.models.TexturedModel;
 import com.dersgames.game.graphics.shaders.Shader;
-import com.dersgames.game.graphics.shaders.StaticShader;
+import com.dersgames.game.graphics.shaders.PhongShader;
 import com.dersgames.game.graphics.textures.ModelTexture;
 
 public class Renderer3D {
 	
-	private StaticShader m_Shader;
+	private PhongShader m_Shader;
 	private Matrix4f m_Projection;
 	private Map<TexturedModel, List<Renderable3D>> m_Renderables;
 
-	public Renderer3D(StaticShader shader, Matrix4f projection){
+	public Renderer3D(PhongShader shader, Matrix4f projection){
 		m_Shader = shader;
 		m_Projection = projection;
 		m_Renderables = new HashMap<TexturedModel, List<Renderable3D>>();
@@ -62,7 +61,7 @@ public class Renderer3D {
 	
 	public void render(Light sun, Camera camera){
 		m_Shader.enable();
-		m_Shader.loadLight(sun);
+		m_Shader.loadLightSource(sun);
 		m_Shader.loadViewMatrix(camera);
 		m_Shader.loadProjectionMatrix(m_Projection);
 		render(m_Renderables);

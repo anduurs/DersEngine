@@ -15,15 +15,15 @@ public class ImageManager {
 		
 	}
 	
-	public void addImage(String tag, String fileName){
+	public static void addImage(String tag, String fileName){
 		m_ImageLib.put(tag, loadImage(fileName));
 	}
 	
-	public void addBitmap(String tag, String fileName){
+	public static void addBitmap(String tag, String fileName){
 		m_ImageLib.put(tag, loadBitmap(fileName));
 	}
 	
-	private synchronized BufferedImage loadImage(String path){
+	private static synchronized BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(ImageManager.class.getResource("/textures/" + path));
@@ -34,7 +34,7 @@ public class ImageManager {
 		return img;
 	}
 	
-	private synchronized BufferedImage loadBitmap(String path){
+	private static synchronized BufferedImage loadBitmap(String path){
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(ImageManager.class.getResource("/bitmaps/" + path));
