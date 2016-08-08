@@ -1,6 +1,5 @@
 package com.dersgames.game.components;
 
-import com.dersgames.game.graphics.Renderable3D;
 import com.dersgames.game.graphics.Renderer3D;
 import com.dersgames.game.graphics.models.TexturedModel;
 

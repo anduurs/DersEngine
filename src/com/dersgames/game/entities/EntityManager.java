@@ -8,7 +8,7 @@ import com.dersgames.game.graphics.Renderer3D;
 
 public class EntityManager {
 	
-	private List<Entity> m_EntityList;
+	private static List<Entity> m_EntityList;
 	
 	public EntityManager(){
 		m_EntityList = new ArrayList<Entity>();
@@ -33,6 +33,12 @@ public class EntityManager {
 		return getEntities().size();
 	}
 	
+	public static Entity findEntityByTag(String tag){
+		for(Entity e : getEntities())
+			if(e.getTag().equals(tag)) return e;
+		return null;
+	}
+	
 	private void refreshEntityList(){
 		for(Iterator<Entity> it = m_EntityList.iterator(); it.hasNext();){
 			Entity e = it.next();
@@ -40,7 +46,7 @@ public class EntityManager {
 		}
 	}
 	
-	private synchronized List<Entity> getEntities(){
+	private static synchronized List<Entity> getEntities(){
 		return m_EntityList;
 	}
 

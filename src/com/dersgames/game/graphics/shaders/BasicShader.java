@@ -1,5 +1,7 @@
 package com.dersgames.game.graphics.shaders;
 
+import com.dersgames.game.components.lights.BaseLight;
+
 public class BasicShader extends Shader{
 
 	public BasicShader() {
@@ -20,6 +22,11 @@ public class BasicShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+	}
+	
+	public void loadLightSource(BaseLight light){
+		setUniformf("lightPosition", light.getPosition());
+		setUniformf("lightColor", light.getColor());
 	}
 
 }

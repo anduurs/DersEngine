@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.game.components.Component;
+import com.dersgames.game.components.Renderable3D;
 import com.dersgames.game.core.Transform;
 import com.dersgames.game.core.Vector3f;
-import com.dersgames.game.graphics.Renderable3D;
 import com.dersgames.game.graphics.Renderer3D;
 
 public class Entity {

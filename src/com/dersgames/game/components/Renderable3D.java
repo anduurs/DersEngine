@@ -1,6 +1,6 @@
-package com.dersgames.game.graphics;
+package com.dersgames.game.components;
 
-import com.dersgames.game.components.Component;
+import com.dersgames.game.graphics.Renderer3D;
 
 public abstract class Renderable3D extends Component{
 	

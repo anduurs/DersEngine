@@ -1,18 +1,17 @@
 package com.dersgames.game.states;
 
-import com.dersgames.game.components.MovementComponent;
 import com.dersgames.game.components.StaticMesh;
+import com.dersgames.game.components.lights.BaseLight;
 import com.dersgames.game.core.Camera;
-import com.dersgames.game.core.Debug;
 import com.dersgames.game.core.GameState;
 import com.dersgames.game.core.GameStateManager;
 import com.dersgames.game.core.Matrix4f;
+import com.dersgames.game.core.Vector3f;
 import com.dersgames.game.entities.Entity;
 import com.dersgames.game.entities.EntityManager;
 import com.dersgames.game.graphics.ModelLoader;
 import com.dersgames.game.graphics.Renderer3D;
 import com.dersgames.game.graphics.Window;
-import com.dersgames.game.graphics.models.Model;
 import com.dersgames.game.graphics.models.TexturedModel;
 import com.dersgames.game.graphics.shaders.BasicShader;
 import com.dersgames.game.graphics.shaders.Shader;
@@ -54,6 +53,12 @@ public class PlayState extends GameState{
 		entity.addComponent(new StaticMesh("StaticMesh1", texturedModel));
 		//entity.addComponent(new MovementComponent("MovementTest"));
 		entityManager.addEntity(entity);
+		
+		Entity lightSource = new Entity("LightSource", 0, -20, 10);
+		BaseLight light = new BaseLight("LightComponent", new Vector3f(1.0f, 1.0f, 1.0f), 1.0f);
+		lightSource.addComponent(light);
+		renderer.addLight(light);
+		
 	}
 	
 	@Override

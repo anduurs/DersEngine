@@ -1,23 +1,19 @@
 package com.dersgames.game.graphics;
 
-import static org.lwjgl.opengl.GL11.GL_BACK;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_CW;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glFrontFace;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import com.dersgames.game.components.lights.BaseLight;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.graphics.models.TexturedModel;
@@ -28,6 +24,7 @@ public class Renderer3D {
 	private Shader m_Shader;
 	private Matrix4f m_Projection;
 	private Camera m_MainCamera;
+	private BaseLight m_LightSource;
 	
 	public Renderer3D(Shader shader, Matrix4f projection, Camera camera){
 		m_Shader = shader;
@@ -38,13 +35,18 @@ public class Renderer3D {
 		glEnable(GL_TEXTURE_2D);
 	}
 	
+	public void addLight(BaseLight light){
+		m_LightSource = light;
+	}
+	
 	public void render(TexturedModel texturedModel){
 		m_Shader.setUniform("projectionMatrix", m_Projection);
 		m_Shader.setUniform("viewMatrix", m_MainCamera.getViewMatrix());
-		
+		m_Shader.loadLightSource(m_LightSource);
 		glBindVertexArray(texturedModel.getModel().getVaoID());
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturedModel.getModelTexture().getID());
@@ -53,6 +55,7 @@ public class Renderer3D {
 	
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 		glBindVertexArray(0);
 	}
 	
