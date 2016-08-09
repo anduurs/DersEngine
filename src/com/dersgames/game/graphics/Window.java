@@ -18,17 +18,10 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.system.MemoryUtil.NULL;
-
-import java.nio.ByteBuffer;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -66,7 +59,7 @@ public class Window {
 		if(window == NULL)
 			System.err.println("Could not create our Window!");
 		 
-		GLFWVidMode  vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		
 		glfwSetWindowPos(window, (vidmode.width() - width) / 2,
 		          (vidmode.height() - height) / 2);
@@ -74,7 +67,7 @@ public class Window {
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
 		glfwSetCursorPosCallback(window, mouseCursorCallback = new MouseCursor());
-		//GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 		
 		glfwMakeContextCurrent(window);
 		

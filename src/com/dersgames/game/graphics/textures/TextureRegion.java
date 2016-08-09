@@ -1,7 +1,5 @@
 package com.dersgames.game.graphics.textures;
 
-import com.dersgames.game.graphics.textures.Texture;
-
 public class TextureRegion {
 	
 	public final float u1, v1;

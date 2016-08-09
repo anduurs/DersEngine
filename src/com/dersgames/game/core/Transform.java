@@ -1,8 +1,5 @@
 package com.dersgames.game.core;
 
-import com.dersgames.game.core.Matrix4f;
-import com.dersgames.game.core.Vector3f;
-
 public class Transform{
 	
 	private Vector3f m_Position, m_Rotation, m_Scaling;

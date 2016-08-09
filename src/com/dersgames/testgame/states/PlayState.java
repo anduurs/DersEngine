@@ -2,7 +2,6 @@ package com.dersgames.testgame.states;
 
 import java.util.Random;
 
-import com.dersgames.game.components.Movement;
 import com.dersgames.game.components.StaticMesh;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
@@ -55,13 +54,13 @@ public class PlayState extends GameState{
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
 		
-		m_Scene.addCamera(new Camera(new Vector3f(200,20,100)));
-		
 		addLightSource();
-
 		generateTerrain();
 		generateEntities(100);
-		createPlayer();
+		
+		Player player = new Player(m_Loader, 200, 0, 150);
+		m_Scene.addEntity(player);
+		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
 	}
 	
 	private void addLightSource(){
@@ -128,11 +127,6 @@ public class PlayState extends GameState{
 			m_Scene.addEntity(grass);
 			m_Scene.addEntity(fern);
 		}
-	}
-	
-	private void createPlayer(){
-		Player player = new Player(m_Loader, 200, 0, 150);
-		m_Scene.addEntity(player);
 	}
 	
 	@Override
