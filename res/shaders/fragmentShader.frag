@@ -4,6 +4,7 @@ in vec2 out_TexCoords;
 in vec3 out_Normal;
 in vec3 toLightVector;
 in vec3 toCameraVector;
+in float visibility;
 
 out vec4 outColor;
 
@@ -12,12 +13,15 @@ uniform sampler2D textureSampler;
 uniform vec3 lightColor;
 uniform float shineDamper;
 uniform float reflectivity;
+uniform vec3 skyColor;
 
 void main(){
 	vec3 unitNormal = normalize(out_Normal);
 	vec3 unitLightVector = normalize(toLightVector);
 	
-	float brightness = max(dot(unitNormal, unitLightVector), 0.1);
+	float ambientFactor = 0.2;
+	
+	float brightness = max(dot(unitNormal, unitLightVector), ambientFactor);
 	vec3 diffuse = brightness * lightColor;
 	
 	vec3 unitCameraVector = normalize(toCameraVector);
@@ -33,5 +37,5 @@ void main(){
 		discard;
 	}
 	
-	outColor = vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0);
+	outColor = mix(vec4(skyColor, 1.0), vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0), visibility);
 }

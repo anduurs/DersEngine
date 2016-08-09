@@ -14,6 +14,11 @@ public class Light extends Component{
 	}
 	
 	@Override
+	public void init() {
+		
+	}
+	
+	@Override
 	public void update(float dt) {
 		
 	}

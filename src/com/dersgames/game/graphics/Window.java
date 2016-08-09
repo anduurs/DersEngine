@@ -87,16 +87,10 @@ public class Window {
 		GL.createCapabilities();
 		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
-		
-		glClearColor(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f, 0f);
 	}
 	
 	public void setTitle(String title){
 		GLFW.glfwSetWindowTitle(window, title);
-	}
-	
-	public void clearBuffers(){
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
 	public void update(){

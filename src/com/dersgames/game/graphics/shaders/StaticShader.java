@@ -3,12 +3,13 @@ package com.dersgames.game.graphics.shaders;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
+import com.dersgames.game.core.Vector3f;
 
 public class StaticShader extends Shader{
 
 	public StaticShader() {
 		super("vertexShader", "fragmentShader");
-		enable();
+		
 		addUniform("textureSampler");
 		addUniform("transformationMatrix");
 		addUniform("projectionMatrix");
@@ -18,7 +19,9 @@ public class StaticShader extends Shader{
 		addUniform("shineDamper");
 		addUniform("reflectivity");
 		addUniform("useFakeLighting");
+		addUniform("skyColor");
 		
+		enable();
 		loadInteger("textureSampler", 0);
 		disable();
 	}
@@ -28,6 +31,10 @@ public class StaticShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+	}
+	
+	public void loadSkyColor(Vector3f skyColor){
+		loadVector3f("skyColor", skyColor);
 	}
 	
 	public void loadUseFakeLighting(boolean useFakelighting){

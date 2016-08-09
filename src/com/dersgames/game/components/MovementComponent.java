@@ -1,7 +1,5 @@
 package com.dersgames.game.components;
 
-import com.dersgames.game.utils.Randomizer;
-
 public class MovementComponent extends Component{
 	
 	float tmp = 0;
@@ -9,6 +7,11 @@ public class MovementComponent extends Component{
 	
 	public MovementComponent(String tag){
 		super(tag);
+		
+	}
+	
+	@Override
+	public void init() {
 		
 	}
 

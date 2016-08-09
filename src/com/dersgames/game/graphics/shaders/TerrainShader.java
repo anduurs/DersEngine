@@ -3,22 +3,29 @@ package com.dersgames.game.graphics.shaders;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.Matrix4f;
+import com.dersgames.game.core.Vector3f;
 
 public class TerrainShader extends Shader{
 
 	public TerrainShader() {
 		super("terrainVertexShader", "terrainFragmentShader");
-		enable();
-		addUniform("textureSampler");
+		
 		addUniform("transformationMatrix");
 		addUniform("projectionMatrix");
 		addUniform("viewMatrix");
+		
 		addUniform("lightPosition");
 		addUniform("lightColor");
+		addUniform("skyColor");
+		
 		addUniform("shineDamper");
 		addUniform("reflectivity");
-		loadInteger("textureSampler", 0);
-		disable();
+		
+		addUniform("backgroundTexture");
+		addUniform("rTexture");
+		addUniform("gTexture");
+		addUniform("bTexture");
+		addUniform("blendMap");
 	}
 
 	@Override
@@ -26,6 +33,18 @@ public class TerrainShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+	}
+	
+	public void connectTextureUnits(){
+		loadInteger("backgroundTexture", 0);
+		loadInteger("rTexture", 1);
+		loadInteger("gTexture", 2);
+		loadInteger("bTexture", 3);
+		loadInteger("blendMap", 4);
+	}
+	
+	public void loadSkyColor(Vector3f skyColor){
+		loadVector3f("skyColor", skyColor);
 	}
 	
 	public void loadShineVariables(float damper, float reflectivity){

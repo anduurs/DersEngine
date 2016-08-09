@@ -30,6 +30,11 @@ public class Entity {
 		this(tag, x, y, 0);
 	}
 	
+	public Entity(String tag, float x, float y, float z, float scale){
+		this(tag, x, y, z);
+		m_Transform.scale(scale, scale, scale);
+	}
+	
 	public Entity(String tag, float x, float y, float z){
 		m_Tag = tag;
 		m_Alive = true;
@@ -39,11 +44,6 @@ public class Entity {
 		
 		m_Transform = new Transform();
 		m_Transform.translate(x, y, z);
-	}
-	
-	public Entity(String tag, float x, float y, float z, float scale){
-		this(tag, x, y, z);
-		m_Transform.scale(scale, scale, scale);
 	}
 	
 	public Component addComponent(Component component){

@@ -12,6 +12,12 @@ public abstract class Renderable3D extends Component{
 		
 	}
 	
+	@Override
+	public void init() {
+		
+		
+	}
+	
 	public abstract void render(Renderer3D renderer);
 
 	@Override

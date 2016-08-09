@@ -4,8 +4,8 @@ import com.dersgames.game.components.Renderable3D;
 import com.dersgames.game.graphics.ModelLoader;
 import com.dersgames.game.graphics.Renderer3D;
 import com.dersgames.game.graphics.models.Model;
-import com.dersgames.game.graphics.models.TexturedModel;
-import com.dersgames.game.graphics.textures.ModelTexture;
+import com.dersgames.game.graphics.textures.TerrainTexture;
+import com.dersgames.game.graphics.textures.TerrainTexturePack;
 
 public class Terrain extends Renderable3D{
 	
@@ -14,15 +14,23 @@ public class Terrain extends Renderable3D{
 	
 	private float x, z;
 	private Model m_Model;
-	private ModelTexture m_Texture;
+
+	private TerrainTexturePack m_TexturePack;
+	private TerrainTexture m_BlendMap;
 	
-	public Terrain(String tag, int gridX, int gridY, ModelLoader loader, ModelTexture texture){
+	public Terrain(String tag, int gridX, int gridY, 
+			ModelLoader loader, TerrainTexturePack texturePack, TerrainTexture blendMap){
 		super(tag);
-		m_Texture = texture;
+		m_TexturePack = texturePack;
+		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridY * SIZE;
 		m_Model = generateTerrain(loader);
-		m_TexturedModel = new TexturedModel(m_Model, texture);
+	}
+	
+	@Override
+	public void init() {
+		
 	}
 	
 	@Override
@@ -83,8 +91,11 @@ public class Terrain extends Renderable3D{
 		return m_Model;
 	}
 
-	public ModelTexture getTexture() {
-		return m_Texture;
+	public TerrainTexturePack getTexturePack() {
+		return m_TexturePack;
 	}
 
+	public TerrainTexture getBlendMap() {
+		return m_BlendMap;
+	}
 }

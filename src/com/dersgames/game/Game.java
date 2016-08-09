@@ -1,6 +1,5 @@
 package com.dersgames.game;
 
-import com.dersgames.game.core.Debug;
 import com.dersgames.game.core.GameStateManager;
 import com.dersgames.game.graphics.Window;
 import com.dersgames.game.states.PlayState;
@@ -37,7 +36,6 @@ public class Game implements Runnable{
 	}
 	
 	private void render(){
-		m_Window.clearBuffers();
 		m_StateManager.render();
 		m_Window.swapBuffers();
 	}

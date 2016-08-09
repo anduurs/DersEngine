@@ -2,22 +2,20 @@ package com.dersgames.game.states;
 
 import java.util.Random;
 
-import com.dersgames.game.components.MovementComponent;
 import com.dersgames.game.components.StaticMesh;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
 import com.dersgames.game.core.GameState;
 import com.dersgames.game.core.GameStateManager;
-import com.dersgames.game.core.Matrix4f;
 import com.dersgames.game.core.Scene;
 import com.dersgames.game.core.Vector3f;
 import com.dersgames.game.entities.Entity;
 import com.dersgames.game.graphics.ModelLoader;
 import com.dersgames.game.graphics.Renderer3D;
-import com.dersgames.game.graphics.Window;
 import com.dersgames.game.graphics.models.TexturedModel;
-import com.dersgames.game.graphics.shaders.StaticShader;
 import com.dersgames.game.graphics.textures.ModelTexture;
+import com.dersgames.game.graphics.textures.TerrainTexture;
+import com.dersgames.game.graphics.textures.TerrainTexturePack;
 import com.dersgames.game.terrains.Terrain;
 import com.dersgames.game.utils.ImageManager;
 
@@ -42,44 +40,46 @@ public class PlayState extends GameState{
 		ImageManager.addImage("fern", "fern.png");
 		ImageManager.addImage("tree", "tree.png");
 		
+		ImageManager.addImage("grassy", "grassy2.png");
+		ImageManager.addImage("grassFlowers", "grassFlowers.png");
+		ImageManager.addImage("mud", "mud.png");
+		ImageManager.addImage("path", "path.png");
+		
+		ImageManager.addImage("blendMap", "blendMap.png");
+		
 		m_Renderer = new Renderer3D();
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
-		
-//		TexturedModel texturedModel = new TexturedModel(m_Loader.loadObjModel("dragon"), 
-//				new ModelTexture(m_Loader.loadTexture("dragon")));
-		
-		ModelTexture grassTexture = new ModelTexture(m_Loader.loadTexture("grass"));
-		
-		Entity terrainEntity = new Entity("Terrain1");
-		Terrain terrain = new Terrain("TerrainComponent1", 0, 0, m_Loader, grassTexture);
-		terrainEntity.addComponent(terrain);
-		m_Scene.addEntity(terrainEntity);
-		
-		Entity terrainEntity2 = new Entity("Terrain2");
-		Terrain terrain2 = new Terrain("TerrainComponent2", 1, 0, m_Loader, grassTexture);
-		terrainEntity.addComponent(terrain2);
-		m_Scene.addEntity(terrainEntity2);
-		
-//		Entity entity = new Entity("Player", 200, 0, 200);
-//		texturedModel.getModelTexture().setShineDamper(10.0f);
-//		texturedModel.getModelTexture().setReflectivity(1.0f);
-//		entity.addComponent(new StaticMesh("StaticMesh0", texturedModel));
-//		entity.addComponent(new MovementComponent("MovementTest"));
-//		m_Scene.addEntity(entity);
-		
-		stressTest(100);
-		
-		Entity lightSource = new Entity("LightSource", 200, 200, 100);
-		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
-		lightSource.addComponent(light);
-		m_Scene.addSun(light);
-		m_Scene.addEntity(lightSource);
+	
+		generateTerrain();
+		generateEntities(100);
+		addLightSource();
 		
 		m_Scene.addCamera(new Camera(new Vector3f(200,20,100)));
 	}
 	
-	private void stressTest(int numOfEntities){
+	private void generateTerrain(){
+		TerrainTexture backgroundTexture = new TerrainTexture(m_Loader.loadTexture("grassy"));
+		TerrainTexture rTexture = new TerrainTexture(m_Loader.loadTexture("mud"));
+		TerrainTexture gTexture = new TerrainTexture(m_Loader.loadTexture("grassFlowers"));
+		TerrainTexture bTexture = new TerrainTexture(m_Loader.loadTexture("path"));
+		TerrainTexture blendMap = new TerrainTexture(m_Loader.loadTexture("blendMap"));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+		
+		Entity terrainEntity = new Entity("Terrain1");
+		Terrain terrain = new Terrain("TerrainComponent1", 0, 0, m_Loader, texturePack, blendMap);
+		terrainEntity.addComponent(terrain);
+		
+		Entity terrainEntity2 = new Entity("Terrain2");
+		Terrain terrain2 = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap);
+		terrainEntity.addComponent(terrain2);
+		
+		m_Scene.addEntity(terrainEntity);
+		m_Scene.addEntity(terrainEntity2);
+	}
+	
+	private void generateEntities(int numOfEntities){
 		TexturedModel treeModel = new TexturedModel(m_Loader.loadObjModel("tree"), 
 				new ModelTexture(m_Loader.loadTexture("tree")));
 		
@@ -93,29 +93,35 @@ public class PlayState extends GameState{
 		fernModel.getModelTexture().setTransparency(true);
 		
 		Random random = new Random();
+		
 		for(int i = 0; i < numOfEntities; i++){
-//			float x = random.nextFloat() * 800;
-//			float z = random.nextFloat() * 800;
-			
 			Entity tree = new Entity("Tree" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800, 10);
 			treeModel.getModelTexture().setShineDamper(10.0f);
 			treeModel.getModelTexture().setReflectivity(1.0f);
 			tree.addComponent(new StaticMesh("treemesh" + i, treeModel));
-			m_Scene.addEntity(tree);
 			
 			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
 			grassModel.getModelTexture().setShineDamper(1.0f);
 			grassModel.getModelTexture().setReflectivity(0.0f);
 			grass.addComponent(new StaticMesh("grassmesh" + i, grassModel));
-			m_Scene.addEntity(grass);
 			
 			Entity fern = new Entity("Fern" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
 			fernModel.getModelTexture().setShineDamper(1.0f);
 			fernModel.getModelTexture().setReflectivity(0.0f);
 			fern.addComponent(new StaticMesh("fernmesh" + i, fernModel));
-			m_Scene.addEntity(fern);
 			
+			m_Scene.addEntity(tree);
+			m_Scene.addEntity(grass);
+			m_Scene.addEntity(fern);
 		}
+	}
+	
+	private void addLightSource(){
+		Entity lightSource = new Entity("LightSource", 200, 200, 100);
+		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
+		lightSource.addComponent(light);
+		m_Scene.addSun(light);
+		m_Scene.addEntity(lightSource);
 	}
 	
 	@Override

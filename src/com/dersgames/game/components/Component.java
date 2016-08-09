@@ -18,6 +18,7 @@ public abstract class Component {
 		m_Entity = null;
 	}
 	
+	public abstract void init();
 	public abstract void update(float dt);
 	
 	public Entity getEntity() {
