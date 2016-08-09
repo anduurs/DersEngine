@@ -76,7 +76,7 @@ public class Camera{
 		
 		if(m_MouseLocked){
 			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
-			
+		
 			boolean rotY = deltaPos.x != 0;
 			boolean rotX = deltaPos.y != 0;
 			

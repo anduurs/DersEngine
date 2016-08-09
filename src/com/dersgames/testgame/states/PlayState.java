@@ -1,7 +1,8 @@
-package com.dersgames.game.states;
+package com.dersgames.testgame.states;
 
 import java.util.Random;
 
+import com.dersgames.game.components.Movement;
 import com.dersgames.game.components.StaticMesh;
 import com.dersgames.game.components.lights.Light;
 import com.dersgames.game.core.Camera;
@@ -18,6 +19,7 @@ import com.dersgames.game.graphics.textures.TerrainTexture;
 import com.dersgames.game.graphics.textures.TerrainTexturePack;
 import com.dersgames.game.terrains.Terrain;
 import com.dersgames.game.utils.ImageManager;
+import com.dersgames.testgame.entities.Player;
 
 public class PlayState extends GameState{
 	
@@ -47,15 +49,27 @@ public class PlayState extends GameState{
 		
 		ImageManager.addImage("blendMap", "blendMap.png");
 		
+		ImageManager.addImage("player", "playerTexture.png");
+		
 		m_Renderer = new Renderer3D();
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
-	
-		generateTerrain();
-		generateEntities(100);
-		addLightSource();
 		
 		m_Scene.addCamera(new Camera(new Vector3f(200,20,100)));
+		
+		addLightSource();
+
+		generateTerrain();
+		generateEntities(100);
+		createPlayer();
+	}
+	
+	private void addLightSource(){
+		Entity lightSource = new Entity("LightSource", 200, 200, 100);
+		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
+		lightSource.addComponent(light);
+		m_Scene.addSun(light);
+		m_Scene.addEntity(lightSource);
 	}
 	
 	private void generateTerrain(){
@@ -73,7 +87,7 @@ public class PlayState extends GameState{
 		
 		Entity terrainEntity2 = new Entity("Terrain2");
 		Terrain terrain2 = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap);
-		terrainEntity.addComponent(terrain2);
+		terrainEntity2.addComponent(terrain2);
 		
 		m_Scene.addEntity(terrainEntity);
 		m_Scene.addEntity(terrainEntity2);
@@ -116,12 +130,9 @@ public class PlayState extends GameState{
 		}
 	}
 	
-	private void addLightSource(){
-		Entity lightSource = new Entity("LightSource", 200, 200, 100);
-		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
-		lightSource.addComponent(light);
-		m_Scene.addSun(light);
-		m_Scene.addEntity(lightSource);
+	private void createPlayer(){
+		Player player = new Player(m_Loader, 200, 0, 150);
+		m_Scene.addEntity(player);
 	}
 	
 	@Override

@@ -1,4 +1,6 @@
-package com.dersgames.game;
+package com.dersgames.testgame;
+
+import com.dersgames.game.Game;
 
 public class Main {
 	

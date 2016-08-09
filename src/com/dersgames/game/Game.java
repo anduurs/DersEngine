@@ -2,7 +2,7 @@ package com.dersgames.game;
 
 import com.dersgames.game.core.GameStateManager;
 import com.dersgames.game.graphics.Window;
-import com.dersgames.game.states.PlayState;
+import com.dersgames.testgame.states.PlayState;
 
 public class Game implements Runnable{
 	

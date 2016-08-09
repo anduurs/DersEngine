@@ -1,11 +1,11 @@
 package com.dersgames.game.components;
 
-public class MovementComponent extends Component{
+public class Movement extends Component{
 	
 	float tmp = 0;
 	int timer = 0;
 	
-	public MovementComponent(String tag){
+	public Movement(String tag){
 		super(tag);
 		
 	}
