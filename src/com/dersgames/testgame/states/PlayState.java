@@ -108,10 +108,10 @@ public class PlayState extends GameState{
 		Random random = new Random();
 		
 		for(int i = 0; i < numOfEntities; i++){
-			Entity tree = new Entity("Tree" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800, 10);
-			treeModel.getModelTexture().setShineDamper(10.0f);
-			treeModel.getModelTexture().setReflectivity(1.0f);
-			tree.addComponent(new StaticMesh("treemesh" + i, treeModel));
+//			Entity tree = new Entity("Tree" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800, 10);
+//			treeModel.getModelTexture().setShineDamper(10.0f);
+//			treeModel.getModelTexture().setReflectivity(1.0f);
+//			tree.addComponent(new StaticMesh("treemesh" + i, treeModel));
 			
 			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
 			grassModel.getModelTexture().setShineDamper(1.0f);
@@ -123,7 +123,7 @@ public class PlayState extends GameState{
 			fernModel.getModelTexture().setReflectivity(0.0f);
 			fern.addComponent(new StaticMesh("fernmesh" + i, fernModel));
 			
-			m_Scene.addEntity(tree);
+//			m_Scene.addEntity(tree);
 			m_Scene.addEntity(grass);
 			m_Scene.addEntity(fern);
 		}

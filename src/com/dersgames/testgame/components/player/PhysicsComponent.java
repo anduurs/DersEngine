@@ -16,6 +16,10 @@ public class PhysicsComponent extends Component{
 	private float m_CurrentSpeed = 0.0f;
 	private float m_CurrentRotationSpeed = 0.0f;
 	private float m_UpwardsSpeed = 0.0f;
+	
+	public PhysicsComponent(String tag){
+		super(tag);
+	}
 
 	@Override
 	public void init() {

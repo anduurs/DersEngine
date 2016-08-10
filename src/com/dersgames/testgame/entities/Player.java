@@ -20,7 +20,7 @@ public class Player extends Entity{
 		playerModel.getModelTexture().setReflectivity(1.0f);
 		
 		addComponent(new StaticMesh("PlayerModel", playerModel));
-		PhysicsComponent physics = new PhysicsComponent();
+		PhysicsComponent physics = new PhysicsComponent("Physics");
 		addComponent(new InputComponent(physics));
 		addComponent(physics);
 	}
