@@ -6,7 +6,7 @@ import com.dersgames.game.core.Camera;
 public class PhysicsComponent extends Component{
 	
 	private float m_RunSpeed = 20;
-	private float m_RotationSpeed = 160;
+	private float m_RotationSpeed = 100;
 	
 	public static final float GRAVITY = -50.0f;
 	public static final int TERRAIN_HEIGHT = 0;

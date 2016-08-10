@@ -15,6 +15,8 @@ public class MouseCursor extends GLFWCursorPosCallback{
 		x = (float)xpos;
 		y = (float)ypos;
 		MouseCursor.window = window;
+		
+		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 	}
 	
 	public static void setVisibility(boolean visible){

@@ -67,7 +67,6 @@ public class Window {
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
 		glfwSetCursorPosCallback(window, mouseCursorCallback = new MouseCursor());
-//		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 		
 		glfwMakeContextCurrent(window);
 		

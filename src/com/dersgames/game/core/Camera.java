@@ -22,7 +22,7 @@ public class Camera{
 	private float m_Speed;
 	private boolean m_MouseLocked = false;
 	
-	private float m_DistanceFromPlayer = 70;
+	private float m_DistanceFromPlayer = 50;
 	private float m_AngleAroundPlayer = 0;
 	private float m_Pitch = 30;
 	
@@ -53,24 +53,21 @@ public class Camera{
 	}
 	
 	public void update(float dt){
-		float horizontalDistance = calculateHorizontalDistance();
-		float verticalDistance = calculateVerticalDistance();
-		
-		calculateCameraPosition(horizontalDistance, verticalDistance, dt);
+		setCameraPosition(dt);
 		
 		if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT)){
+			
+			//http://forum.lwjgl.org/index.php?topic=5597.0
+			
 			MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
 			
 			boolean rotX = deltaPos.y != 0;
 			
 			float pitchChange = deltaPos.y * m_Sensitivity;
-			
 			m_Pitch -= pitchChange;
 			
-			if(rotX){
-				rotateAroundX(-pitchChange);
-			}
+			if(rotX) rotateAroundX(-pitchChange);
 			if(rotX) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 			
 		}else if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_LEFT)){
@@ -88,19 +85,13 @@ public class Camera{
 		}
 	}
 	
-	private float calculateHorizontalDistance(){
-		return (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
-	}
-	
-	private float calculateVerticalDistance(){
-		return (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
-	}
-	
-	private void calculateCameraPosition(float horizontalDistance, float verticalDistance, float dt){
+	private void setCameraPosition(float dt){
+		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
+		float verticalDistance = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
 		float theta = -m_Player.getTransform().getRotation().y;
 		
 		m_Position.x = m_Player.getPosition().x - (float)(horizontalDistance * Math.sin(Math.toRadians(theta)));
-		m_Position.y = m_Player.getPosition().y + verticalDistance;
+		m_Position.y = m_Player.getPosition().y + verticalDistance + 6;
 		m_Position.z = m_Player.getPosition().z - (float)(horizontalDistance * Math.cos(Math.toRadians(theta)));
 		
 		PhysicsComponent p = (PhysicsComponent)m_Player.findComponentByTag("Physics");
