@@ -78,7 +78,6 @@ public class Window {
 		
 		GL.createCapabilities();
 		
-		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 	}
 	

@@ -96,38 +96,6 @@ public class Matrix4f {
 		return this;
 	}
 	
-	/**
-	 * Sets this matrix to the orthographic projection matrix
-	 * @param left
-	 * @param right
-	 * @param bottom
-	 * @param top
-	 * @param near
-	 * @param far
-	 * @return this matrix transformed to the orthographic projection matrix
-	 */
-	public Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near, float far){
-		m_Matrix[0][0] = 2/(right - left);	m_Matrix[0][1] = 0;					m_Matrix[0][2] = 0;				m_Matrix[0][3] = -(right + left)/(right - left);
-		m_Matrix[1][0] = 0;					m_Matrix[1][1] = 2/(top - bottom);	m_Matrix[1][2] = 0;				m_Matrix[1][3] = -(top + bottom)/(top - bottom);
-		m_Matrix[2][0] = 0;					m_Matrix[2][1] = 0;					m_Matrix[2][2] = 2/(far - near);	m_Matrix[2][3] = -(far + near)/(far - near);
-		m_Matrix[3][0] = 0;					m_Matrix[3][1] = 0;					m_Matrix[3][2] = 0;				m_Matrix[3][3] = 1;
-
-		return this;
-	}
-	
-	public Matrix4f setPerspectiveProjection(float fov, float aspectRatio, float zNear, float zFar){
-		float tanHalfFOV = (float)Math.tan(fov / 2);
-		float zRange = zNear - zFar;
-		
-		m_Matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);	m_Matrix[0][1] = 0;		m_Matrix[0][2] = 0;	m_Matrix[0][3] = 0;
-		m_Matrix[1][0] = 0;						m_Matrix[1][1] = 1.0f / tanHalfFOV;	m_Matrix[1][2] = 0;	m_Matrix[1][3] = 0;
-		m_Matrix[2][0] = 0;						m_Matrix[2][1] = 0;					m_Matrix[2][2] = (-zNear -zFar)/zRange;	m_Matrix[2][3] = 2 * zFar * zNear / zRange;
-		m_Matrix[3][0] = 0;						m_Matrix[3][1] = 0;					m_Matrix[3][2] = 1;	m_Matrix[3][3] = 0;
-		
-		
-		return this;
-	}
-	
 	public Matrix4f setRotationMatrix(Vector3f forward, Vector3f up){
 		Vector3f f = forward.normalize();
 		
@@ -151,7 +119,37 @@ public class Matrix4f {
 
 		return this;
 	}
+	
+	/**
+	 * Sets this matrix to the orthographic projection matrix
+	 * @param left
+	 * @param right
+	 * @param bottom
+	 * @param top
+	 * @param near
+	 * @param far
+	 * @return this matrix transformed to the orthographic projection matrix
+	 */
+	public Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near, float far){
+		m_Matrix[0][0] = 2/(right - left);	m_Matrix[0][1] = 0;					m_Matrix[0][2] = 0;				m_Matrix[0][3] = -(right + left)/(right - left);
+		m_Matrix[1][0] = 0;					m_Matrix[1][1] = 2/(top - bottom);	m_Matrix[1][2] = 0;				m_Matrix[1][3] = -(top + bottom)/(top - bottom);
+		m_Matrix[2][0] = 0;					m_Matrix[2][1] = 0;					m_Matrix[2][2] = 2/(far - near);	m_Matrix[2][3] = -(far + near)/(far - near);
+		m_Matrix[3][0] = 0;					m_Matrix[3][1] = 0;					m_Matrix[3][2] = 0;				m_Matrix[3][3] = 1;
 
+		return this;
+	}
+	
+	public Matrix4f setPerspectiveProjection(float fov, float aspectRatio, float zNear, float zFar){
+		float tanHalfFOV = (float)Math.tan(fov / 2);
+		float zRange = zNear - zFar;
+		
+		m_Matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);	m_Matrix[0][1] = 0;					m_Matrix[0][2] = 0;						m_Matrix[0][3] = 0;
+		m_Matrix[1][0] = 0;									m_Matrix[1][1] = 1.0f / tanHalfFOV;	m_Matrix[1][2] = 0;						m_Matrix[1][3] = 0;
+		m_Matrix[2][0] = 0;									m_Matrix[2][1] = 0;					m_Matrix[2][2] = (-zNear -zFar)/zRange;	m_Matrix[2][3] = 2 * zFar * zNear / zRange;
+		m_Matrix[3][0] = 0;									m_Matrix[3][1] = 0;					m_Matrix[3][2] = 1;						m_Matrix[3][3] = 0;
+		
+		return this;
+	}
 	
 	/**
 	 * Performs matrix multiplication between this matrix and the given

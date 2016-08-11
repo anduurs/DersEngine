@@ -17,7 +17,6 @@ public class Camera{
 	private Vector3f m_Position;
 	private Vector3f m_Forward;
 	private Vector3f m_Up;
-	private Vector2f m_CenterPosition;
 	
 	private float m_Sensitivity;
 	private boolean m_MouseLocked = false;
@@ -25,6 +24,11 @@ public class Camera{
 	private float m_DistanceFromPlayer;
 	private float m_AngleAroundPlayer;
 	private float m_Pitch;
+	
+	private final float MAX_PITCH_ANGLE = 50.0f;
+	private final float MIN_PITCH_ANGLE = 5.0f;
+	
+	private float lastFrameMouseX, lastFrameMouseY = 0;
 	
 	public Camera(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -41,7 +45,6 @@ public class Camera{
 		m_Up = up;
 		m_Forward.normalize();
 		m_Up.normalize();
-		m_CenterPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
 		
 		m_Sensitivity = 0.06f;
 		m_DistanceFromPlayer = 50;
@@ -56,40 +59,43 @@ public class Camera{
 		
 		if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT)){
 			m_MouseLocked = true;
-			MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 		}else m_MouseLocked = false;
 		
 		if(m_MouseLocked){
-			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
+			float deltaX = MouseCursor.getX() - lastFrameMouseX;
+			float deltaY = MouseCursor.getY() - lastFrameMouseY;
 			
-			boolean rotX = deltaPos.y != 0;
-			boolean rotY = deltaPos.x != 0;
+			boolean rotX = MouseCursor.getY() != lastFrameMouseY;
+			boolean rotY = MouseCursor.getX() != lastFrameMouseX;
 			
-			float pitchChange = deltaPos.y * m_Sensitivity;
-			Debug.log(pitchChange);
+			float pitchChange = deltaY * m_Sensitivity;
+			
 			m_Pitch -= pitchChange;
 			
-			if(m_Pitch >= 50){
-				m_Pitch = 50;
-				rotX = false;
-			}
-			if(m_Pitch <= 5){
-				m_Pitch = 5;
+			if(m_Pitch >= MAX_PITCH_ANGLE){
+				m_Pitch = MAX_PITCH_ANGLE;
 				rotX = false;
 			}
 			
-			float angleChange = deltaPos.x * m_Sensitivity;
+			if(m_Pitch <= MIN_PITCH_ANGLE){
+				m_Pitch = MIN_PITCH_ANGLE;
+				rotX = false;
+			}
+			
+			float angleChange = deltaX * m_Sensitivity;
 			m_AngleAroundPlayer -= angleChange;
 			
 			if(rotX) rotateAroundX(-pitchChange);
 			if(rotY) rotateAroundY(angleChange);
-			if(rotX || rotY) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 		}
+		
+		lastFrameMouseX = MouseCursor.getX();
+		lastFrameMouseY = MouseCursor.getY();
 	}
 	
 	private void updateCameraPosition(float dt){
 		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
-		float verticalDistance = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
+		float verticalDistance   = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
 		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
 		
 		PlayerMovement p = (PlayerMovement) m_Player.findComponentByTag("PlayerMovement");
