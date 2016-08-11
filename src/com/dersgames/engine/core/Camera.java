@@ -66,7 +66,17 @@ public class Camera{
 			boolean rotY = deltaPos.x != 0;
 			
 			float pitchChange = deltaPos.y * m_Sensitivity;
+			Debug.log(pitchChange);
 			m_Pitch -= pitchChange;
+			
+			if(m_Pitch >= 50){
+				m_Pitch = 50;
+				rotX = false;
+			}
+			if(m_Pitch <= 5){
+				m_Pitch = 5;
+				rotX = false;
+			}
 			
 			float angleChange = deltaPos.x * m_Sensitivity;
 			m_AngleAroundPlayer -= angleChange;
