@@ -7,7 +7,7 @@ public class Main {
 	
 	public static void main(String[] args){
 		GameApplication game = new GameApplication(800, 600, "TestGame", true);
-		game.addStartingState(new ExampleState(game.getGameStateManager()));
+		game.pushStartingState(new ExampleState(game.getGameStateManager()));
 		game.start();
 	}
 	

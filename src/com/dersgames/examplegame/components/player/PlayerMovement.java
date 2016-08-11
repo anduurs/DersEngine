@@ -21,8 +21,8 @@ public class PlayerMovement extends Component{
 
 	@Override
 	public void update(float dt) {
-		float yRotAmount = m_Entity.getTransform().getRotation().y + m_CurrentRotationSpeed * dt;
-		m_Entity.getTransform().rotate(0, yRotAmount, 0);
+//		float yRotAmount = m_Entity.getTransform().getRotation().y + m_CurrentRotationSpeed * dt;
+//		m_Entity.getTransform().rotate(0, yRotAmount, 0);
 		
 		float distance = m_CurrentSpeed * dt;
 		

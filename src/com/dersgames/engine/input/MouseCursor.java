@@ -9,7 +9,7 @@ import com.dersgames.engine.core.Vector2f;
 public class MouseCursor extends GLFWCursorPosCallback{
 
 	private static float mouseX = 0, mouseY = 0;
-	private static float mouseDX = 0, mouseDY = 0;
+	private static int mouseDX = 0, mouseDY = 0;
 	
 	private static long window;
 
@@ -53,11 +53,11 @@ public class MouseCursor extends GLFWCursorPosCallback{
 		return mouseY;
 	}
 	
-	public static float getDX(){
-		return mouseDX;
+	public static int getDX(){
+		 return mouseDX | (mouseDX = 0);
 	}
 
-	public static float getDY(){
-		return mouseDY;
+	public static int getDY(){
+		 return mouseDY | (mouseDY = 0);
 	}
 }

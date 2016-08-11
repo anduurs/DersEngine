@@ -19,7 +19,7 @@ public class Player extends Entity{
 		playerModel.getModelTexture().setShineDamper(10.0f);
 		playerModel.getModelTexture().setReflectivity(1.0f);
 		
-		addComponent(new StaticMesh("PlayerMesh", playerModel));
+//		addComponent(new StaticMesh("PlayerMesh", playerModel));
 		PlayerMovement playerMovement = new PlayerMovement();
 		addComponent(new PlayerInput(playerMovement));
 		addComponent(playerMovement);

@@ -1,10 +1,6 @@
 package com.dersgames.engine.core;
 
-import org.lwjgl.glfw.GLFW;
-
-import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
-import com.dersgames.examplegame.components.player.PlayerMovement;
 import com.dersgames.examplegame.entities.Player;
 
 public class Camera{
@@ -18,16 +14,17 @@ public class Camera{
 	private Vector3f m_Up;
 	
 	private float m_Sensitivity;
-	private boolean m_MouseLocked = false;
+	private boolean m_MouseLocked = true;
 	
 	private float m_DistanceFromPlayer;
 	private float m_AngleAroundPlayer;
 	private float m_Pitch;
 	
-	private final float MAX_PITCH_ANGLE = 50.0f;
-	private final float MIN_PITCH_ANGLE = 0.0f;
+	private final float MAX_PITCH_ANGLE = 90.0f;
+	private final float MIN_PITCH_ANGLE = -90.0f;
 	
 	private float previousMouseX, previousMouseY = 0;
+	private float m_CameraOffsetY = 10.0f;
 	
 	public Camera(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -45,70 +42,62 @@ public class Camera{
 		m_Forward.normalize();
 		m_Up.normalize();
 		
-		m_Sensitivity = 0.06f;
+		m_Sensitivity = 1.6f;
 		m_DistanceFromPlayer = -3;
 		m_AngleAroundPlayer = 0;
-		m_Pitch = 30;
+		m_Pitch = 0;
 		
 		rotateAroundX(m_Pitch);
 	}
 	
 	public void update(float dt){
-		updateCameraPosition(dt);
+		updateCameraPositionRelativeToPlayer(dt);
 		
 		float currentMouseX = MouseCursor.getX();
 		float currentMouseY = MouseCursor.getY();
-		
-		if(Mouse.isRightMouseButtonPressed()){
-			m_MouseLocked = true;
-		}else m_MouseLocked = false;
-		
-		if(m_MouseLocked){
-			float deltaMouseX = currentMouseX - previousMouseX;
-			float deltaMouseY = currentMouseY - previousMouseY;
+	
+		float deltaMouseX = currentMouseX - previousMouseX;
+		float deltaMouseY = currentMouseY - previousMouseY;
 			
-			boolean shouldRotateAroundX = currentMouseY != previousMouseY;
-			boolean shouldRotateAroundY = currentMouseX != previousMouseX;
+		boolean shouldRotateAroundX = currentMouseY != previousMouseY;
+		boolean shouldRotateAroundY = currentMouseX != previousMouseX;
 			
-			float pitchChange = deltaMouseY * m_Sensitivity;
+		float pitchChange = deltaMouseY * m_Sensitivity * dt;
 			
-			m_Pitch -= pitchChange;
+		m_Pitch += pitchChange;
 			
-			if(m_Pitch >= MAX_PITCH_ANGLE){
-				m_Pitch = MAX_PITCH_ANGLE;
-				shouldRotateAroundX = false;
-			}
+		if(m_Pitch >= MAX_PITCH_ANGLE){
+			m_Pitch = MAX_PITCH_ANGLE;
+			shouldRotateAroundX = false;
+		}
 			
-			if(m_Pitch <= MIN_PITCH_ANGLE){
-				m_Pitch = MIN_PITCH_ANGLE;
-				shouldRotateAroundX = false;
-			}
+		if(m_Pitch <= MIN_PITCH_ANGLE){
+			m_Pitch = MIN_PITCH_ANGLE;
+			shouldRotateAroundX = false;
+		}
 			
-			float yawChange = deltaMouseX * m_Sensitivity;
-			m_AngleAroundPlayer -= yawChange;
+		float yawChange = deltaMouseX * m_Sensitivity * dt;
+		m_AngleAroundPlayer -= yawChange;
 			
-			if(shouldRotateAroundX) rotateAroundX(-pitchChange);
-			if(shouldRotateAroundY) rotateAroundY(yawChange);
+		if(shouldRotateAroundX) rotateAroundX(pitchChange);
+			
+		if(shouldRotateAroundY){
+			rotateAroundY(yawChange);
+			float yRotAmount = m_Player.getTransform().getRotation().y - yawChange;
+			m_Player.getTransform().rotate(0, yRotAmount, 0);
 		}
 		
 		previousMouseX = currentMouseX;
 		previousMouseY = currentMouseY;
 	}
 	
-	private void updateCameraPosition(float dt){
+	private void updateCameraPositionRelativeToPlayer(float dt){
 		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
 		float verticalDistance   = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
 		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
-		
-		PlayerMovement p = (PlayerMovement) m_Player.findComponentByTag("PlayerMovement");
-
-		if(p.getCurrentRotationSpeed() != 0){
-			float angleChange = p.getCurrentRotationSpeed() * dt;
-			rotateAroundY(-angleChange);
-		}
-		
+	
 		m_Position.x = (float) (m_Player.getPosition().x - (horizontalDistance * Math.sin(Math.toRadians(theta))));
-		m_Position.y = m_Player.getPosition().y + verticalDistance + 6;
+		m_Position.y = m_Player.getPosition().y + verticalDistance + m_CameraOffsetY;
 		m_Position.z = (float) (m_Player.getPosition().z - (horizontalDistance * Math.cos(Math.toRadians(theta))));
 	}
 	

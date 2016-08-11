@@ -32,7 +32,7 @@ public class GameApplication implements Runnable{
 		m_StateManager = new GameStateManager();
 	}
 	
-	public void addStartingState(GameState startingState){
+	public void pushStartingState(GameState startingState){
 		m_StartState = startingState;
 		m_StateManager.push(startingState);
 	}
