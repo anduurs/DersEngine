@@ -104,9 +104,9 @@ public class Camera{
 			rotateAroundY(-angleChange);
 		}
 		
-		m_Position.x = m_Player.getPosition().x - (float)(horizontalDistance * Math.sin(Math.toRadians(theta)));
+		m_Position.x = (float) (m_Player.getPosition().x - (horizontalDistance * Math.sin(Math.toRadians(theta))));
 		m_Position.y = m_Player.getPosition().y + verticalDistance + 6;
-		m_Position.z = m_Player.getPosition().z - (float)(horizontalDistance * Math.cos(Math.toRadians(theta)));
+		m_Position.z = (float) (m_Player.getPosition().z - (horizontalDistance * Math.cos(Math.toRadians(theta))));
 	}
 	
 	public void rotateAroundY(float angle){
