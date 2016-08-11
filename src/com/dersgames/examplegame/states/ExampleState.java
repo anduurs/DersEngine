@@ -36,6 +36,7 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("grassTexture", "grassTexture.png");
 		ImageManager.addImage("fern", "fern.png");
 		ImageManager.addImage("tree", "tree.png");
+		ImageManager.addImage("box", "box.png");
 		
 		//TERRAIN TEXTURES
 		ImageManager.addImage("grassy", "grassy2.png");
@@ -54,6 +55,12 @@ public class ExampleState extends GameState{
 		addLightSource();
 		generateTerrain();
 		generateEntities(100);
+		
+		Entity box = new Entity("Box", 200, 7, 200, 10);
+		TexturedModel boxModel = new TexturedModel(m_Loader.loadObjModel("box"), 
+				new ModelTexture(m_Loader.loadTexture("box")));
+		box.addComponent(new StaticMesh("BoxMesh", boxModel));
+		m_Scene.addEntity(box);
 		
 		Player player = new Player(m_Loader, 200, 0, 150);
 		m_Scene.addEntity(player);

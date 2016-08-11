@@ -12,8 +12,13 @@ public class Mouse extends GLFWMouseButtonCallback{
 		buttons[button] = action;
 	}
 	
-	public static boolean isMouseButtonPressed(int mousebutton){
-		if(buttons[mousebutton] == GLFW.GLFW_PRESS) return true;
+	public static boolean isRightMouseButtonPressed(){
+		if(buttons[GLFW.GLFW_MOUSE_BUTTON_RIGHT] == GLFW.GLFW_PRESS) return true;
+		return false;
+	}
+	
+	public static boolean isLeftMouseButtonPressed(){
+		if(buttons[GLFW.GLFW_MOUSE_BUTTON_LEFT] == GLFW.GLFW_PRESS) return true;
 		return false;
 	}
 

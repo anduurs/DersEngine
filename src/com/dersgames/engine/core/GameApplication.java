@@ -8,7 +8,7 @@ import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.examplegame.states.ExampleState;
 
-public class StateBased3DGame implements Runnable{
+public class GameApplication implements Runnable{
 	
 	private volatile boolean m_Running = false;
 	
@@ -21,8 +21,9 @@ public class StateBased3DGame implements Runnable{
 	private int m_Height;
 	private String m_Title;
 	private boolean m_Vsync;
+	public static double interpolationFactor = 0;
 	
-	public StateBased3DGame(int width, int height, String title, boolean vsync){
+	public GameApplication(int width, int height, String title, boolean vsync){
 		m_Width = width;
 		m_Height = height;
 		m_Title = title;
@@ -67,7 +68,7 @@ public class StateBased3DGame implements Runnable{
 		double currentTime;
 		double passedTime;
 		
-		double lag = 0;
+		double accumulator = 0;
 		double frameCounter = 0;
 		
 		int fps = 0;
@@ -75,32 +76,25 @@ public class StateBased3DGame implements Runnable{
 		final double TARGET_UPS = 60.0;
 		final double SEC_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SEC_PER_UPDATE;
-		
-		boolean shouldRender = !m_Vsync;
 	
 		while(m_Running){
-			shouldRender = !m_Vsync;
 			currentTime = System.nanoTime();
 			passedTime = (currentTime - previousTime) / 1000000000.0;
 			
 			if(passedTime > 0.25) 
 				passedTime = 0.25;
 			
-			lag += passedTime;
+			accumulator += passedTime;
 			frameCounter += passedTime;
-			
 			previousTime = currentTime;
 			
-			while(lag >= SEC_PER_UPDATE){
+			while(accumulator >= SEC_PER_UPDATE){
 				update(dt);
-				lag -= SEC_PER_UPDATE;
-				shouldRender = true;
+				accumulator -= SEC_PER_UPDATE;
 			}
-
-			if(shouldRender){
-				render();
-				fps++;
-			}
+			
+			render();
+			fps++;
 				
 			if(frameCounter >= 1){
 				m_Window.setTitle(m_Title + " || " + fps + " fps");
@@ -114,7 +108,6 @@ public class StateBased3DGame implements Runnable{
 			
 			if(m_Window.isWindowClosed())
 				m_Running = false;
-			
 		}
 		
 		m_StateManager.getCurrentState().dispose();

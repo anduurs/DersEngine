@@ -27,7 +27,7 @@ public class Camera{
 	private final float MAX_PITCH_ANGLE = 50.0f;
 	private final float MIN_PITCH_ANGLE = 0.0f;
 	
-	private float lastFrameMouseX, lastFrameMouseY = 0;
+	private float previousMouseX, previousMouseY = 0;
 	
 	public Camera(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -46,7 +46,7 @@ public class Camera{
 		m_Up.normalize();
 		
 		m_Sensitivity = 0.06f;
-		m_DistanceFromPlayer = 50;
+		m_DistanceFromPlayer = -3;
 		m_AngleAroundPlayer = 0;
 		m_Pitch = 30;
 		
@@ -56,40 +56,43 @@ public class Camera{
 	public void update(float dt){
 		updateCameraPosition(dt);
 		
-		if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT)){
+		float currentMouseX = MouseCursor.getX();
+		float currentMouseY = MouseCursor.getY();
+		
+		if(Mouse.isRightMouseButtonPressed()){
 			m_MouseLocked = true;
 		}else m_MouseLocked = false;
 		
 		if(m_MouseLocked){
-			float deltaX = MouseCursor.getX() - lastFrameMouseX;
-			float deltaY = MouseCursor.getY() - lastFrameMouseY;
+			float deltaMouseX = currentMouseX - previousMouseX;
+			float deltaMouseY = currentMouseY - previousMouseY;
 			
-			boolean rotX = MouseCursor.getY() != lastFrameMouseY;
-			boolean rotY = MouseCursor.getX() != lastFrameMouseX;
+			boolean shouldRotateAroundX = currentMouseY != previousMouseY;
+			boolean shouldRotateAroundY = currentMouseX != previousMouseX;
 			
-			float pitchChange = deltaY * m_Sensitivity;
+			float pitchChange = deltaMouseY * m_Sensitivity;
 			
 			m_Pitch -= pitchChange;
 			
 			if(m_Pitch >= MAX_PITCH_ANGLE){
 				m_Pitch = MAX_PITCH_ANGLE;
-				rotX = false;
+				shouldRotateAroundX = false;
 			}
 			
 			if(m_Pitch <= MIN_PITCH_ANGLE){
 				m_Pitch = MIN_PITCH_ANGLE;
-				rotX = false;
+				shouldRotateAroundX = false;
 			}
 			
-			float angleChange = deltaX * m_Sensitivity;
-			m_AngleAroundPlayer -= angleChange;
+			float yawChange = deltaMouseX * m_Sensitivity;
+			m_AngleAroundPlayer -= yawChange;
 			
-			if(rotX) rotateAroundX(-pitchChange);
-			if(rotY) rotateAroundY(angleChange);
+			if(shouldRotateAroundX) rotateAroundX(-pitchChange);
+			if(shouldRotateAroundY) rotateAroundY(yawChange);
 		}
 		
-		lastFrameMouseX = MouseCursor.getX();
-		lastFrameMouseY = MouseCursor.getY();
+		previousMouseX = currentMouseX;
+		previousMouseY = currentMouseY;
 	}
 	
 	private void updateCameraPosition(float dt){

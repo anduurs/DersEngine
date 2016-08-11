@@ -69,7 +69,10 @@ public class EntityRenderer {
 		glEnableVertexAttribArray(2);
 		
 		ModelTexture texture = texturedModel.getModelTexture();
-		if(texture.hasTransparency()) Renderer3D.disableCulling();
+		
+		if(texture.hasTransparency()) 
+			Renderer3D.disableCulling();
+		
 		m_Shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		m_Shader.loadUseFakeLighting(texture.getUseFakeLighting());
 		
