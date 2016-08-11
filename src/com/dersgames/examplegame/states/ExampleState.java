@@ -44,6 +44,7 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("mud", "mud.png");
 		ImageManager.addImage("path", "path.png");
 		ImageManager.addImage("blendMap", "blendMap.png");
+		ImageManager.addImage("heightmap", "heightmap.png");
 		
 		//PLAYER TEXTURE
 		ImageManager.addImage("player", "playerTexture.png");
@@ -85,11 +86,11 @@ public class ExampleState extends GameState{
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
 		Entity terrainEntity = new Entity("Terrain1");
-		Terrain terrain 	 = new Terrain("TerrainComponent1", 0, 0, m_Loader, texturePack, blendMap);
+		Terrain terrain 	 = new Terrain("TerrainComponent1", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
 		terrainEntity.addComponent(terrain);
 		
 		Entity terrainEntity2 = new Entity("Terrain2");
-		Terrain terrain2 	  = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap);
+		Terrain terrain2 	  = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap, "heightmap");
 		terrainEntity2.addComponent(terrain2);
 		
 		m_Scene.addEntity(terrainEntity);

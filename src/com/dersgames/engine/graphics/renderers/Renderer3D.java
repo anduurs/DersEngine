@@ -29,8 +29,8 @@ public class Renderer3D {
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
 	
-	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f);
-//	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
+//	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f);
+	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
 
 	public Renderer3D(){
 		m_Projection = new Matrix4f().setPerspectiveProjection(70.0f, 

@@ -1,16 +1,20 @@
 package com.dersgames.engine.terrains;
 
+import java.awt.image.BufferedImage;
+
 import com.dersgames.engine.components.Renderable3D;
 import com.dersgames.engine.graphics.ModelLoader;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.renderers.Renderer3D;
 import com.dersgames.engine.graphics.textures.TerrainTexture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
+import com.dersgames.engine.utils.ImageManager;
 
 public class Terrain extends Renderable3D{
 	
 	private static final float SIZE = 800;
-	private static final int VERTEX_COUNT = 128;
+	private static final int MAX_HEIGHT = 40;
+	private static final int MAX_PIXEL_COLOR = 256 * 256 * 256;
 	
 	private float x, z;
 	private Model m_Model;
@@ -19,13 +23,13 @@ public class Terrain extends Renderable3D{
 	private TerrainTexture m_BlendMap;
 	
 	public Terrain(String tag, int gridX, int gridY, 
-			ModelLoader loader, TerrainTexturePack texturePack, TerrainTexture blendMap){
+			ModelLoader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap){
 		super(tag);
 		m_TexturePack = texturePack;
 		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridY * SIZE;
-		m_Model = generateTerrain(loader);
+		m_Model = generateTerrain(loader, heightmap);
 	}
 	
 	@Override
@@ -38,7 +42,10 @@ public class Terrain extends Renderable3D{
 		renderer.submit(this);
 	}
 	
-	private Model generateTerrain(ModelLoader loader){
+	private Model generateTerrain(ModelLoader loader, String heightmap){
+		BufferedImage image = ImageManager.getImage(heightmap);
+		int VERTEX_COUNT = image.getHeight();
+		
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];
 		float[] normals = new float[count * 3];
@@ -49,7 +56,7 @@ public class Terrain extends Renderable3D{
 		for(int i=0;i<VERTEX_COUNT;i++){
 			for(int j=0;j<VERTEX_COUNT;j++){
 				vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-				vertices[vertexPointer*3+1] = 0;
+				vertices[vertexPointer*3+1] = getHeight(j, i, image);
 				vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
 				normals[vertexPointer*3] = 0;
 				normals[vertexPointer*3+1] = 1;
@@ -77,6 +84,20 @@ public class Terrain extends Renderable3D{
 		}
 		
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
+	}
+	
+	private float getHeight(int x, int y, BufferedImage image){
+		if(x < 0 || x >= image.getHeight() || y < 0 || y >= image.getHeight())
+			return 0;
+		
+		float height = image.getRGB(x, y);
+		
+		//change the height so it lies in the range between -MAX_HEIGHT and MAX_HEIGHT
+		height += MAX_PIXEL_COLOR / 2.0f;
+		height /= MAX_PIXEL_COLOR / 2.0f;
+		height *= MAX_HEIGHT;
+		
+		return height;
 	}
 
 	public float getX() {
