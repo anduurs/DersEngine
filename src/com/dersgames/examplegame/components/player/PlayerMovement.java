@@ -11,6 +11,8 @@ public class PlayerMovement extends Component{
 	private float m_CurrentRotationSpeed = 0.0f;
 	private float m_UpwardsSpeed = 0.0f;
 	
+	public boolean strafeLeft = false, strafeRight = false;
+	
 	public PlayerMovement(){
 		super("PlayerMovement");
 	}
@@ -21,16 +23,33 @@ public class PlayerMovement extends Component{
 
 	@Override
 	public void update(float dt) {
-//		float yRotAmount = m_Entity.getTransform().getRotation().y + m_CurrentRotationSpeed * dt;
-//		m_Entity.getTransform().rotate(0, yRotAmount, 0);
-		
 		float distance = m_CurrentSpeed * dt;
 		
-		float deltaX = (float)(distance * Math.sin(Math.toRadians(-m_Entity.getTransform().getRotation().y)));
-		float deltaZ = (float)(distance * Math.cos(Math.toRadians(-m_Entity.getTransform().getRotation().y)));
+		float deltaX = 0;
+		float deltaZ = 0;
 		
-		float xAmount = m_Entity.getPosition().x + deltaX;
-		float zAmount = m_Entity.getPosition().z + deltaZ;
+		float xAmount = 0;
+		float zAmount = 0;
+		
+		if(strafeLeft){
+			deltaX = (float)(distance * Math.sin(Math.toRadians(m_Entity.getTransform().getRotation().y - 90)));
+			deltaZ = (float)(distance * Math.cos(Math.toRadians(m_Entity.getTransform().getRotation().y - 90)));
+			
+			xAmount = m_Entity.getPosition().x - deltaX;
+			zAmount = m_Entity.getPosition().z + deltaZ;
+		}else if(strafeRight){
+			deltaX = (float)(distance * Math.sin(Math.toRadians(m_Entity.getTransform().getRotation().y + 90)));
+			deltaZ = (float)(distance * Math.cos(Math.toRadians(m_Entity.getTransform().getRotation().y + 90)));
+			
+			xAmount = m_Entity.getPosition().x + deltaX;
+			zAmount = m_Entity.getPosition().z - deltaZ;
+		}else{
+			deltaX = (float)(distance * Math.sin(Math.toRadians(-m_Entity.getTransform().getRotation().y)));
+			deltaZ = (float)(distance * Math.cos(Math.toRadians(-m_Entity.getTransform().getRotation().y)));
+			
+			xAmount = m_Entity.getPosition().x + deltaX;
+			zAmount = m_Entity.getPosition().z + deltaZ;
+		}
 		
 		m_Entity.getTransform().translate(xAmount, 0, zAmount);
 	}

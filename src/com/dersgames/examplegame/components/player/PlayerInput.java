@@ -22,33 +22,34 @@ public class PlayerInput extends Component{
 
 	@Override
 	public void update(float dt) {
-		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
+			m_PlayerMovement.strafeRight = false;
+			m_PlayerMovement.strafeLeft = false;
 			m_PlayerMovement.setCurrentSpeed(m_PlayerMovement.getRunSpeed());
-			
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S)){
+			m_PlayerMovement.strafeRight = false;
+			m_PlayerMovement.strafeLeft = false;
 			m_PlayerMovement.setCurrentSpeed(-m_PlayerMovement.getRunSpeed());
-			
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
+			m_PlayerMovement.strafeRight = true;
+			m_PlayerMovement.strafeLeft = false;
+			m_PlayerMovement.setCurrentSpeed(m_PlayerMovement.getRunSpeed());
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A)){
+			m_PlayerMovement.strafeRight = false;
+			m_PlayerMovement.strafeLeft = true;
+			m_PlayerMovement.setCurrentSpeed(-m_PlayerMovement.getRunSpeed());
 		}else{
-		
+			m_PlayerMovement.strafeRight = false;
+			m_PlayerMovement.strafeLeft = false;
 			m_PlayerMovement.setCurrentSpeed(0);
 		}
 		
 //		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
 //			m_PlayerMovement.setCurrentSpeed(m_PlayerMovement.getRunSpeed());
-//			m_PlayerMovement.setStrafeRight(true);
-//			m_PlayerMovement.setStrafeLeft(false);
-////			m_PlayerMovement.setCurrentRotationSpeed(-m_PlayerMovement.getRotationSpeed());
 //		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A)){
 //			m_PlayerMovement.setCurrentSpeed(-m_PlayerMovement.getRunSpeed());
-//			m_PlayerMovement.setStrafeLeft(true);
-//			m_PlayerMovement.setStrafeRight(false);
-////			m_PlayerMovement.setCurrentRotationSpeed(m_PlayerMovement.getRotationSpeed());
 //		}else{
-//			m_PlayerMovement.setStrafeRight(false);
-//			m_PlayerMovement.setStrafeLeft(false);
 //			m_PlayerMovement.setCurrentSpeed(0);
-////			m_PlayerMovement.setCurrentRotationSpeed(0);
 //		}
 		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_SPACE)){
