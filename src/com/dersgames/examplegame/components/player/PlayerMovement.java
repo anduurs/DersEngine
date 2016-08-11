@@ -1,17 +1,11 @@
 package com.dersgames.examplegame.components.player;
 
 import com.dersgames.engine.components.Component;
-import com.dersgames.engine.core.Camera;
 
 public class PlayerMovement extends Component{
 	
 	private float m_RunSpeed = 20;
 	private float m_RotationSpeed = 100;
-	
-	public static final float GRAVITY = -50.0f;
-	public static final int TERRAIN_HEIGHT = 0;
-	
-	private boolean m_IsInAir = false;
 	
 	private float m_CurrentSpeed = 0.0f;
 	private float m_CurrentRotationSpeed = 0.0f;

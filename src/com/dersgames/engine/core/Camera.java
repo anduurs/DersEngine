@@ -2,7 +2,6 @@ package com.dersgames.engine.core;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
 import com.dersgames.examplegame.components.player.PlayerMovement;
@@ -26,7 +25,7 @@ public class Camera{
 	private float m_Pitch;
 	
 	private final float MAX_PITCH_ANGLE = 50.0f;
-	private final float MIN_PITCH_ANGLE = 5.0f;
+	private final float MIN_PITCH_ANGLE = 0.0f;
 	
 	private float lastFrameMouseX, lastFrameMouseY = 0;
 	

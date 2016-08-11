@@ -1,88 +1,83 @@
 package com.dersgames.engine.core;
 
-public class Quaternion
-{
-	private float m_x;
-	private float m_y;
-	private float m_z;
-	private float m_w;
+public class Quaternion{
+	
+	public float x;
+	public float y;
+	public float z;
+	public float w;
 
 	public Quaternion(float x, float y, float z, float w){
-		m_x = x;
-		m_y = y;
-		m_z = z;
-		m_w = w;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
 	}
 
 	public Quaternion(Vector3f axis, float angle){
 		float sinHalfAngle = (float)Math.sin(angle / 2);
 		float cosHalfAngle = (float)Math.cos(angle / 2);
 
-		m_x = axis.x * sinHalfAngle;
-		m_y = axis.y * sinHalfAngle;
-		m_z = axis.z * sinHalfAngle;
-		m_w = cosHalfAngle;
+		x = axis.x * sinHalfAngle;
+		y = axis.y * sinHalfAngle;
+		z = axis.z * sinHalfAngle;
+		w = cosHalfAngle;
 	}
 
 	public float length(){
-		return (float)Math.sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
+		return (float)Math.sqrt(x * x + y * y + z * z + w * w);
 	}
 	
 	public Quaternion normalize(){
 		float length = length();
 		
-		return new Quaternion(m_x / length, m_y / length, m_z / length, m_w / length);
+		return new Quaternion(x / length, y / length, z / length, w / length);
 	}
 	
 	public Quaternion conjugate(){
-		return new Quaternion(-m_x, -m_y, -m_z, m_w);
+		return new Quaternion(-x, -y, -z, w);
 	}
 
-	public Quaternion mul(float r)
-	{
-		return new Quaternion(m_x * r, m_y * r, m_z * r, m_w * r);
+	public Quaternion mul(float r){
+		return new Quaternion(x * r, y * r, z * r, w * r);
 	}
 
-	public Quaternion mul(Quaternion r)
-	{
-		float w_ = m_w * r.getW() - m_x * r.getX() - m_y * r.getY() - m_z * r.getZ();
-		float x_ = m_x * r.getW() + m_w * r.getX() + m_y * r.getZ() - m_z * r.getY();
-		float y_ = m_y * r.getW() + m_w * r.getY() + m_z * r.getX() - m_x * r.getZ();
-		float z_ = m_z * r.getW() + m_w * r.getZ() + m_x * r.getY() - m_y * r.getX();
+	public Quaternion mul(Quaternion r){
+		float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
+		float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
+		float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
+		float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
 		
 		return new Quaternion(x_, y_, z_, w_);
 	}
 	
-	public Quaternion mul(Vector3f r)
-	{
-		float w_ = -m_x * r.x - m_y * r.y - m_z * r.z;
-		float x_ =  m_w * r.x + m_y * r.z - m_z * r.y;
-		float y_ =  m_w * r.y + m_z * r.x - m_x * r.z;
-		float z_ =  m_w * r.z + m_x * r.y - m_y * r.x;
+	public Quaternion mul(Vector3f r){
+		float w_ = -x * r.x - y * r.y - z * r.z;
+		float x_ =  w * r.x + y * r.z - z * r.y;
+		float y_ =  w * r.y + z * r.x - x * r.z;
+		float z_ =  w * r.z + x * r.y - y * r.x;
 		
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion sub(Quaternion r)
-	{
-		return new Quaternion(m_x - r.getX(), m_y - r.getY(), m_z - r.getZ(), m_w - r.getW());
+	public Quaternion sub(Quaternion r){
+		return new Quaternion(x - r.getX(), y - r.getY(), z - r.getZ(), w - r.getW());
 	}
 
-	public Quaternion add(Quaternion r)
-	{
-		return new Quaternion(m_x + r.getX(), m_y + r.getY(), m_z + r.getZ(), m_w + r.getW());
+	public Quaternion add(Quaternion r){
+		return new Quaternion(x + r.getX(), y + r.getY(), z + r.getZ(), w + r.getW());
 	}
 
 	public Matrix4f toRotationMatrix(){
-		Vector3f forward =  new Vector3f(2.0f * (m_x * m_z - m_w * m_y), 2.0f * (m_y * m_z + m_w * m_x), 1.0f - 2.0f * (m_x * m_x + m_y * m_y));
-		Vector3f up = new Vector3f(2.0f * (m_x * m_y + m_w * m_z), 1.0f - 2.0f * (m_x * m_x + m_z * m_z), 2.0f * (m_y * m_z - m_w * m_x));
-		Vector3f right = new Vector3f(1.0f - 2.0f * (m_y * m_y + m_z * m_z), 2.0f * (m_x * m_y - m_w * m_z), 2.0f * (m_x * m_z + m_w * m_y));
+		Vector3f forward =  new Vector3f(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+		Vector3f up = new Vector3f(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
+		Vector3f right = new Vector3f(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
 
 		return new Matrix4f().setRotationMatrix(forward, up, right);
 	}
 
 	public float dot(Quaternion r){
-		return m_x * r.getX() + m_y * r.getY() + m_z * r.getZ() + m_w * r.getW();
+		return x * r.getX() + y * r.getY() + z * r.getZ() + w * r.getW();
 	}
 
 	public Quaternion nLerp(Quaternion dest, float lerpFactor, boolean shortest){
@@ -127,44 +122,44 @@ public class Quaternion
 		if(trace > 0)
 		{
 			float s = 0.5f / (float)Math.sqrt(trace+ 1.0f);
-			m_w = 0.25f / s;
-			m_x = (rot.get(1, 2) - rot.get(2, 1)) * s;
-			m_y = (rot.get(2, 0) - rot.get(0, 2)) * s;
-			m_z = (rot.get(0, 1) - rot.get(1, 0)) * s;
+			w = 0.25f / s;
+			x = (rot.get(1, 2) - rot.get(2, 1)) * s;
+			y = (rot.get(2, 0) - rot.get(0, 2)) * s;
+			z = (rot.get(0, 1) - rot.get(1, 0)) * s;
 		}
 		else
 		{
 			if(rot.get(0, 0) > rot.get(1, 1) && rot.get(0, 0) > rot.get(2, 2))
 			{
 				float s = 2.0f * (float)Math.sqrt(1.0f + rot.get(0, 0) - rot.get(1, 1) - rot.get(2, 2));
-				m_w = (rot.get(1, 2) - rot.get(2, 1)) / s;
-				m_x = 0.25f * s;
-				m_y = (rot.get(1, 0) + rot.get(0, 1)) / s;
-				m_z = (rot.get(2, 0) + rot.get(0, 2)) / s;
+				w = (rot.get(1, 2) - rot.get(2, 1)) / s;
+				x = 0.25f * s;
+				y = (rot.get(1, 0) + rot.get(0, 1)) / s;
+				z = (rot.get(2, 0) + rot.get(0, 2)) / s;
 			}
 			else if(rot.get(1, 1) > rot.get(2, 2))
 			{
 				float s = 2.0f * (float)Math.sqrt(1.0f + rot.get(1, 1) - rot.get(0, 0) - rot.get(2, 2));
-				m_w = (rot.get(2, 0) - rot.get(0, 2)) / s;
-				m_x = (rot.get(1, 0) + rot.get(0, 1)) / s;
-				m_y = 0.25f * s;
-				m_z = (rot.get(2, 1) + rot.get(1, 2)) / s;
+				w = (rot.get(2, 0) - rot.get(0, 2)) / s;
+				x = (rot.get(1, 0) + rot.get(0, 1)) / s;
+				y = 0.25f * s;
+				z = (rot.get(2, 1) + rot.get(1, 2)) / s;
 			}
 			else
 			{
 				float s = 2.0f * (float)Math.sqrt(1.0f + rot.get(2, 2) - rot.get(0, 0) - rot.get(1, 1));
-				m_w = (rot.get(0, 1) - rot.get(1, 0) ) / s;
-				m_x = (rot.get(2, 0) + rot.get(0, 2) ) / s;
-				m_y = (rot.get(1, 2) + rot.get(2, 1) ) / s;
-				m_z = 0.25f * s;
+				w = (rot.get(0, 1) - rot.get(1, 0) ) / s;
+				x = (rot.get(2, 0) + rot.get(0, 2) ) / s;
+				y = (rot.get(1, 2) + rot.get(2, 1) ) / s;
+				z = 0.25f * s;
 			}
 		}
 
-		float length = (float)Math.sqrt(m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w);
-		m_x /= length;
-		m_y /= length;
-		m_z /= length;
-		m_w /= length;
+		float length = (float)Math.sqrt(x * x + y * y + z * z + w * w);
+		x /= length;
+		y /= length;
+		z /= length;
+		w /= length;
 	}
 
 	public Vector3f getForward()
@@ -197,51 +192,51 @@ public class Quaternion
 		return new Vector3f(-1,0,0).rotate(this);
 	}
 
-	public Quaternion set(float x, float y, float z, float w) { this.m_x = x; this.m_y = y; this.m_z = z; this.m_w = w; return this; }
+	public Quaternion set(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; return this; }
 	public Quaternion set(Quaternion r) { set(r.getX(), r.getY(), r.getZ(), r.getW()); return this; }
 
 	public float getX()
 	{
-		return m_x;
+		return x;
 	}
 
 	public void setX(float x)
 	{
-		this.m_x = x;
+		this.x = x;
 	}
 
 	public float getY()
 	{
-		return m_y;
+		return y;
 	}
 
 	public void setY(float m_y)
 	{
-		this.m_y = m_y;
+		this.y = m_y;
 	}
 
 	public float getZ()
 	{
-		return m_z;
+		return z;
 	}
 
 	public void setZ(float z)
 	{
-		this.m_z = z;
+		this.z = z;
 	}
 
 	public float getW()
 	{
-		return m_w;
+		return w;
 	}
 
 	public void setW(float w)
 	{
-		this.m_w = w;
+		this.w = w;
 	}
 
 	public boolean equals(Quaternion r)
 	{
-		return m_x == r.getX() && m_y == r.getY() && m_z == r.getZ() && m_w == r.getW();
+		return x == r.getX() && y == r.getY() && z == r.getZ() && w == r.getW();
 	}
 }

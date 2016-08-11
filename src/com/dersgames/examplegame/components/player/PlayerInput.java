@@ -7,11 +7,11 @@ import com.dersgames.engine.input.KeyInput;
 
 public class PlayerInput extends Component{
 	
-	private PlayerMovement m_PhysicsComponent;
+	private PlayerMovement m_PlayerMovement;
 	
-	public PlayerInput(PlayerMovement physicsComponent){
+	public PlayerInput(PlayerMovement playerMovement){
 		super("PlayerInput");
-		m_PhysicsComponent = physicsComponent;
+		m_PlayerMovement = playerMovement;
 	}
 
 	@Override
@@ -23,23 +23,23 @@ public class PlayerInput extends Component{
 	public void update(float dt) {
 		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
-			m_PhysicsComponent.setCurrentSpeed(m_PhysicsComponent.getRunSpeed());
+			m_PlayerMovement.setCurrentSpeed(m_PlayerMovement.getRunSpeed());
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S)){
-			m_PhysicsComponent.setCurrentSpeed(-m_PhysicsComponent.getRunSpeed());
+			m_PlayerMovement.setCurrentSpeed(-m_PlayerMovement.getRunSpeed());
 		}else{
-			m_PhysicsComponent.setCurrentSpeed(0);
+			m_PlayerMovement.setCurrentSpeed(0);
 		}
 		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
-			m_PhysicsComponent.setCurrentRotationSpeed(-m_PhysicsComponent.getRotationSpeed());
+			m_PlayerMovement.setCurrentRotationSpeed(-m_PlayerMovement.getRotationSpeed());
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A)){
-			m_PhysicsComponent.setCurrentRotationSpeed(m_PhysicsComponent.getRotationSpeed());
+			m_PlayerMovement.setCurrentRotationSpeed(m_PlayerMovement.getRotationSpeed());
 		}else{
-			m_PhysicsComponent.setCurrentRotationSpeed(0);
+			m_PlayerMovement.setCurrentRotationSpeed(0);
 		}
 		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_SPACE)){
-			m_PhysicsComponent.jump();
+			m_PlayerMovement.jump();
 		}
 	}
 
