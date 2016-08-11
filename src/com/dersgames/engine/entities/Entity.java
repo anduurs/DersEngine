@@ -86,7 +86,6 @@ public class Entity {
 	
 	public void destroy(){
 		m_Alive = false;
-		
 	}
 
 	public String getTag() {

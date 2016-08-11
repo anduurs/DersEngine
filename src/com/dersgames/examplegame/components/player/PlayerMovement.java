@@ -3,7 +3,7 @@ package com.dersgames.examplegame.components.player;
 import com.dersgames.engine.components.Component;
 import com.dersgames.engine.core.Camera;
 
-public class PhysicsComponent extends Component{
+public class PlayerMovement extends Component{
 	
 	private float m_RunSpeed = 20;
 	private float m_RotationSpeed = 100;
@@ -17,14 +17,12 @@ public class PhysicsComponent extends Component{
 	private float m_CurrentRotationSpeed = 0.0f;
 	private float m_UpwardsSpeed = 0.0f;
 	
-	public PhysicsComponent(String tag){
-		super(tag);
+	public PlayerMovement(){
+		super("PlayerMovement");
 	}
 
 	@Override
 	public void init() {
-		
-		
 	}
 
 	@Override

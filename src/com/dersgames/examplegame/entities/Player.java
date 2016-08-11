@@ -5,8 +5,8 @@ import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.ModelLoader;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.ModelTexture;
-import com.dersgames.examplegame.components.player.InputComponent;
-import com.dersgames.examplegame.components.player.PhysicsComponent;
+import com.dersgames.examplegame.components.player.PlayerInput;
+import com.dersgames.examplegame.components.player.PlayerMovement;
 
 public class Player extends Entity{
 	
@@ -19,10 +19,10 @@ public class Player extends Entity{
 		playerModel.getModelTexture().setShineDamper(10.0f);
 		playerModel.getModelTexture().setReflectivity(1.0f);
 		
-		addComponent(new StaticMesh("PlayerModel", playerModel));
-		PhysicsComponent physics = new PhysicsComponent("Physics");
-		addComponent(new InputComponent(physics));
-		addComponent(physics);
+		addComponent(new StaticMesh("PlayerMesh", playerModel));
+		PlayerMovement playerMovement = new PlayerMovement();
+		addComponent(new PlayerInput(playerMovement));
+		addComponent(playerMovement);
 	}
 
 }

@@ -5,11 +5,12 @@ import org.lwjgl.glfw.GLFW;
 import com.dersgames.engine.components.Component;
 import com.dersgames.engine.input.KeyInput;
 
-public class InputComponent extends Component{
+public class PlayerInput extends Component{
 	
-	private PhysicsComponent m_PhysicsComponent;
+	private PlayerMovement m_PhysicsComponent;
 	
-	public InputComponent(PhysicsComponent physicsComponent){
+	public PlayerInput(PlayerMovement physicsComponent){
+		super("PlayerInput");
 		m_PhysicsComponent = physicsComponent;
 	}
 

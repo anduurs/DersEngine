@@ -39,7 +39,7 @@ public class Window {
 	private static int m_Width;
 	private static int m_Height;
 	
-	private long window;
+	public static long window;
 	
 	private GLFWKeyCallback keyCallback;
 	private GLFWMouseButtonCallback mouseCallback;
@@ -78,6 +78,7 @@ public class Window {
 		
 		GL.createCapabilities();
 		
+		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 	}
 	
@@ -87,8 +88,6 @@ public class Window {
 	
 	public void update(){
 		glfwPollEvents();
-		
-		
 	}
 	
 	public void swapBuffers(){

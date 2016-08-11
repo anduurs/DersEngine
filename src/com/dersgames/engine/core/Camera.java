@@ -3,15 +3,16 @@ package com.dersgames.engine.core;
 import org.lwjgl.glfw.GLFW;
 
 import com.dersgames.engine.graphics.Window;
-import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
-import com.dersgames.examplegame.components.player.PhysicsComponent;
+import com.dersgames.examplegame.components.player.PlayerMovement;
 import com.dersgames.examplegame.entities.Player;
 
 public class Camera{
 	
 	public static final Vector3f yAxis = new Vector3f(0, 1, 0);
+	
+	private Player m_Player;
 	
 	private Vector3f m_Position;
 	private Vector3f m_Forward;
@@ -19,14 +20,11 @@ public class Camera{
 	private Vector2f m_CenterPosition;
 	
 	private float m_Sensitivity;
-	private float m_Speed;
 	private boolean m_MouseLocked = false;
 	
-	private float m_DistanceFromPlayer = 50;
-	private float m_AngleAroundPlayer = 0;
-	private float m_Pitch = 30;
-	
-	private Player m_Player;
+	private float m_DistanceFromPlayer;
+	private float m_AngleAroundPlayer;
+	private float m_Pitch;
 	
 	public Camera(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -41,66 +39,59 @@ public class Camera{
 		m_Position = position;
 		m_Forward = forward;
 		m_Up = up;
-		
 		m_Forward.normalize();
 		m_Up.normalize();
-		
 		m_CenterPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+		
 		m_Sensitivity = 0.06f;
-		m_Speed = 50.0f;
+		m_DistanceFromPlayer = 50;
+		m_AngleAroundPlayer = 0;
+		m_Pitch = 30;
 		
 		rotateAroundX(m_Pitch);
 	}
 	
 	public void update(float dt){
-		setCameraPosition(dt);
+		updateCameraPosition(dt);
 		
 		if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT)){
-			
-			//http://forum.lwjgl.org/index.php?topic=5597.0
-			
+			m_MouseLocked = true;
 			MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
+		}else m_MouseLocked = false;
+		
+		if(m_MouseLocked){
 			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
 			
 			boolean rotX = deltaPos.y != 0;
+			boolean rotY = deltaPos.x != 0;
 			
 			float pitchChange = deltaPos.y * m_Sensitivity;
 			m_Pitch -= pitchChange;
 			
+			float angleChange = deltaPos.x * m_Sensitivity;
+			m_AngleAroundPlayer -= angleChange;
+			
 			if(rotX) rotateAroundX(-pitchChange);
-			if(rotX) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
-			
-		}else if(Mouse.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_LEFT)){
-			
-//			MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
-//			Vector2f deltaPos = MouseCursor.getPosition().sub(m_CenterPosition);
-//			
-//			boolean rotY = deltaPos.x != 0;
-//			
-//			float angleChange = deltaPos.x * m_Sensitivity;
-//			m_AngleAroundPlayer -= angleChange;
-//			
-//			if(rotY) rotateAroundY(angleChange);
-//			if(rotY) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
+			if(rotY) rotateAroundY(angleChange);
+			if(rotX || rotY) MouseCursor.setPosition(m_CenterPosition.x, m_CenterPosition.y);
 		}
 	}
 	
-	private void setCameraPosition(float dt){
+	private void updateCameraPosition(float dt){
 		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
 		float verticalDistance = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
-		float theta = -m_Player.getTransform().getRotation().y;
+		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
+		
+		PlayerMovement p = (PlayerMovement) m_Player.findComponentByTag("PlayerMovement");
+
+		if(p.getCurrentRotationSpeed() != 0){
+			float angleChange = p.getCurrentRotationSpeed() * dt;
+			rotateAroundY(-angleChange);
+		}
 		
 		m_Position.x = m_Player.getPosition().x - (float)(horizontalDistance * Math.sin(Math.toRadians(theta)));
 		m_Position.y = m_Player.getPosition().y + verticalDistance + 6;
 		m_Position.z = m_Player.getPosition().z - (float)(horizontalDistance * Math.cos(Math.toRadians(theta)));
-		
-		PhysicsComponent p = (PhysicsComponent)m_Player.findComponentByTag("Physics");
-
-		if(p.getCurrentRotationSpeed() != 0){
-			float angleChange = p.getCurrentRotationSpeed() * dt;
-			m_AngleAroundPlayer -= angleChange;
-			rotateAroundY(-angleChange);
-		}
 	}
 	
 	public void rotateAroundY(float angle){
