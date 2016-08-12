@@ -1,5 +1,9 @@
 package com.dersgames.engine.core;
 
+import org.lwjgl.glfw.GLFW;
+
+import com.dersgames.engine.input.KeyInput;
+import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
 import com.dersgames.examplegame.entities.Player;
 
@@ -52,6 +56,17 @@ public class Camera{
 	
 	public void update(float dt){
 		updateCameraPositionRelativeToPlayer(dt);
+//		freeLookCamera(dt, 100.0f);
+	}
+	
+	private void updateCameraPositionRelativeToPlayer(float dt){
+		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
+		float verticalDistance   = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
+		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
+	
+		m_Position.x = (float) (m_Player.getPosition().x - (horizontalDistance * Math.sin(Math.toRadians(theta))));
+		m_Position.y = m_Player.getPosition().y + verticalDistance + m_CameraOffsetY;
+		m_Position.z = (float) (m_Player.getPosition().z - (horizontalDistance * Math.cos(Math.toRadians(theta))));
 		
 		float currentMouseX = MouseCursor.getX();
 		float currentMouseY = MouseCursor.getY();
@@ -91,14 +106,35 @@ public class Camera{
 		previousMouseY = currentMouseY;
 	}
 	
-	private void updateCameraPositionRelativeToPlayer(float dt){
-		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
-		float verticalDistance   = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
-		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
-	
-		m_Position.x = (float) (m_Player.getPosition().x - (horizontalDistance * Math.sin(Math.toRadians(theta))));
-		m_Position.y = m_Player.getPosition().y + verticalDistance + m_CameraOffsetY;
-		m_Position.z = (float) (m_Player.getPosition().z - (horizontalDistance * Math.cos(Math.toRadians(theta))));
+	private void freeLookCamera(float dt, float speed){
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
+			m_Position = m_Position.add(m_Forward.mul(speed * dt));
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S))
+			m_Position = m_Position.add(m_Forward.mul(-speed * dt));
+		
+//		if(Mouse.isRightMouseButtonPressed()){
+//			m_MouseLocked = true;
+//		}else m_MouseLocked = false;
+		
+		float currentMouseX = MouseCursor.getX();
+		float currentMouseY = MouseCursor.getY();
+		
+//		if(m_MouseLocked){
+			float deltaMouseX = currentMouseX - previousMouseX;
+			float deltaMouseY = currentMouseY - previousMouseY;
+				
+			boolean shouldRotateAroundX = currentMouseY != previousMouseY;
+			boolean shouldRotateAroundY = currentMouseX != previousMouseX;
+				
+			float pitchChange = deltaMouseY * m_Sensitivity * dt;
+			float yawChange = deltaMouseX * m_Sensitivity * dt;
+			
+			if(shouldRotateAroundX) rotateAroundX(pitchChange);
+			if(shouldRotateAroundY) rotateAroundY(yawChange);
+//		}
+		
+		previousMouseX = currentMouseX;
+		previousMouseY = currentMouseY;
 	}
 	
 	public void rotateAroundY(float angle){

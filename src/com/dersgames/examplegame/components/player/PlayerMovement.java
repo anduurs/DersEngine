@@ -1,6 +1,10 @@
 package com.dersgames.examplegame.components.player;
 
 import com.dersgames.engine.components.Component;
+import com.dersgames.engine.core.Debug;
+import com.dersgames.engine.core.Scene;
+import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.terrains.Terrain;
 
 public class PlayerMovement extends Component{
 	
@@ -10,6 +14,8 @@ public class PlayerMovement extends Component{
 	private float m_CurrentSpeed = 0.0f;
 	private float m_CurrentRotationSpeed = 0.0f;
 	private float m_UpwardsSpeed = 0.0f;
+	private final float GRAVITY = -100.0f;
+	private float m_TerrainHeight = 0;
 	
 	public boolean strafeLeft = false, strafeRight = false;
 	
@@ -51,7 +57,19 @@ public class PlayerMovement extends Component{
 			zAmount = m_Entity.getPosition().z + deltaZ;
 		}
 		
-		m_Entity.getTransform().translate(xAmount, 0, zAmount);
+		m_UpwardsSpeed += GRAVITY * dt;
+		m_Entity.getPosition().y += m_UpwardsSpeed * dt;
+		
+		m_Entity.getTransform().translate(xAmount, m_Entity.getPosition().y, zAmount);
+		
+		Entity e = (Entity)Scene.findEntityByTag("Terrain");
+		Terrain terrain = (Terrain) e.findComponentByTag("Terrain");
+		m_TerrainHeight = terrain.getHeightOfTerrain(m_Entity.getPosition().x, m_Entity.getPosition().z);
+		
+		if(m_Entity.getPosition().y < m_TerrainHeight){
+			m_UpwardsSpeed = 0;
+			m_Entity.getPosition().y = m_TerrainHeight;
+		}
 	}
 	
 	public void jump(){

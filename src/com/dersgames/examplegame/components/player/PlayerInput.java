@@ -44,14 +44,6 @@ public class PlayerInput extends Component{
 			m_PlayerMovement.setCurrentSpeed(0);
 		}
 		
-//		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
-//			m_PlayerMovement.setCurrentSpeed(m_PlayerMovement.getRunSpeed());
-//		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A)){
-//			m_PlayerMovement.setCurrentSpeed(-m_PlayerMovement.getRunSpeed());
-//		}else{
-//			m_PlayerMovement.setCurrentSpeed(0);
-//		}
-		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_SPACE)){
 			m_PlayerMovement.jump();
 		}

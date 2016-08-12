@@ -55,15 +55,10 @@ public class ExampleState extends GameState{
 		
 		addLightSource();
 		generateTerrain();
-		generateEntities(100);
 		
-		Entity box = new Entity("Box", 200, 7, 200, 10);
-		TexturedModel boxModel = new TexturedModel(m_Loader.loadObjModel("box"), 
-				new ModelTexture(m_Loader.loadTexture("box")));
-		box.addComponent(new StaticMesh("BoxMesh", boxModel));
-		m_Scene.addEntity(box);
 		
-		Player player = new Player(m_Loader, 200, 0, 150);
+		
+		Player player = new Player(m_Loader, 200, 20, 150);
 		m_Scene.addEntity(player);
 		
 		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
@@ -85,19 +80,17 @@ public class ExampleState extends GameState{
 		
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
-		Entity terrainEntity = new Entity("Terrain1");
-		Terrain terrain 	 = new Terrain("TerrainComponent1", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+		Entity terrainEntity = new Entity("Terrain");
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
 		terrainEntity.addComponent(terrain);
 		
-		Entity terrainEntity2 = new Entity("Terrain2");
-		Terrain terrain2 	  = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap, "heightmap");
-		terrainEntity2.addComponent(terrain2);
+//		Entity terrainEntity2 = new Entity("Terrain2");
+//		Terrain terrain2 	  = new Terrain("TerrainComponent2", 1, 0, m_Loader, texturePack, blendMap, "heightmap");
+//		terrainEntity2.addComponent(terrain2);
 		
 		m_Scene.addEntity(terrainEntity);
-		m_Scene.addEntity(terrainEntity2);
-	}
-	
-	private void generateEntities(int numOfEntities){
+//		m_Scene.addEntity(terrainEntity2);
+		
 		TexturedModel treeModel = new TexturedModel(m_Loader.loadObjModel("tree"), 
 				new ModelTexture(m_Loader.loadTexture("tree")));
 		
@@ -112,25 +105,35 @@ public class ExampleState extends GameState{
 		
 		Random random = new Random();
 		
-		for(int i = 0; i < numOfEntities; i++){
+		for(int i = 0; i < 200; i++){
 //			Entity tree = new Entity("Tree" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800, 10);
+//			tree.getPosition().y = terrain.getHeightOfTerrain(tree.getPosition().x, tree.getPosition().z);
 //			treeModel.getModelTexture().setShineDamper(10.0f);
 //			treeModel.getModelTexture().setReflectivity(1.0f);
 //			tree.addComponent(new StaticMesh("treemesh" + i, treeModel));
 //			m_Scene.addEntity(tree);
 			
 			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			grass.getPosition().y = terrain.getHeightOfTerrain(grass.getPosition().x, grass.getPosition().z);
 			grassModel.getModelTexture().setShineDamper(1.0f);
 			grassModel.getModelTexture().setReflectivity(0.0f);
 			grass.addComponent(new StaticMesh("grassmesh" + i, grassModel));
 			m_Scene.addEntity(grass);
 			
 			Entity fern = new Entity("Fern" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			fern.getPosition().y = terrain.getHeightOfTerrain(fern.getPosition().x, fern.getPosition().z);
 			fernModel.getModelTexture().setShineDamper(1.0f);
 			fernModel.getModelTexture().setReflectivity(0.0f);
 			fern.addComponent(new StaticMesh("fernmesh" + i, fernModel));
 			m_Scene.addEntity(fern);
 		}
+		
+		Entity box = new Entity("Box", 200, 7, 200, 10);
+		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
+		TexturedModel boxModel = new TexturedModel(m_Loader.loadObjModel("box"), 
+				new ModelTexture(m_Loader.loadTexture("box")));
+		box.addComponent(new StaticMesh("BoxMesh", boxModel));
+		m_Scene.addEntity(box);
 	}
 	
 	@Override
