@@ -29,6 +29,7 @@ import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.graphics.textures.Texture.TextureType;
 
 public class ModelLoader {
 	
@@ -52,8 +53,8 @@ public class ModelLoader {
 		return new Model(vaoID, indices.length);
 	}
 	
-	public int loadTexture(String name){
-		Texture texture = new Texture(name);
+	public int loadTexture(String name, TextureType type){
+		Texture texture = new Texture(name, type);
 		int textureID = texture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;

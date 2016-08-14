@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.entities.Entity;
-import com.dersgames.engine.graphics.renderers.Renderer3D;
+import com.dersgames.engine.graphics.RenderEngine;
 
 public class Scene {
 	
@@ -39,7 +39,7 @@ public class Scene {
 			e.updateComponents(dt);
 	}
 	
-	public void render(Renderer3D renderer){
+	public void render(RenderEngine renderer){
 		for(Entity e : getEntities())
 			e.renderComponents(renderer);
 		

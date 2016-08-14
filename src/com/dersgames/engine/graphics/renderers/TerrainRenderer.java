@@ -18,7 +18,8 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dersgames.engine.components.Renderable3D;
+import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
@@ -87,13 +88,13 @@ public class TerrainRenderer {
 		glBindTexture(GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
-	private void prepareRenderable(Renderable3D renderable){
+	private void prepareRenderable(Renderable renderable){
 		m_TerrainShader.loadMatrix4f("transformationMatrix", 
 				renderable.getEntity().getTransform().getTransformationMatrix());
 	}
 	
 	private void unbindTexturedModel(){
-		Renderer3D.enableCulling();
+		RenderEngine.enableCulling();
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);

@@ -55,8 +55,8 @@ public class Camera{
 	}
 	
 	public void update(float dt){
-		updateCameraPositionRelativeToPlayer(dt);
-//		freeLookCamera(dt, 100.0f);
+//		updateCameraPositionRelativeToPlayer(dt);
+		freeLookCamera(dt, 100.0f);
 	}
 	
 	private void updateCameraPositionRelativeToPlayer(float dt){

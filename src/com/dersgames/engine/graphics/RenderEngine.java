@@ -1,4 +1,4 @@
-package com.dersgames.engine.graphics.renderers;
+package com.dersgames.engine.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
@@ -12,17 +12,18 @@ import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
-import com.dersgames.engine.components.Renderable3D;
+import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.core.Camera;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.graphics.Window;
+import com.dersgames.engine.graphics.renderers.EntityRenderer;
+import com.dersgames.engine.graphics.renderers.TerrainRenderer;
 import com.dersgames.engine.graphics.shaders.StaticShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.terrains.Terrain;
 
-public class Renderer3D {
+public class RenderEngine {
 
 	private Matrix4f m_Projection;
 	
@@ -32,12 +33,12 @@ public class Renderer3D {
 	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 //	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
 
-	public Renderer3D(){
+	public RenderEngine(){
 		m_Projection = new Matrix4f().setPerspectiveProjection(70.0f, 
 				(float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 1000.0f);
 		
 		m_TerrainRenderer = new TerrainRenderer();
-		m_EntityRenderer = new EntityRenderer();
+		m_EntityRenderer  = new EntityRenderer();
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
@@ -53,19 +54,14 @@ public class Renderer3D {
 		glDisable(GL_CULL_FACE);
 	}
 	
-	public void submit(Renderable3D renderable){
+	public void submit(Renderable renderable){
 		if(renderable instanceof Terrain)
 			m_TerrainRenderer.addTerrain((Terrain)renderable);
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
-	private void clearBuffers(){
-		glClearColor(m_SkyColor.x, m_SkyColor.y, m_SkyColor.z, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-	
 	public void render(Light sun, Camera camera){
-		clearBuffers();
+		clearFrameBuffer();
 		
 		StaticShader shader = m_EntityRenderer.getShader();
 		shader.enable();
@@ -91,6 +87,11 @@ public class Renderer3D {
 	public void dispose(){
 		m_TerrainRenderer.dispose();
 		m_EntityRenderer.dispose();
+	}
+	
+	private void clearFrameBuffer(){
+		glClearColor(m_SkyColor.x, m_SkyColor.y, m_SkyColor.z, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 }

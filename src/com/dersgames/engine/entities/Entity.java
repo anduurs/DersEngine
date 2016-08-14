@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.Component;
-import com.dersgames.engine.components.Renderable3D;
+import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.graphics.renderers.Renderer3D;
+import com.dersgames.engine.graphics.RenderEngine;
 
 public class Entity {
 	
 	private List<Component> m_Components;
-	private List<Renderable3D> m_Renderables;
+	private List<Renderable> m_Renderables;
 	
 	private String m_Tag;
 	private Transform m_Transform;
@@ -40,7 +40,7 @@ public class Entity {
 		m_Alive = true;
 		
 		m_Components = new ArrayList<Component>();
-		m_Renderables = new ArrayList<Renderable3D>();
+		m_Renderables = new ArrayList<Renderable>();
 		
 		m_Transform = new Transform();
 		m_Transform.translate(x, y, z);
@@ -49,8 +49,8 @@ public class Entity {
 	public Component addComponent(Component component){
 		component.setEntity(this);
 		
-		if(component instanceof Renderable3D){
-			Renderable3D r = (Renderable3D) component;
+		if(component instanceof Renderable){
+			Renderable r = (Renderable) component;
 			getRenderables().add(r);
 		}
 		
@@ -65,21 +65,14 @@ public class Entity {
 		return null;
 	}
 	
-	public Component findComponentByReference(Component component){
-		for(Component c : getComponents())
-			if(c.equals(component))
-				return c;
-		return null;
-	}
-	
 	public void updateComponents(float dt){
 		for(Component c : getComponents())
 			if(c.isActive())
 				c.update(dt);
 	}
 	
-	public void renderComponents(Renderer3D renderer){
-		for(Renderable3D r : getRenderables())
+	public void renderComponents(RenderEngine renderer){
+		for(Renderable r : getRenderables())
 			if(r.isActive())
 				r.render(renderer);
 	}
@@ -108,7 +101,7 @@ public class Entity {
 		return m_Components;
 	}
 	
-	private synchronized List<Renderable3D> getRenderables(){
+	private synchronized List<Renderable> getRenderables(){
 		return m_Renderables;
 	}
 }

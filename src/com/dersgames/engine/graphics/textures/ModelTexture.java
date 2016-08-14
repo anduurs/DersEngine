@@ -10,6 +10,8 @@ public class ModelTexture {
 	private boolean m_HasTransparency = false;
 	private boolean m_UseFakeLighting = false;
 	
+	private int m_NumberOfRows = 1;
+	
 	public ModelTexture(int textureID){
 		m_TextureID = textureID;
 	}
@@ -48,6 +50,14 @@ public class ModelTexture {
 
 	public void setTransparency(boolean hasTransparency) {
 		m_HasTransparency= hasTransparency;
+	}
+
+	public int getNumberOfRows() {
+		return m_NumberOfRows;
+	}
+
+	public void setNumberOfRowsInTextureAtlas(int numberOfRows) {
+		m_NumberOfRows = numberOfRows;
 	}
 
 }

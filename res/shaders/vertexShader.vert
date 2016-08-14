@@ -17,12 +17,15 @@ uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
 uniform float useFakeLighting;
 
+uniform float numOfRows;
+uniform vec2 offset;
+
 const float density = 0.0035;
 const float gradient = 2;
 
 void main(){
 	vec4 worldPos = transformationMatrix * vec4(position, 1.0);
-	out_TexCoords = textureCoords;
+	out_TexCoords = (textureCoords / numOfRows) + offset;
 	vec3 actualNormal = normal;
 	
 	if(useFakeLighting == 1.0){

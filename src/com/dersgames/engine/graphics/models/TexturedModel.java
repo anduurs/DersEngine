@@ -16,7 +16,7 @@ public class TexturedModel {
 		return m_Model;
 	}
 
-	public ModelTexture getModelTexture() {
+	public ModelTexture getTexture() {
 		return m_ModelTexture;
 	}
 

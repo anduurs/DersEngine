@@ -2,18 +2,18 @@ package com.dersgames.engine.terrains;
 
 import java.awt.image.BufferedImage;
 
-import com.dersgames.engine.components.Renderable3D;
+import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.ModelLoader;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.renderers.Renderer3D;
 import com.dersgames.engine.graphics.textures.TerrainTexture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.engine.utils.MathUtil;
 
-public class Terrain extends Renderable3D{
+public class Terrain extends Renderable{
 	
 	private static final float SIZE = 800.0f;
 	private static final int MAX_HEIGHT = 40;
@@ -43,7 +43,7 @@ public class Terrain extends Renderable3D{
 	}
 	
 	@Override
-	public void render(Renderer3D renderer) {
+	public void render(RenderEngine renderer) {
 		renderer.submit(this);
 	}
 	
@@ -126,7 +126,7 @@ public class Terrain extends Renderable3D{
 		float zPos = (terrainZ % gridSquareSize);
 		
 		//get the height at the x-z coordinate that the pålayer is on inside the gridsquare
-		//need to check two cases pone for each triangle of the gridsquare that the player might be on
+		//need to check two cases one for each triangle of the gridsquare that the player might be on
 		float height = 0;
 		if(xPos <= (1 - zPos)){
 			Vector3f p1 = new Vector3f(0, m_Heights[gridX][gridZ], 0);

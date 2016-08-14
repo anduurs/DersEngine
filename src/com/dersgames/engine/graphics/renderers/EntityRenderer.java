@@ -16,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dersgames.engine.components.Renderable3D;
+import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.components.StaticMesh;
+import com.dersgames.engine.core.Vector2f;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.shaders.StaticShader;
@@ -25,19 +28,20 @@ import com.dersgames.engine.graphics.textures.ModelTexture;
 public class EntityRenderer {
 	
 	private StaticShader m_Shader;
-	private Map<TexturedModel, List<Renderable3D>> m_Renderables;
+	private Map<TexturedModel, List<Renderable>> m_Renderables;
 	
 	public EntityRenderer(){
 		m_Shader = new StaticShader();
-		m_Renderables = new HashMap<TexturedModel, List<Renderable3D>>();
+		m_Renderables = new HashMap<TexturedModel, List<Renderable>>();
 	}
 	
-	public void addRenderable(Renderable3D renderable){
-		TexturedModel model = renderable.getTexturedModel();
+	public void addRenderable(Renderable renderable){
+		StaticMesh sm = (StaticMesh) renderable;
+		TexturedModel model = sm.getTexturedModel();
 		if(m_Renderables.containsKey(model))
 			m_Renderables.get(model).add(renderable);
 		else{
-			List<Renderable3D> batch = new ArrayList<Renderable3D>();
+			List<Renderable> batch = new ArrayList<Renderable>();
 			batch.add(renderable);
 			m_Renderables.put(model, batch);
 		}
@@ -48,12 +52,12 @@ public class EntityRenderer {
 	}
 	
 	public void render(){
-		for(TexturedModel model : m_Renderables.keySet()){
-			prepareTexturedModel(model);
-			List<Renderable3D> batch = m_Renderables.get(model);
-			for(Renderable3D renderable : batch){
+		for(TexturedModel texturedModel : m_Renderables.keySet()){
+			prepareTexturedModel(texturedModel);
+			List<Renderable> batch = m_Renderables.get(texturedModel);
+			for(Renderable renderable : batch){
 				prepareRenderable(renderable);
-				glDrawElements(GL_TRIANGLES, model.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, texturedModel.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
 			}
 			unbindTexturedModel();
 		}
@@ -68,28 +72,38 @@ public class EntityRenderer {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		
-		ModelTexture texture = texturedModel.getModelTexture();
+		ModelTexture texture = texturedModel.getTexture();
 		
 		if(texture.hasTransparency()) 
-			Renderer3D.disableCulling();
+			RenderEngine.disableCulling();
 		
 		m_Shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		m_Shader.loadUseFakeLighting(texture.getUseFakeLighting());
+		m_Shader.loadNumOfRows(texture.getNumberOfRows());
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture.getID());
 	}
 	
-	private void prepareRenderable(Renderable3D renderable){
+	private void prepareRenderable(Renderable renderable){
 		m_Shader.loadMatrix4f("transformationMatrix", 
 			renderable.getEntity().getTransform().getTransformationMatrix());
+		
+		StaticMesh sm = (StaticMesh) renderable;
+		
+		float xOffset = sm.getTextureXOffset();
+		float yOffset = sm.getTextureYOffset();
+		
+		m_Shader.loadOffset(new Vector2f(xOffset, yOffset));
 	}
 	
 	private void unbindTexturedModel(){
-		Renderer3D.enableCulling();
+		RenderEngine.enableCulling();
+		
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
+		
 		glBindVertexArray(0);
 	}
 	
