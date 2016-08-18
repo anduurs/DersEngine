@@ -12,6 +12,8 @@ import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
+import java.util.List;
+
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.core.Camera;
@@ -60,13 +62,13 @@ public class RenderEngine {
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
-	public void render(Light sun, Camera camera){
+	public void render(List<Light> lightSources, Camera camera){
 		clearFrameBuffer();
 		
 		StaticShader shader = m_EntityRenderer.getShader();
 		shader.enable();
 		shader.loadSkyColor(m_SkyColor);
-		shader.loadLightSource(sun);
+		shader.loadLightSources(lightSources);
 		shader.loadViewMatrix(camera);
 		shader.loadProjectionMatrix(m_Projection);
 		m_EntityRenderer.render();
@@ -76,7 +78,7 @@ public class RenderEngine {
 		TerrainShader terrainShader = m_TerrainRenderer.getShader();
 		terrainShader.enable();
 		terrainShader.loadSkyColor(m_SkyColor);
-		terrainShader.loadLightSource(sun);
+		terrainShader.loadLightSources(lightSources);
 		terrainShader.loadViewMatrix(camera);
 		terrainShader.loadProjectionMatrix(m_Projection);
 		m_TerrainRenderer.render();

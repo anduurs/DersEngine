@@ -99,6 +99,14 @@ public abstract class Shader {
 		m_Uniforms.put(uniform, uniformLocation);
 	}
 	
+	public void addUniform(String uniform, int arraySize){
+		int[] uniformLocation = new int[arraySize];
+		for(int i = 0; i < arraySize; i++){
+			uniformLocation[i] = glGetUniformLocation(m_ShaderProgram, uniform + "[" + i + "]");
+			m_Uniforms.put(uniform+i, uniformLocation[i]);
+		}
+	}
+	
 	public void loadInteger(String uniformName, int value){
 		glUniform1i(m_Uniforms.get(uniformName), value);
 	}

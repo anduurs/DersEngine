@@ -6,11 +6,20 @@ import com.dersgames.engine.core.Vector3f;
 public class Light extends Component{
 	
 	private Vector3f m_Color;
+	private Vector3f m_Attenuation;
 	
 	public Light(String tag, Vector3f color) {
 		super(tag);
 		
 		m_Color = color;
+		m_Attenuation = new Vector3f(1, 0, 0);
+	}
+	
+	public Light(String tag, Vector3f color, Vector3f attenuation) {
+		super(tag);
+		
+		m_Color = color;
+		m_Attenuation = attenuation;
 	}
 	
 	@Override
@@ -33,6 +42,14 @@ public class Light extends Component{
 
 	public void setColor(Vector3f color) {
 		this.m_Color = color;
+	}
+
+	public Vector3f getAttenuation() {
+		return m_Attenuation;
+	}
+
+	public void setM_Attenuation(Vector3f attenuation) {
+		m_Attenuation = attenuation;
 	}
 
 }

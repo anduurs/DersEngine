@@ -13,10 +13,11 @@ public class Scene {
 	private static List<Entity> m_EntityList;
 	
 	private Camera m_Camera;
-	private Light m_LightSource;
+	private List<Light> m_LightSources;
 	
 	public Scene(){
 		m_EntityList = new ArrayList<Entity>();
+		m_LightSources = new ArrayList<Light>();
 	}
 	
 	public void addCamera(Camera camera){
@@ -24,8 +25,8 @@ public class Scene {
 	}
 	
 	public void addLightSource(Light lightSource){
-		m_LightSource = lightSource;
-		addEntity(m_LightSource.getEntity());
+		m_LightSources.add(lightSource);
+		addEntity(lightSource.getEntity());
 	}
 	
 	public void addEntity(Entity entity){
@@ -43,7 +44,7 @@ public class Scene {
 		for(Entity e : getEntities())
 			e.renderComponents(renderer);
 		
-		renderer.render(m_LightSource, m_Camera);
+		renderer.render(m_LightSources, m_Camera);
 	}
 	
 	public int getEntityCount(){

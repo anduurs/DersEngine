@@ -54,7 +54,7 @@ public class ExampleState extends GameState{
 		m_Loader = new ModelLoader();
 		m_Scene = new Scene();
 		
-		addLightSource();
+		addLightSources();
 		generateTerrain();
 		
 		Player player = new Player(m_Loader, 200, 20, 150);
@@ -63,11 +63,26 @@ public class ExampleState extends GameState{
 		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
 	}
 	
-	private void addLightSource(){
-		Entity lightSource = new Entity("LightSource", 200, 200, 100);
-		Light light = new Light("Sun", new Vector3f(1.0f, 1.0f, 1.0f));
-		lightSource.addComponent(light);
-		m_Scene.addLightSource(light);
+	private void addLightSources(){
+		Entity lightSource1 = new Entity("LightSource1", 0, 10000, -7000);
+		Light light1 = new Light("LightSource1", new Vector3f(0.2f, 0.2f, 0.2f));
+		lightSource1.addComponent(light1);
+		m_Scene.addLightSource(light1);
+		
+		Entity lightSource2 = new Entity("LightSource2", 200, 20, 100);
+		Light light2 = new Light("LightSource2", new Vector3f(2, 0f, 0f), new Vector3f(1, 0.01f, 0.002f));
+		lightSource2.addComponent(light2);
+		m_Scene.addLightSource(light2);
+		
+		Entity lightSource3 = new Entity("LightSource3", 370, 30, 100);
+		Light light3 = new Light("LightSource3", new Vector3f(0f, 2f, 2f), new Vector3f(1, 0.01f, 0.002f));
+		lightSource3.addComponent(light3);
+		m_Scene.addLightSource(light3);
+		
+		Entity lightSource4 = new Entity("LightSource4", 293, 40, 100);
+		Light light4 = new Light("LightSource4", new Vector3f(2f, 2f, 0f), new Vector3f(1, 0.01f, 0.002f));
+		lightSource4.addComponent(light4);
+		m_Scene.addLightSource(light4);
 	}
 	
 	private void generateTerrain(){
