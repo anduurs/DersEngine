@@ -11,8 +11,6 @@ public class Vector2f {
 
 	public float x;
 	public float y;
-	
-	private static boolean normalizing = false;
 
 	/**
 	 * Creates a vector in 2d coordinate space with components x and y
@@ -33,12 +31,7 @@ public class Vector2f {
 	 * @return returns the length of the vector
 	 */
 	public float length() {
-		if(normalizing){
-			float len = (float) Math.sqrt(x * x + y * y);
-			return Math.round(len);
-		}else{
-			return (float) Math.sqrt(x * x + y * y);
-		}
+		return (float) Math.sqrt(x * x + y * y);
 	}
 
 	/**
@@ -60,7 +53,6 @@ public class Vector2f {
 	 * @return returns the new normalized vector
 	 */
 	public Vector2f normalize() {
-		normalizing = true;
 		float length = length();
 		return new Vector2f(x / length, y / length);
 	}

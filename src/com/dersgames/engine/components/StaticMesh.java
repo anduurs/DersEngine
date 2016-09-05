@@ -1,20 +1,26 @@
 package com.dersgames.engine.components;
 
+import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.TexturedModel;
+import com.dersgames.engine.graphics.models.Mesh;
+import com.dersgames.engine.graphics.models.TexturedMesh;
 
 public class StaticMesh extends Renderable{
 	
-	private TexturedModel m_TexturedModel;
+	private TexturedMesh m_TexturedMesh;
+	private Material m_Material;
+	
 	private int m_TextureIndex;
 	
-	public StaticMesh(String tag, TexturedModel model){
-		this(tag, model, 0);
+	public StaticMesh(String tag, TexturedMesh mesh){
+		this(tag, mesh, 0);
 	}
 	
-	public StaticMesh(String tag, TexturedModel model, int textureIndex){
+	public StaticMesh(String tag, TexturedMesh mesh, int textureIndex){
 		super(tag);
-		m_TexturedModel = model;
+		
+		m_TexturedMesh = mesh;
+		m_Material = mesh.getMaterial();
 		m_TextureIndex  = textureIndex;
 	}
 	
@@ -22,21 +28,27 @@ public class StaticMesh extends Renderable{
 	public void render(RenderEngine renderer) {
 		renderer.submit(this);
 	}
-	
-	public TexturedModel getTexturedModel(){
-		return m_TexturedModel;
-	}
 
 	public float getTextureXOffset() {
-		int rows = m_TexturedModel.getTexture().getNumberOfRows();
-		int col = m_TextureIndex % rows;
-		return (float)col / (float)rows;
+		int col = m_TextureIndex % m_Material.getTextureAtlas().getNumberOfRows();
+		return (float)col / (float)m_Material.getTextureAtlas().getNumberOfRows();
 	}
 	
 	public float getTextureYOffset() {
-		int rows = m_TexturedModel.getTexture().getNumberOfRows();
-		int row = m_TextureIndex / rows;
-		return (float)row / (float)rows;
+		int row = m_TextureIndex / m_Material.getTextureAtlas().getNumberOfRows();
+		return (float)row / (float)m_Material.getTextureAtlas().getNumberOfRows();
+	}
+
+	public TexturedMesh getTexturedMesh() {
+		return m_TexturedMesh;
+	}
+	
+	public Mesh getMesh(){
+		return m_TexturedMesh.getMesh();
+	}
+
+	public Material getMaterial() {
+		return m_Material;
 	}
 
 }

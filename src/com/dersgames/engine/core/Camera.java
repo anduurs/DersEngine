@@ -3,7 +3,6 @@ package com.dersgames.engine.core;
 import org.lwjgl.glfw.GLFW;
 
 import com.dersgames.engine.input.KeyInput;
-import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
 import com.dersgames.examplegame.entities.Player;
 
@@ -46,7 +45,7 @@ public class Camera{
 		m_Forward.normalize();
 		m_Up.normalize();
 		
-		m_Sensitivity = 1.6f;
+		m_Sensitivity = 2.0f;
 		m_DistanceFromPlayer = -3;
 		m_AngleAroundPlayer = 0;
 		m_Pitch = 0;

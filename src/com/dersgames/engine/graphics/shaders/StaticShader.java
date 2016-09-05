@@ -60,7 +60,7 @@ public class StaticShader extends Shader{
 		else loadFloat("useFakeLighting", 0.0f);
 	}
 	
-	public void loadShineVariables(float damper, float reflectivity){
+	public void loadSpecularVariables(float damper, float reflectivity){
 		loadFloat("shineDamper", damper);
 		loadFloat("reflectivity", reflectivity);
 	}

@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.Mesh;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.terrains.Terrain;
@@ -56,7 +56,7 @@ public class TerrainRenderer {
 	}
 	
 	private void prepareTexturedModel(Terrain terrain){
-		Model model = terrain.getModel();
+		Mesh model = terrain.getModel();
 		
 		glBindVertexArray(model.getVaoID());
 		

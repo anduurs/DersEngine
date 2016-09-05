@@ -2,11 +2,8 @@ package com.dersgames.engine.core;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.engine.core.Debug;
-import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
-import com.dersgames.examplegame.states.ExampleState;
 
 public class GameApplication implements Runnable{
 	
@@ -21,7 +18,6 @@ public class GameApplication implements Runnable{
 	private int m_Height;
 	private String m_Title;
 	private boolean m_Vsync;
-	public static double interpolationFactor = 0;
 	
 	public GameApplication(int width, int height, String title, boolean vsync){
 		m_Width = width;

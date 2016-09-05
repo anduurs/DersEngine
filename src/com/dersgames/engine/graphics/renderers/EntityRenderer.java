@@ -19,31 +19,30 @@ import java.util.Map;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Vector2f;
+import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.models.TexturedModel;
+import com.dersgames.engine.graphics.models.TexturedMesh;
 import com.dersgames.engine.graphics.shaders.StaticShader;
-import com.dersgames.engine.graphics.textures.ModelTexture;
 
 public class EntityRenderer {
 	
 	private StaticShader m_Shader;
-	private Map<TexturedModel, List<Renderable>> m_Renderables;
+	private Map<TexturedMesh, List<Renderable>> m_Renderables;
 	
 	public EntityRenderer(){
 		m_Shader = new StaticShader();
-		m_Renderables = new HashMap<TexturedModel, List<Renderable>>();
+		m_Renderables = new HashMap<TexturedMesh, List<Renderable>>();
 	}
 	
 	public void addRenderable(Renderable renderable){
 		StaticMesh sm = (StaticMesh) renderable;
-		TexturedModel model = sm.getTexturedModel();
-		if(m_Renderables.containsKey(model))
-			m_Renderables.get(model).add(renderable);
+		TexturedMesh mesh = sm.getTexturedMesh();
+		if(m_Renderables.containsKey(mesh))
+			m_Renderables.get(mesh).add(renderable);
 		else{
 			List<Renderable> batch = new ArrayList<Renderable>();
 			batch.add(renderable);
-			m_Renderables.put(model, batch);
+			m_Renderables.put(mesh, batch);
 		}
 	}
 	
@@ -52,52 +51,49 @@ public class EntityRenderer {
 	}
 	
 	public void render(){
-		for(TexturedModel texturedModel : m_Renderables.keySet()){
-			prepareTexturedModel(texturedModel);
-			List<Renderable> batch = m_Renderables.get(texturedModel);
+		for(TexturedMesh mesh : m_Renderables.keySet()){
+			bindTexturedMesh(mesh);
+			List<Renderable> batch = m_Renderables.get(mesh);
 			for(Renderable renderable : batch){
-				prepareRenderable(renderable);
-				glDrawElements(GL_TRIANGLES, texturedModel.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+				StaticMesh sm = (StaticMesh) renderable;
+				loadRenderableData(sm);
+				glDrawElements(GL_TRIANGLES, sm.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 			}
-			unbindTexturedModel();
+			unbind();
 		}
 	}
 	
-	private void prepareTexturedModel(TexturedModel texturedModel){
-		Model model = texturedModel.getModel();
-		
-		glBindVertexArray(model.getVaoID());
+	private void bindTexturedMesh(TexturedMesh texturedMesh){
+		glBindVertexArray(texturedMesh.getMesh().getVaoID());
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		
-		ModelTexture texture = texturedModel.getTexture();
+		Material material = texturedMesh.getMaterial();
 		
-		if(texture.hasTransparency()) 
+		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
 		
-		m_Shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-		m_Shader.loadUseFakeLighting(texture.getUseFakeLighting());
-		m_Shader.loadNumOfRows(texture.getNumberOfRows());
+		m_Shader.loadSpecularVariables(material.getShineDamper(), material.getReflectivity());
+		m_Shader.loadUseFakeLighting(material.getUseFakeLighting());
+		m_Shader.loadNumOfRows(material.getTextureAtlas().getNumberOfRows());
 		
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture.getID());
+		glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getTextureID());
 	}
 	
-	private void prepareRenderable(Renderable renderable){
+	private void loadRenderableData(StaticMesh mesh){
 		m_Shader.loadMatrix4f("transformationMatrix", 
-			renderable.getEntity().getTransform().getTransformationMatrix());
+				mesh.getEntity().getTransform().getTransformationMatrix());
 		
-		StaticMesh sm = (StaticMesh) renderable;
-		
-		float xOffset = sm.getTextureXOffset();
-		float yOffset = sm.getTextureYOffset();
+		float xOffset = mesh.getTextureXOffset();
+		float yOffset = mesh.getTextureYOffset();
 		
 		m_Shader.loadOffset(new Vector2f(xOffset, yOffset));
 	}
 	
-	private void unbindTexturedModel(){
+	private void unbind(){
 		RenderEngine.enableCulling();
 		
 		glDisableVertexAttribArray(0);
