@@ -95,7 +95,8 @@ public class ExampleState extends GameState{
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
 		Entity terrainEntity = new Entity("Terrain");
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 		
 		m_Scene.addEntity(terrainEntity);
@@ -112,12 +113,12 @@ public class ExampleState extends GameState{
 		
 		for(int i = 0; i < 200; i++){
 			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
-			grass.getPosition().y = terrain.getHeightOfTerrain(grass.getPosition().x, grass.getPosition().z);
+//			grass.getPosition().y = terrain.getHeightOfTerrain(grass.getPosition().x, grass.getPosition().z);
 			grass.addComponent(new StaticMesh("grassmesh" + i, grassMesh));
 			m_Scene.addEntity(grass);
 			
 			Entity fern = new Entity("Fern" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
-			fern.getPosition().y = terrain.getHeightOfTerrain(fern.getPosition().x, fern.getPosition().z);
+//			fern.getPosition().y = terrain.getHeightOfTerrain(fern.getPosition().x, fern.getPosition().z);
 			fern.addComponent(new StaticMesh("fernmesh" + i, fernMesh, random.nextInt(4)));
 			m_Scene.addEntity(fern);
 		}
@@ -126,7 +127,7 @@ public class ExampleState extends GameState{
 		TexturedMesh boxMesh    = new TexturedMesh(m_Loader.loadObjFile("box"), new Material(boxTexture)); 
 		
 		Entity box = new Entity("Box", 200, 7, 200, 10);
-		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
+//		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
 		box.addComponent(new StaticMesh("BoxMesh", boxMesh));
 		
 		m_Scene.addEntity(box);

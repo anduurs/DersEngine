@@ -64,7 +64,7 @@ public class PlayerMovement extends Component{
 		
 		Entity e = (Entity)Scene.findEntityByTag("Terrain");
 		Terrain terrain = (Terrain) e.findComponentByTag("Terrain");
-		m_TerrainHeight = terrain.getHeightOfTerrain(m_Entity.getPosition().x, m_Entity.getPosition().z);
+		m_TerrainHeight = 0;//terrain.getHeightOfTerrain(m_Entity.getPosition().x, m_Entity.getPosition().z);
 		
 		if(m_Entity.getPosition().y < m_TerrainHeight){
 			m_UpwardsSpeed = 0;
