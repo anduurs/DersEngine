@@ -66,7 +66,7 @@ public class TerrainShader extends Shader{
 		loadVector3f("skyColor", skyColor);
 	}
 	
-	public void loadShineVariables(float damper, float reflectivity){
+	public void loadSpecularVariables(float damper, float reflectivity){
 		loadFloat("shineDamper", damper);
 		loadFloat("reflectivity", reflectivity);
 	}

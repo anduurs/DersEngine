@@ -65,7 +65,7 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Entity lightSource1 = new Entity("LightSource1", 0, 10000, -7000);
-		Light light1 = new Light("LightSource1", new Vector3f(0.2f, 0.2f, 0.2f));
+		Light light1 = new Light("LightSource1", new Vector3f(0.9f, 0.7f, 0.7f));
 		lightSource1.addComponent(light1);
 		m_Scene.addLightSource(light1);
 		
@@ -75,12 +75,12 @@ public class ExampleState extends GameState{
 		m_Scene.addLightSource(light2);
 		
 		Entity lightSource3 = new Entity("LightSource3", 370, 30, 100);
-		Light light3 = new Light("LightSource3", new Vector3f(0f, 2f, 2f), new Vector3f(1, 0.01f, 0.002f));
+		Light light3 = new Light("LightSource3", new Vector3f(0f, 2f, 0f), new Vector3f(1, 0.01f, 0.002f));
 		lightSource3.addComponent(light3);
 		m_Scene.addLightSource(light3);
 		
 		Entity lightSource4 = new Entity("LightSource4", 293, 40, 100);
-		Light light4 = new Light("LightSource4", new Vector3f(2f, 2f, 0f), new Vector3f(1, 0.01f, 0.002f));
+		Light light4 = new Light("LightSource4", new Vector3f(0f, 0f, 2f), new Vector3f(1, 0.01f, 0.002f));
 		lightSource4.addComponent(light4);
 		m_Scene.addLightSource(light4);
 	}

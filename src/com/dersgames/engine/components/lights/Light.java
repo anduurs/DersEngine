@@ -48,7 +48,7 @@ public class Light extends Component{
 		return m_Attenuation;
 	}
 
-	public void setM_Attenuation(Vector3f attenuation) {
+	public void setAttenuation(Vector3f attenuation) {
 		m_Attenuation = attenuation;
 	}
 

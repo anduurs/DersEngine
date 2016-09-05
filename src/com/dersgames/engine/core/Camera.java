@@ -27,7 +27,7 @@ public class Camera{
 	private final float MIN_PITCH_ANGLE = -90.0f;
 	
 	private float previousMouseX, previousMouseY = 0;
-	private float m_CameraOffsetY = 10.0f;
+	private float m_CameraOffsetY = 12.0f;
 	
 	public Camera(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
@@ -54,14 +54,14 @@ public class Camera{
 	}
 	
 	public void update(float dt){
-//		updateCameraPositionRelativeToPlayer(dt);
-		freeLookCamera(dt, 100.0f);
+		updateCameraPositionRelativeToPlayer(dt);
+//		freeLookCamera(dt, 100.0f);
 	}
 	
 	private void updateCameraPositionRelativeToPlayer(float dt){
 		float horizontalDistance = (float) (m_DistanceFromPlayer * Math.cos(Math.toRadians(m_Pitch)));
 		float verticalDistance   = (float) (m_DistanceFromPlayer * Math.sin(Math.toRadians(m_Pitch)));
-		float theta = -m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
+		float theta = m_Player.getTransform().getRotation().y - m_AngleAroundPlayer;
 	
 		m_Position.x = (float) (m_Player.getPosition().x - (horizontalDistance * Math.sin(Math.toRadians(theta))));
 		m_Position.y = m_Player.getPosition().y + verticalDistance + m_CameraOffsetY;

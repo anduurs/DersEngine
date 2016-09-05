@@ -14,7 +14,7 @@ public class PlayerMovement extends Component{
 	private float m_CurrentSpeed = 0.0f;
 	private float m_CurrentRotationSpeed = 0.0f;
 	private float m_UpwardsSpeed = 0.0f;
-	private final float GRAVITY = -100.0f;
+	private final float GRAVITY = -10f;
 	private float m_TerrainHeight = 0;
 	
 	public boolean strafeLeft = false, strafeRight = false;
