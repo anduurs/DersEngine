@@ -70,8 +70,8 @@ public class GameApplication implements Runnable{
 		int fps = 0;
 		
 		final double TARGET_UPS = 60.0;
-		final double SEC_PER_UPDATE = 1.0 / TARGET_UPS;
-		float dt = (float) SEC_PER_UPDATE;
+		final double SECONDS_PER_UPDATE = 1.0 / TARGET_UPS;
+		float dt = (float) SECONDS_PER_UPDATE;
 	
 		while(m_Running){
 			currentTime = System.nanoTime();
@@ -84,9 +84,9 @@ public class GameApplication implements Runnable{
 			frameCounter += passedTime;
 			previousTime = currentTime;
 			
-			while(accumulator >= SEC_PER_UPDATE){
+			while(accumulator >= SECONDS_PER_UPDATE){
 				update(dt);
-				accumulator -= SEC_PER_UPDATE;
+				accumulator -= SECONDS_PER_UPDATE;
 			}
 			
 			render();

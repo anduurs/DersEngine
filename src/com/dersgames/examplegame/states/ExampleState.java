@@ -51,8 +51,8 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("player", "playerTexture.png");
 		
 		m_Renderer = new RenderEngine();
-		m_Loader = new Loader();
-		m_Scene = new Scene();
+		m_Loader   = new Loader();
+		m_Scene    = new Scene();
 		
 		addLightSources();
 		generateTerrain();
