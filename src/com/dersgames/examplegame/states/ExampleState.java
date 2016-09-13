@@ -64,9 +64,8 @@ public class ExampleState extends GameState{
 		Entity guiTest = new Entity("GuiEntity");
 		TextureAtlas texture = new TextureAtlas(m_Loader.loadGUITexture("gui"), 1);
 		Material mat = new Material(texture);
-		GUIComponent guiComp = new GUIComponent("GuiComponent", m_Loader, mat,32,32);
+		GUIComponent guiComp = new GUIComponent("GuiComponent", m_Loader, mat, 32,32);
 		guiTest.addComponent(guiComp);
-		guiComp.init();
 		m_Scene.addEntity(guiTest);
 		
 		Player player = new Player(m_Loader, 200, 20, 150);
@@ -74,8 +73,6 @@ public class ExampleState extends GameState{
 		
 		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
 	}
-	
-	
 	
 	private void addLightSources(){
 		Entity lightSource1 = new Entity("LightSource1", 0, 10000, -7000);

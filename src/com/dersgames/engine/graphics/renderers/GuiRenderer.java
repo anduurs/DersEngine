@@ -68,7 +68,6 @@ public class GuiRenderer {
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
 		
 		Material material = texturedMesh.getMaterial();
 		
@@ -96,7 +95,6 @@ public class GuiRenderer {
 		
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
 		
 		glBindVertexArray(0);
 	}

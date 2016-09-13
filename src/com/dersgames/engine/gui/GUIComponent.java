@@ -29,33 +29,28 @@ public class GUIComponent extends Renderable{
 		m_Height = height;
 		
 		m_Loader = loader;
-	}
-	
-	public void init(){
-		float x = getEntity().getPosition().x;
-		float y = getEntity().getPosition().y;
 		
-		float[] vertices = {x , y, 0,
-							x, y + m_Height, 0,
-							x + m_Width, y + m_Height, 0,
-							x + m_Width, y, 0};
-		
+		float[] vertices = {0 , 0, 0,
+							0, 0 + m_Height, 0,
+							0 + m_Width, 0 + m_Height, 0,
+							0 + m_Width, 0, 0};
+
 		float[] texCoords = {0,0,
-							 0,1,
-							 1,1,
-							 1,0};
-		
-		int[] indices = {0,1,2,
-						 2,3,1};
-		
+				             0,1,
+				             1,1,
+				             1,0};
+
+		int[] indices = {0,1,2, 
+					    2,3,0};
+
 		m_TexturedMesh = new TexturedMesh(m_Loader.loadMesh(vertices, texCoords, indices), m_Material);
 	}
-
+	
 	@Override
 	public void render(RenderEngine renderer) {
-		float x = getEntity().getPosition().x - Scene.getCamera().getPosition().x;
-		float y = getEntity().getPosition().y - Scene.getCamera().getPosition().y;
-		float z = getEntity().getPosition().z - Scene.getCamera().getPosition().z;
+		float x = getEntity().getPosition().x + Scene.getCamera().getPosition().x;
+		float y = getEntity().getPosition().y + Scene.getCamera().getPosition().y;
+		float z = getEntity().getPosition().z + Scene.getCamera().getPosition().z;
 		getEntity().getTransform().translate(x, y, z);
 
 		renderer.submit(this);

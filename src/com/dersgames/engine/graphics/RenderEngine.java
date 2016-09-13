@@ -98,7 +98,7 @@ public class RenderEngine {
 		BasicShader guiShader = m_GuiRenderer.getShader();
 		guiShader.enable();
 		guiShader.loadViewMatrix(camera);
-		guiShader.loadProjectionMatrix(m_OrthoProjection);
+		guiShader.loadProjectionMatrix(m_PerspectiveProjection);
 		m_GuiRenderer.render();
 		guiShader.disable();
 		m_GuiRenderer.clear();
