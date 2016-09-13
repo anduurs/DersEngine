@@ -17,19 +17,21 @@ import java.util.List;
 import java.util.Map;
 
 import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedMesh;
-import com.dersgames.engine.graphics.shaders.StaticShader;
+import com.dersgames.engine.graphics.shaders.BasicShader;
+import com.dersgames.engine.gui.GUIComponent;
 
-public class EntityRenderer {
+public class GuiRenderer {
 	
-	private StaticShader m_Shader;
+	private BasicShader m_Shader;
 	private Map<TexturedMesh, List<Renderable>> m_Renderables;
 	
-	public EntityRenderer(){
-		m_Shader = new StaticShader();
+	public GuiRenderer(){
+		m_Shader = new BasicShader();
 		m_Renderables = new HashMap<TexturedMesh, List<Renderable>>();
 	}
 	
@@ -73,8 +75,6 @@ public class EntityRenderer {
 		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
 		
-		m_Shader.loadSpecularVariables(material.getShineDamper(), material.getReflectivity());
-		m_Shader.loadUseFakeLighting(material.getUseFakeLighting());
 		m_Shader.loadNumOfRows(material.getTextureAtlas().getNumberOfRows());
 		
 		glActiveTexture(GL_TEXTURE0);
@@ -105,7 +105,7 @@ public class EntityRenderer {
 		m_Shader.deleteShaderProgram();
 	}
 	
-	public StaticShader getShader(){
+	public BasicShader getShader(){
 		return m_Shader;
 	}
 

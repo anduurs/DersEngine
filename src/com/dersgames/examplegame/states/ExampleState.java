@@ -17,6 +17,7 @@ import com.dersgames.engine.graphics.models.TexturedMesh;
 import com.dersgames.engine.graphics.textures.TerrainTexture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.gui.GUIComponent;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.entities.Player;
@@ -50,6 +51,9 @@ public class ExampleState extends GameState{
 		//PLAYER TEXTURE
 		ImageManager.addImage("player", "playerTexture.png");
 		
+		//GUI SHÌZZLE
+		ImageManager.addImage("gui", "test.png");
+		
 		m_Renderer = new RenderEngine();
 		m_Loader   = new Loader();
 		m_Scene    = new Scene();
@@ -57,11 +61,21 @@ public class ExampleState extends GameState{
 		addLightSources();
 		generateTerrain();
 		
+		Entity guiTest = new Entity("GuiEntity");
+		TextureAtlas texture = new TextureAtlas(m_Loader.loadGUITexture("gui"), 1);
+		Material mat = new Material(texture);
+		GUIComponent guiComp = new GUIComponent("GuiComponent", m_Loader, mat,32,32);
+		guiTest.addComponent(guiComp);
+		guiComp.init();
+		m_Scene.addEntity(guiTest);
+		
 		Player player = new Player(m_Loader, 200, 20, 150);
 		m_Scene.addEntity(player);
 		
 		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
 	}
+	
+	
 	
 	private void addLightSources(){
 		Entity lightSource1 = new Entity("LightSource1", 0, 10000, -7000);
@@ -95,8 +109,8 @@ public class ExampleState extends GameState{
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
 		Entity terrainEntity = new Entity("Terrain");
-//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 		
 		m_Scene.addEntity(terrainEntity);
@@ -113,12 +127,12 @@ public class ExampleState extends GameState{
 		
 		for(int i = 0; i < 200; i++){
 			Entity grass = new Entity("Grass" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
-//			grass.getPosition().y = terrain.getHeightOfTerrain(grass.getPosition().x, grass.getPosition().z);
+			grass.getPosition().y = terrain.getHeightOfTerrain(grass.getPosition().x, grass.getPosition().z);
 			grass.addComponent(new StaticMesh("grassmesh" + i, grassMesh));
 			m_Scene.addEntity(grass);
 			
 			Entity fern = new Entity("Fern" + i, random.nextFloat() * 800, 0, random.nextFloat() * 800);
-//			fern.getPosition().y = terrain.getHeightOfTerrain(fern.getPosition().x, fern.getPosition().z);
+			fern.getPosition().y = terrain.getHeightOfTerrain(fern.getPosition().x, fern.getPosition().z);
 			fern.addComponent(new StaticMesh("fernmesh" + i, fernMesh, random.nextInt(4)));
 			m_Scene.addEntity(fern);
 		}
@@ -127,7 +141,7 @@ public class ExampleState extends GameState{
 		TexturedMesh boxMesh    = new TexturedMesh(m_Loader.loadObjFile("box"), new Material(boxTexture)); 
 		
 		Entity box = new Entity("Box", 200, 7, 200, 10);
-//		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
+		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
 		box.addComponent(new StaticMesh("BoxMesh", boxMesh));
 		
 		m_Scene.addEntity(box);

@@ -20,30 +20,38 @@ import com.dersgames.engine.core.Camera;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
+import com.dersgames.engine.graphics.renderers.GuiRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
+import com.dersgames.engine.graphics.shaders.BasicShader;
 import com.dersgames.engine.graphics.shaders.StaticShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
+import com.dersgames.engine.gui.GUIComponent;
 import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
 
-	private Matrix4f m_Projection;
+	private Matrix4f m_PerspectiveProjection;
+	private Matrix4f m_OrthoProjection;
 	
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
+	private GuiRenderer m_GuiRenderer;
 	
 	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 //	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
 
 	public RenderEngine(){
-		m_Projection = new Matrix4f().setPerspectiveProjection(70.0f, 
+		m_OrthoProjection = new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -1.0f, 1.0f);
+		m_PerspectiveProjection = new Matrix4f().setPerspectiveProjection(70.0f, 
 				(float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 1000.0f);
 		
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
+		m_GuiRenderer 	  = new GuiRenderer();
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
+		
 		enableCulling();
 	}
 	
@@ -59,6 +67,8 @@ public class RenderEngine {
 	public void submit(Renderable renderable){
 		if(renderable instanceof Terrain)
 			m_TerrainRenderer.addTerrain((Terrain)renderable);
+		else if(renderable instanceof GUIComponent)
+			m_GuiRenderer.addRenderable((GUIComponent)renderable);
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
@@ -70,7 +80,7 @@ public class RenderEngine {
 		shader.loadSkyColor(m_SkyColor);
 		shader.loadLightSources(lightSources);
 		shader.loadViewMatrix(camera);
-		shader.loadProjectionMatrix(m_Projection);
+		shader.loadProjectionMatrix(m_PerspectiveProjection);
 		m_EntityRenderer.render();
 		shader.disable();
 		m_EntityRenderer.clear();
@@ -80,15 +90,24 @@ public class RenderEngine {
 		terrainShader.loadSkyColor(m_SkyColor);
 		terrainShader.loadLightSources(lightSources);
 		terrainShader.loadViewMatrix(camera);
-		terrainShader.loadProjectionMatrix(m_Projection);
+		terrainShader.loadProjectionMatrix(m_PerspectiveProjection);
 		m_TerrainRenderer.render();
 		terrainShader.disable();
 		m_TerrainRenderer.clear();
+		
+		BasicShader guiShader = m_GuiRenderer.getShader();
+		guiShader.enable();
+		guiShader.loadViewMatrix(camera);
+		guiShader.loadProjectionMatrix(m_OrthoProjection);
+		m_GuiRenderer.render();
+		guiShader.disable();
+		m_GuiRenderer.clear();
 	}
 	
 	public void dispose(){
 		m_TerrainRenderer.dispose();
 		m_EntityRenderer.dispose();
+		m_GuiRenderer.dispose();
 	}
 	
 	private void clearFrameBuffer(){

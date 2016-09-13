@@ -54,6 +54,15 @@ public class Loader{
 		return new Mesh(vaoID, indices.length);
 	}
 	
+	public Mesh loadMesh(float[] positions, float[] textureCoords, int[] indices){
+		int vaoID = createVAO();
+		bindIndexBuffer(indices);
+		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		unbindVAO();
+		return new Mesh(vaoID, indices.length);
+	}
+	
 	public Mesh loadObjFile(String fileName){
 		List<Vector3f> vertices = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 

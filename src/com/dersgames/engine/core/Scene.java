@@ -12,7 +12,7 @@ public class Scene {
 	
 	private static List<Entity> m_EntityList;
 	
-	private Camera m_Camera;
+	private static Camera m_Camera;
 	private List<Light> m_LightSources;
 	
 	public Scene(){
@@ -66,6 +66,10 @@ public class Scene {
 	
 	private static synchronized List<Entity> getEntities(){
 		return m_EntityList;
+	}
+	
+	public static Camera getCamera(){
+		return m_Camera;
 	}
 
 }
