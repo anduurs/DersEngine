@@ -49,7 +49,13 @@ void main(){
 		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); 
 		float specularFactor = max(dot(reflectedLightDirection, unitCameraVector), 0.0); 
 		float dampedFactor = pow(specularFactor, shineDamper);
-		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attenuationFactor;
+		
+		if(attenuationFactor == 1){
+			totalDiffuse = totalDiffuse + (brightness * lightColor[i]) * 1;
+		}else {
+			totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attenuationFactor;
+		}
+		
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attenuationFactor;
 	}
 	

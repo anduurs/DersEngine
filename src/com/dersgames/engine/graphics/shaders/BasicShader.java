@@ -15,6 +15,10 @@ public class BasicShader extends Shader{
 		addUniform("viewMatrix");
 		addUniform("numOfRows");
 		addUniform("offset");
+		
+		enable();
+		loadInteger("textureSampler", 0);
+		disable();
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import com.dersgames.engine.graphics.models.TexturedMesh;
 import com.dersgames.engine.graphics.textures.TerrainTexture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
-import com.dersgames.engine.gui.GUIComponent;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.entities.Player;
@@ -60,13 +59,6 @@ public class ExampleState extends GameState{
 		
 		addLightSources();
 		generateTerrain();
-		
-		Entity guiTest = new Entity("GuiEntity");
-		TextureAtlas texture = new TextureAtlas(m_Loader.loadGUITexture("gui"), 1);
-		Material mat = new Material(texture);
-		GUIComponent guiComp = new GUIComponent("GuiComponent", m_Loader, mat, 32,32);
-		guiTest.addComponent(guiComp);
-		m_Scene.addEntity(guiTest);
 		
 		Player player = new Player(m_Loader, 200, 20, 150);
 		m_Scene.addEntity(player);

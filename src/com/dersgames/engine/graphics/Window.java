@@ -53,6 +53,8 @@ public class Window {
 			System.err.println("GLFW initialization failed!");
 		
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glfwWindowHint(GLFW.GLFW_STENCIL_BITS, 4);
+		glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 				
 		window = glfwCreateWindow(width, height, title, NULL, NULL);
 		
