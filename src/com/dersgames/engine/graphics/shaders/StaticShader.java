@@ -2,8 +2,8 @@ package com.dersgames.engine.graphics.shaders;
 
 import java.util.List;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.lights.Light;
-import com.dersgames.engine.core.Camera;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;

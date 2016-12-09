@@ -14,12 +14,9 @@ import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL13;
-
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.lights.Light;
-import com.dersgames.engine.core.Camera;
-import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
@@ -29,8 +26,7 @@ import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
 
-	private Matrix4f m_PerspectiveProjection;
-	private Matrix4f m_OrthoProjection;
+	private Camera m_Camera;
 	
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
@@ -39,10 +35,6 @@ public class RenderEngine {
 //	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
 
 	public RenderEngine(){
-		m_OrthoProjection = new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -1.0f, 1.0f);
-		m_PerspectiveProjection = new Matrix4f().setPerspectiveProjection(70.0f, 
-				(float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 10000.0f);
-		
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
 		
@@ -67,15 +59,15 @@ public class RenderEngine {
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
-	public void render(List<Light> lightSources, Camera camera){
+	public void render(List<Light> lightSources){
 		clearFrameBuffer();
 		
 		StaticShader shader = m_EntityRenderer.getShader();
 		shader.enable();
 		shader.loadSkyColor(m_SkyColor);
 		shader.loadLightSources(lightSources);
-		shader.loadViewMatrix(camera);
-		shader.loadProjectionMatrix(m_PerspectiveProjection);
+		shader.loadViewMatrix(m_Camera);
+		shader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		m_EntityRenderer.render();
 		shader.disable();
 		m_EntityRenderer.clear();
@@ -84,11 +76,15 @@ public class RenderEngine {
 		terrainShader.enable();
 		terrainShader.loadSkyColor(m_SkyColor);
 		terrainShader.loadLightSources(lightSources);
-		terrainShader.loadViewMatrix(camera);
-		terrainShader.loadProjectionMatrix(m_PerspectiveProjection);
+		terrainShader.loadViewMatrix(m_Camera);
+		terrainShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		m_TerrainRenderer.render();
 		terrainShader.disable();
 		m_TerrainRenderer.clear();
+	}
+	
+	public void addCamera(Camera camera){
+		m_Camera = camera;
 	}
 	
 	public void dispose(){

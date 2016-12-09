@@ -1,5 +1,6 @@
 package com.dersgames.engine.components;
 
+import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.entities.Entity;
 
 public abstract class Component {
@@ -23,6 +24,10 @@ public abstract class Component {
 	
 	public Entity getEntity() {
 		return m_Entity;
+	}
+	
+	public Transform getTransform(){
+		return m_Entity.getTransform();
 	}
 
 	public void setEntity(Entity entity) {

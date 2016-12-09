@@ -3,24 +3,35 @@ package com.dersgames.engine.core;
 public class Vertex {
 	
 	private Vector3f m_Position;
+	private Vector3f m_Normal;
 	private Vector2f m_TexCoord;
 	
 	//total number of floats in a vertex
-	public static final int VERTEX_SIZE = 5;
+	public static final int VERTEX_SIZE = 8;
 	
 	public Vertex(Vector3f position){
-		this(position, new Vector2f(0,0));
+		m_Position = position;
 	}
 	
 	public Vertex(Vector3f position, Vector2f texCoord){
 		m_Position = position;
 		m_TexCoord = texCoord;
 	}
+	
+	public Vertex(Vector3f position, Vector3f normal, Vector2f texCoord){
+		m_Position = position;
+		m_Normal = normal;
+		m_TexCoord = texCoord;
+	}
 
 	public Vector3f getPosition() {
 		return m_Position;
 	}
-
+	
+	public Vector3f getNormal() {
+		return m_Normal;
+	}
+	
 	public Vector2f getTexCoord() {
 		return m_TexCoord;
 	}

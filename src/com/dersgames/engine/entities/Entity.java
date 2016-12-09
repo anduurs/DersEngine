@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Component;
 import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.core.Quaternion;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.RenderEngine;
@@ -31,19 +32,21 @@ public class Entity {
 	}
 	
 	public Entity(String tag, float x, float y, float z, float scale){
-		this(tag, x, y, z);
-		m_Transform.scale(scale, scale, scale);
+		this(tag, new Transform(new Vector3f(x,y,z), new Quaternion(), new Vector3f(scale,scale,scale)));
 	}
 	
 	public Entity(String tag, float x, float y, float z){
+		this(tag, new Transform(new Vector3f(x,y,z), new Quaternion(), new Vector3f(1,1,1)));
+	}
+	
+	public Entity(String tag, Transform transform){
 		m_Tag = tag;
 		m_Alive = true;
 		
 		m_Components = new ArrayList<Component>();
 		m_Renderables = new ArrayList<Renderable>();
 		
-		m_Transform = new Transform();
-		m_Transform.translate(x, y, z);
+		m_Transform = transform;
 	}
 	
 	public Component addComponent(Component component){

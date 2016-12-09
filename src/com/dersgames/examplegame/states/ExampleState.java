@@ -2,9 +2,9 @@ package com.dersgames.examplegame.states;
 
 import java.util.Random;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.components.lights.Light;
-import com.dersgames.engine.core.Camera;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.core.Scene;
@@ -19,7 +19,6 @@ import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
-import com.dersgames.examplegame.entities.Player;
 
 public class ExampleState extends GameState{
 	
@@ -60,10 +59,16 @@ public class ExampleState extends GameState{
 		addLightSources();
 		generateTerrain();
 		
-		Player player = new Player(m_Loader, 200, 20, 150);
-		m_Scene.addEntity(player);
+//		Player player = new Player(m_Loader, 200, 20, 150);
+//		m_Scene.addEntity(player);
 		
-		m_Scene.addCamera(new Camera(player, new Vector3f(200,20,100)));
+//		m_Scene.addCamera(new CameraOld(player, new Vector3f(200,20,100)));
+		
+		Entity camera = new Entity("MainCamera", 200, 20, 100);
+		Camera cameraComponent = new Camera();
+		camera.addComponent(cameraComponent);
+		m_Renderer.addCamera(cameraComponent);
+		m_Scene.addEntity(camera);
 	}
 	
 	private void addLightSources(){

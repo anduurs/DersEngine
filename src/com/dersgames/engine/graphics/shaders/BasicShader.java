@@ -1,6 +1,6 @@
 package com.dersgames.engine.graphics.shaders;
 
-import com.dersgames.engine.core.Camera;
+import com.dersgames.engine.core.CameraOld;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
 
@@ -35,7 +35,7 @@ public class BasicShader extends Shader{
 		loadVector2f("offset", offset);
 	}
 	
-	public void loadViewMatrix(Camera camera){
+	public void loadViewMatrix(CameraOld camera){
 		loadMatrix4f("viewMatrix", camera.getViewMatrix());
 	}
 	

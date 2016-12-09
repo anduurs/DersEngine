@@ -6,7 +6,7 @@ import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.MouseCursor;
 import com.dersgames.examplegame.entities.Player;
 
-public class Camera{
+public class CameraOld{
 	
 	public static final Vector3f yAxis = new Vector3f(0, 1, 0);
 	
@@ -29,15 +29,15 @@ public class Camera{
 	private float previousMouseX, previousMouseY = 0;
 	private float m_CameraOffsetY = 12.0f;
 	
-	public Camera(Player player){
+	public CameraOld(Player player){
 		this(player, new Vector3f(0,0,0), new Vector3f(0,0,1), new Vector3f(0,1,0));
 	}
 	
-	public Camera(Player player, Vector3f position){
+	public CameraOld(Player player, Vector3f position){
 		this(player, position, new Vector3f(0,0,1), new Vector3f(0,1,0));
 	}
 	
-	public Camera(Player player, Vector3f position, Vector3f forward, Vector3f up){
+	public CameraOld(Player player, Vector3f position, Vector3f forward, Vector3f up){
 		m_Player = player;
 		m_Position = position;
 		m_Forward = forward;
@@ -137,25 +137,15 @@ public class Camera{
 	}
 	
 	public void rotateAroundY(float angle){
-		Vector3f hAxis = yAxis.cross(m_Forward);
-		hAxis.normalize();
-		
-		m_Forward.rotate(yAxis, angle);
-		m_Forward.normalize();
-		
-		m_Up = m_Forward.cross(hAxis);
-		m_Up.normalize();
+		Vector3f hAxis = yAxis.cross(m_Forward).normalize();
+		m_Forward = m_Forward.rotate(yAxis, angle).normalize();
+		m_Up = m_Forward.cross(hAxis).normalize();
 	}
 	
 	public void rotateAroundX(float angle){
-		Vector3f hAxis = yAxis.cross(m_Forward);
-		hAxis.normalize();
-		
-		m_Forward.rotate(hAxis, angle);
-		m_Forward.normalize();
-		
-		m_Up = m_Forward.cross(hAxis);
-		m_Up.normalize();
+		Vector3f hAxis = yAxis.cross(m_Forward).normalize();
+		m_Forward = m_Forward.rotate(hAxis, angle).normalize();
+		m_Up = m_Forward.cross(hAxis).normalize();
 	}
 	
 	public Vector3f getLeft(){

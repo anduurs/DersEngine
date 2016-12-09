@@ -46,7 +46,7 @@ public class Loader{
 	
 	public Mesh loadMesh(float[] positions, float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
-		bindIndexBuffer(indices);
+		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
@@ -56,7 +56,7 @@ public class Loader{
 	
 	public Mesh loadMesh(float[] positions, float[] textureCoords, int[] indices){
 		int vaoID = createVAO();
-		bindIndexBuffer(indices);
+		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		unbindVAO();
@@ -188,7 +188,7 @@ public class Loader{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
-	private void bindIndexBuffer(int[] indices){
+	private void createIndexBuffer(int[] indices){
 		int vboID = glGenBuffers();
 		m_vboIDs.add(vboID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
