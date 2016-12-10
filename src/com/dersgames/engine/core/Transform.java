@@ -4,10 +4,9 @@ public class Transform{
 	
 	private Vector3f m_Position;
 	private Quaternion m_Rotation;
-	private Vector3f m_Scaling;
+	private Vector3f m_Scale;
 	
 	private Matrix4f m_TranslationMatrix;
-	private Matrix4f m_RotationMatrix;
 	private Matrix4f m_ScalingMatrix;
 	
 	public Transform(){
@@ -17,11 +16,10 @@ public class Transform{
 	public Transform(Vector3f position, Quaternion rotation, Vector3f scale){
 		m_Position = position;
 		m_Rotation = rotation;
-		m_Scaling  = scale;
+		m_Scale  = scale;
 		
 		m_TranslationMatrix = new Matrix4f().setTranslationMatrix(m_Position.x, m_Position.y, m_Position.z);
-		m_RotationMatrix    = m_Rotation.toRotationMatrix();
-		m_ScalingMatrix 	= new Matrix4f().setScalingMatrix(m_Scaling.x, m_Scaling.y, m_Scaling.z);
+		m_ScalingMatrix 	= new Matrix4f().setScalingMatrix(m_Scale.x, m_Scale.y, m_Scale.z);
 	}
 	
 	public Matrix4f getTranslationMatrix(){
@@ -33,17 +31,17 @@ public class Transform{
 	}
 	
 	public Matrix4f getScalingMatrix(){
-		return m_ScalingMatrix.setScalingMatrix(m_Scaling.x, m_Scaling.y, m_Scaling.z);
+		return m_ScalingMatrix.setScalingMatrix(m_Scale.x, m_Scale.y, m_Scale.z);
 	}
 	
-	public Matrix4f getTransformationMatrix(){
+	public Matrix4f getModelMatrix(){
 		Matrix4f T = getTranslationMatrix();
 		Matrix4f R = getRotationMatrix();
 		Matrix4f S = getScalingMatrix();
 		
-		Matrix4f transformationMatrix = T.mul(R.mul(S));
+		Matrix4f modelMatrix = T.mul(R.mul(S));
 		
-		return transformationMatrix;
+		return modelMatrix;
 	}
 	
 	public void translate(float x, float y, float z) {
@@ -58,6 +56,16 @@ public class Transform{
 		m_Rotation.z = z;
 	}
 	
+	public void scale(float x, float y, float z) {
+		m_Scale.x = x;
+		m_Scale.y = y;
+		m_Scale.z = z;
+	}
+	
+	public void translate(Vector3f direction, float speed){
+		m_Position = m_Position.add(direction.mul(speed));
+	}
+	
 	/**
 	 * rotates around the given axis with the specified angle in degrees
 	 * @param axis the axis to rotate around (must be normalized)
@@ -67,15 +75,9 @@ public class Transform{
 		m_Rotation = new Quaternion(axis, (float)Math.toRadians(angle)).mul(m_Rotation).normalize();
 	}
 	
-	public void scale(float x, float y, float z) {
-		m_Scaling.x = x;
-		m_Scaling.y = y;
-		m_Scaling.z = z;
-	}
-	
 	public Vector3f getPosition() {return m_Position;}
 	public Quaternion getRotation() {return m_Rotation;}
-	public Vector3f getScaling() {return m_Scaling;}
+	public Vector3f getScale() {return m_Scale;}
 	
 	public void setTranslationVector(Vector3f translation) {
 		m_Position = translation;
@@ -85,7 +87,7 @@ public class Transform{
 		m_Rotation = rotation;
 	}
 
-	public void setScalingVector(Vector3f scaling) {
-		m_Scaling = scaling;
+	public void scale(Vector3f scaling) {
+		m_Scale = scaling;
 	}
 }

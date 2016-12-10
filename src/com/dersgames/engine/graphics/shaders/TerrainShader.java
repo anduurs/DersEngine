@@ -6,6 +6,7 @@ import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.entities.Entity;
 
 public class TerrainShader extends Shader{
 	
@@ -14,16 +15,16 @@ public class TerrainShader extends Shader{
 	public TerrainShader() {
 		super("terrainVertexShader", "terrainFragmentShader");
 		
-		addUniform("transformationMatrix");
-		addUniform("projectionMatrix");
+		addUniform("modelMatrix");
 		addUniform("viewMatrix");
+		addUniform("projectionMatrix");
 		
 		addUniform("lightPosition", MAX_LIGHTS);
 		addUniform("lightColor", MAX_LIGHTS);
 		addUniform("attenuation", MAX_LIGHTS);
 		addUniform("skyColor");
 		
-		addUniform("shineDamper");
+		addUniform("shininess");
 		addUniform("reflectivity");
 		
 		addUniform("backgroundTexture");
@@ -67,8 +68,12 @@ public class TerrainShader extends Shader{
 	}
 	
 	public void loadSpecularVariables(float damper, float reflectivity){
-		loadFloat("shineDamper", damper);
+		loadFloat("shininess", damper);
 		loadFloat("reflectivity", reflectivity);
+	}
+	
+	public void loadModelMatrix(Entity entity){
+		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
 	}
 	
 	public void loadViewMatrix(Camera camera){

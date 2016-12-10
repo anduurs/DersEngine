@@ -23,7 +23,7 @@ public class Terrain extends Renderable{
 	private float[][] m_Heights;
 	
 	private float x, z;
-	private Mesh m_Model;
+	private Mesh m_Mesh;
 
 	private TerrainTexturePack m_TexturePack;
 	private TerrainTexture m_BlendMap;
@@ -35,7 +35,7 @@ public class Terrain extends Renderable{
 		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridZ * SIZE;
-		m_Model = generateTerrain(loader, heightmap);
+		m_Mesh = generateTerrain(loader, heightmap);
 	}
 	
 	public Terrain(String tag, int gridX, int gridZ, 
@@ -45,7 +45,7 @@ public class Terrain extends Renderable{
 		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridZ * SIZE;
-		m_Model = generateTerrain(loader);
+		m_Mesh = generateTerrain(loader);
 	}
 	
 	@Override
@@ -236,8 +236,8 @@ public class Terrain extends Renderable{
 		return z;
 	}
 
-	public Mesh getModel() {
-		return m_Model;
+	public Mesh getMesh() {
+		return m_Mesh;
 	}
 
 	public TerrainTexturePack getTexturePack() {

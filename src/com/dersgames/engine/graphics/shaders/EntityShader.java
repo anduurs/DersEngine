@@ -7,19 +7,20 @@ import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.entities.Entity;
 
-public class StaticShader extends Shader{
+public class EntityShader extends Shader{
 	
 	public static final int MAX_LIGHTS = 4;
 
-	public StaticShader() {
+	public EntityShader() {
 		super("vertexShader", "fragmentShader");
 		
 		addUniform("textureSampler");
-		addUniform("transformationMatrix");
-		addUniform("projectionMatrix");
+		addUniform("modelMatrix");
 		addUniform("viewMatrix");
-		addUniform("shineDamper");
+		addUniform("projectionMatrix");
+		addUniform("shininess");
 		addUniform("reflectivity");
 		addUniform("useFakeLighting");
 		addUniform("skyColor");
@@ -42,11 +43,11 @@ public class StaticShader extends Shader{
 		super.bindAttribute(2, "normal");
 	}
 	
-	public void loadNumOfRows(float rows){
+	public void loadNumOfRowsInTextureAtlas(float rows){
 		loadFloat("numOfRows", rows);
 	}
 	
-	public void loadOffset(Vector2f offset){
+	public void loadTexCoordOffset(Vector2f offset){
 		loadVector2f("offset", offset);
 	}
 	
@@ -60,8 +61,8 @@ public class StaticShader extends Shader{
 		else loadFloat("useFakeLighting", 0.0f);
 	}
 	
-	public void loadSpecularVariables(float damper, float reflectivity){
-		loadFloat("shineDamper", damper);
+	public void loadSpecularProperties(float damper, float reflectivity){
+		loadFloat("shininess", damper);
 		loadFloat("reflectivity", reflectivity);
 	}
 	
@@ -77,6 +78,10 @@ public class StaticShader extends Shader{
 				super.loadVector3f("attenuation"+i, new Vector3f(1,0,0));
 			}
 		}
+	}
+	
+	public void loadModelMatrix(Entity entity){
+		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
 	}
 	
 	public void loadViewMatrix(Camera camera){

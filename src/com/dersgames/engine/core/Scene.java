@@ -30,13 +30,13 @@ public class Scene {
 	public void update(float dt){
 		refreshEntityList();
 		
-		for(Entity e : getEntities())
-			e.updateComponents(dt);
+		for(Entity entity : getEntities())
+			entity.updateComponents(dt);
 	}
 	
 	public void render(RenderEngine renderer){
-		for(Entity e : getEntities())
-			e.renderComponents(renderer);
+		for(Entity entity : getEntities())
+			entity.renderComponents(renderer);
 		
 		renderer.render(m_LightSources);
 	}
@@ -46,15 +46,17 @@ public class Scene {
 	}
 	
 	public static Entity findEntityByTag(String tag){
-		for(Entity e : getEntities())
-			if(e.getTag().equals(tag)) return e;
+		for(Entity entity : getEntities())
+			if(entity.getTag().equals(tag)) 
+				return entity;
 		return null;
 	}
 	
 	private void refreshEntityList(){
 		for(Iterator<Entity> it = m_EntityList.iterator(); it.hasNext();){
-			Entity e = it.next();
-			if(!e.isAlive()) it.remove();
+			Entity entity = it.next();
+			if(!entity.isAlive()) 
+				it.remove();
 		}
 	}
 	

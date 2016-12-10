@@ -1,8 +1,9 @@
 package com.dersgames.engine.graphics.shaders;
 
-import com.dersgames.engine.core.CameraOld;
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
+import com.dersgames.engine.entities.Entity;
 
 public class BasicShader extends Shader{
 
@@ -10,9 +11,10 @@ public class BasicShader extends Shader{
 		super("basicVertexShader", "basicFragmentShader");
 		
 		addUniform("textureSampler");
-		addUniform("transformationMatrix");
-		addUniform("projectionMatrix");
+		addUniform("modelMatrix");
 		addUniform("viewMatrix");
+		addUniform("projectionMatrix");
+	
 		addUniform("numOfRows");
 		addUniform("offset");
 		
@@ -35,7 +37,11 @@ public class BasicShader extends Shader{
 		loadVector2f("offset", offset);
 	}
 	
-	public void loadViewMatrix(CameraOld camera){
+	public void loadModelMatrix(Entity entity){
+		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
+	}
+	
+	public void loadViewMatrix(Camera camera){
 		loadMatrix4f("viewMatrix", camera.getViewMatrix());
 	}
 	

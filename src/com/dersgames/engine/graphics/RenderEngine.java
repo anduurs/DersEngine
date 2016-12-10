@@ -20,7 +20,7 @@ import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
-import com.dersgames.engine.graphics.shaders.StaticShader;
+import com.dersgames.engine.graphics.shaders.EntityShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.terrains.Terrain;
 
@@ -62,7 +62,7 @@ public class RenderEngine {
 	public void render(List<Light> lightSources){
 		clearFrameBuffer();
 		
-		StaticShader shader = m_EntityRenderer.getShader();
+		EntityShader shader = m_EntityRenderer.getShader();
 		shader.enable();
 		shader.loadSkyColor(m_SkyColor);
 		shader.loadLightSources(lightSources);

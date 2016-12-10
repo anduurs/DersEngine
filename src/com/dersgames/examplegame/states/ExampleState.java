@@ -61,11 +61,9 @@ public class ExampleState extends GameState{
 		
 //		Player player = new Player(m_Loader, 200, 20, 150);
 //		m_Scene.addEntity(player);
-		
-//		m_Scene.addCamera(new CameraOld(player, new Vector3f(200,20,100)));
-		
+	
 		Entity camera = new Entity("MainCamera", 200, 20, 100);
-		Camera cameraComponent = new Camera();
+		Camera cameraComponent = new Camera(2.0f);
 		camera.addComponent(cameraComponent);
 		m_Renderer.addCamera(cameraComponent);
 		m_Scene.addEntity(camera);
@@ -135,7 +133,7 @@ public class ExampleState extends GameState{
 		TexturedMesh boxMesh    = new TexturedMesh(m_Loader.loadObjFile("box"), new Material(boxTexture)); 
 		
 		Entity box = new Entity("Box", 200, 7, 200, 10);
-		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 7;
+		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 9;
 		box.addComponent(new StaticMesh("BoxMesh", boxMesh));
 		
 		m_Scene.addEntity(box);

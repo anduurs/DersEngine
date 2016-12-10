@@ -14,16 +14,17 @@ public class Camera extends Component{
 	
 	private Matrix4f m_PerspectiveProjection;
 	
-	private float m_Sensitivity = 1.5f;
+	private float m_Sensitivity;
 	private float previousMouseX, previousMouseY = 0;
 	
-	public Camera(){
-		this(70.0f, (float)Window.getWidth() / (float)Window.getHeight(), 0.01f, 10000.0f);
+	public Camera(float sensitivity){
+		this(70.0f, 0.01f, 10000.0f, sensitivity);
 	}
 	
-	public Camera(float fov, float aspect, float zNear, float zFar){
+	public Camera(float fov, float zNear, float zFar, float cameraSensitivity){
 		m_PerspectiveProjection = new Matrix4f().setPerspectiveProjection(fov, 
-				aspect, zNear, zFar);
+				(float)Window.getWidth() / (float)Window.getHeight(), zNear, zFar);
+		m_Sensitivity = cameraSensitivity;
 	}
 	
 	@Override
@@ -35,9 +36,9 @@ public class Camera extends Component{
 	
 	private void freeLookCamera(float dt, float speed){
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
-			getTransform().setTranslationVector(getTransform().getPosition().add(getTransform().getRotation().getForward().mul(speed * dt)));
+			getTransform().translate(getRotation().getForward(), speed*dt);
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S))
-			getTransform().setTranslationVector(getTransform().getPosition().add(getTransform().getRotation().getForward().mul(-speed * dt)));
+			getTransform().translate(getRotation().getBack(), speed*dt);
 		
 		float currentMouseX = MouseCursor.getX();
 		float currentMouseY = MouseCursor.getY();
@@ -55,7 +56,7 @@ public class Camera extends Component{
 			getTransform().rotate(yAxis, yawChange);
 		
 		if(shouldRotateAroundX) 
-			getTransform().rotate(getTransform().getRotation().getRight(), pitchChange);
+			getTransform().rotate(getRotation().getRight(), pitchChange);
 		
 		previousMouseX = currentMouseX;
 		previousMouseY = currentMouseY;

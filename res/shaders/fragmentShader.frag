@@ -12,7 +12,7 @@ uniform sampler2D textureSampler;
 
 uniform vec3 lightColor[4];
 uniform vec3 attenuation[4];
-uniform float shineDamper;
+uniform float shininess;
 uniform float reflectivity;
 uniform vec3 skyColor;
 
@@ -32,7 +32,7 @@ void main(){
 		vec3 lightDirection = -unitLightVector;
 		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); 
 		float specularFactor = max(dot(reflectedLightDirection, unitCameraVector), 0.0); 
-		float dampedFactor = pow(specularFactor, shineDamper);
+		float dampedFactor = pow(specularFactor, shininess);
 		
 		if(attenuationFactor == 1){
 			totalDiffuse = totalDiffuse + (brightness * lightColor[i]) * 1;

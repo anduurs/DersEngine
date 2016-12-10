@@ -21,15 +21,15 @@ import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedMesh;
-import com.dersgames.engine.graphics.shaders.StaticShader;
+import com.dersgames.engine.graphics.shaders.EntityShader;
 
 public class EntityRenderer {
 	
-	private StaticShader m_Shader;
+	private EntityShader m_Shader;
 	private Map<TexturedMesh, List<Renderable>> m_Renderables;
 	
 	public EntityRenderer(){
-		m_Shader = new StaticShader();
+		m_Shader = new EntityShader();
 		m_Renderables = new HashMap<TexturedMesh, List<Renderable>>();
 	}
 	
@@ -51,7 +51,7 @@ public class EntityRenderer {
 	
 	public void render(){
 		for(TexturedMesh mesh : m_Renderables.keySet()){
-			bindTexturedMesh(mesh);
+			loadTexturedMeshData(mesh);
 			List<Renderable> batch = m_Renderables.get(mesh);
 			for(Renderable renderable : batch){
 				loadRenderableData(renderable);
@@ -61,7 +61,7 @@ public class EntityRenderer {
 		}
 	}
 	
-	private void bindTexturedMesh(TexturedMesh texturedMesh){
+	private void loadTexturedMeshData(TexturedMesh texturedMesh){
 		glBindVertexArray(texturedMesh.getMesh().getVaoID());
 		
 		glEnableVertexAttribArray(0);
@@ -73,22 +73,21 @@ public class EntityRenderer {
 		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
 		
-		m_Shader.loadSpecularVariables(material.getShineDamper(), material.getReflectivity());
+		m_Shader.loadSpecularProperties(material.getShineDamper(), material.getReflectivity());
 		m_Shader.loadUseFakeLighting(material.getUseFakeLighting());
-		m_Shader.loadNumOfRows(material.getTextureAtlas().getNumberOfRows());
+		m_Shader.loadNumOfRowsInTextureAtlas(material.getTextureAtlas().getNumberOfRows());
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getTextureID());
 	}
 	
 	private void loadRenderableData(Renderable renderable){
-		m_Shader.loadMatrix4f("transformationMatrix", 
-				renderable.getEntity().getTransform().getTransformationMatrix());
+		m_Shader.loadModelMatrix(renderable.getEntity());
 		
 		float xOffset = renderable.getTextureXOffset();
 		float yOffset = renderable.getTextureYOffset();
 		
-		m_Shader.loadOffset(new Vector2f(xOffset, yOffset));
+		m_Shader.loadTexCoordOffset(new Vector2f(xOffset, yOffset));
 	}
 	
 	private void unbind(){
@@ -105,7 +104,7 @@ public class EntityRenderer {
 		m_Shader.deleteShaderProgram();
 	}
 	
-	public StaticShader getShader(){
+	public EntityShader getShader(){
 		return m_Shader;
 	}
 

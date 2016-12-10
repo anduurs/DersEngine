@@ -48,17 +48,17 @@ public class TerrainRenderer {
 	
 	public void render(){
 		for(Terrain terrain : m_Terrains){
-			prepareTexturedModel(terrain);
-			prepareRenderable(terrain);
-			glDrawElements(GL_TRIANGLES, terrain.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			loadTexturedMeshData(terrain);
+			loadRenderableData(terrain);
+			glDrawElements(GL_TRIANGLES, terrain.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 			unbindTexturedModel();
 		}
 	}
 	
-	private void prepareTexturedModel(Terrain terrain){
-		Mesh model = terrain.getModel();
+	private void loadTexturedMeshData(Terrain terrain){
+		Mesh mesh = terrain.getMesh();
 		
-		glBindVertexArray(model.getVaoID());
+		glBindVertexArray(mesh.getVaoID());
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -88,9 +88,8 @@ public class TerrainRenderer {
 		glBindTexture(GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
-	private void prepareRenderable(Renderable renderable){
-		m_TerrainShader.loadMatrix4f("transformationMatrix", 
-				renderable.getEntity().getTransform().getTransformationMatrix());
+	private void loadRenderableData(Renderable renderable){
+		m_TerrainShader.loadModelMatrix(renderable.getEntity());
 	}
 	
 	private void unbindTexturedModel(){

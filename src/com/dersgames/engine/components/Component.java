@@ -1,6 +1,8 @@
 package com.dersgames.engine.components;
 
+import com.dersgames.engine.core.Quaternion;
 import com.dersgames.engine.core.Transform;
+import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
 
 public abstract class Component {
@@ -28,6 +30,18 @@ public abstract class Component {
 	
 	public Transform getTransform(){
 		return m_Entity.getTransform();
+	}
+	
+	public Vector3f getPosition(){
+		return m_Entity.getTransform().getPosition();
+	}
+	
+	public Quaternion getRotation(){
+		return m_Entity.getTransform().getRotation();
+	}
+	
+	public Vector3f getScale(){
+		return m_Entity.getTransform().getScale();
 	}
 
 	public void setEntity(Entity entity) {
