@@ -6,9 +6,9 @@ in vec3 normal;
 
 out vec2 out_TexCoords;
 out vec3 out_Normal;
-
 out vec3 toCameraVector;
 out float visibility;
+out vec3 worldFragPos;
 
 uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
@@ -30,6 +30,8 @@ void main(){
 	if(useFakeLighting == 1.0){
 		actualNormal = vec3(0.0, 1.0, 0.0);
 	}
+	
+	worldFragPos = worldPos.xyz;
 	
 	out_Normal = (modelMatrix * vec4(actualNormal, 0.0)).xyz;
 	

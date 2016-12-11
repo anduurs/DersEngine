@@ -12,7 +12,7 @@ import com.dersgames.engine.entities.Entity;
 
 public class EntityShader extends Shader{
 	
-	public static final int MAX_LIGHTS = 0;
+	public static final int MAX_POINT_LIGHTS = 3;
 
 	public EntityShader() {
 		super("vertexShader", "fragmentShader");
@@ -32,17 +32,14 @@ public class EntityShader extends Shader{
 		addUniform("directionalLight.diffuse");
 		addUniform("directionalLight.specular");
 		
-		addUniform("numOfLights", MAX_LIGHTS);
-		
-		addUniform("lightPositions", MAX_LIGHTS);
-//		addUniform("pointLights", MAX_LIGHTS);
-//		
-//		for(int i = 0; i < MAX_LIGHTS; i++){
-//			addUniform("pointLights" + i + ".attenuation");
-//			addUniform("pointLights" + i + ".ambient");
-//			addUniform("pointLights" + i + ".diffuse");
-//			addUniform("pointLights" + i + ".specular");
-//		}
+		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
+			addUniform("pointLights["+i+"].position");
+			addUniform("pointLights["+i+"].attenuation");
+			addUniform("pointLights["+i+"].ambient");
+			addUniform("pointLights["+i+"].diffuse");
+			addUniform("pointLights["+i+"].specular");
+			addUniform("pointLights["+i+"].intensity");
+		}
 		
 		enable();
 		loadInteger("textureSampler", 0);
@@ -70,13 +67,14 @@ public class EntityShader extends Shader{
 		super.loadVector3f("directionalLight.diffuse", directionalLight.getDiffuseLight());
 		super.loadVector3f("directionalLight.specular", directionalLight.getSpecularLight());
 		
-//		for(int i = 0; i < MAX_LIGHTS; i++){
-//			super.loadVector3f("lightPositions"+i, pointLights.get(i).getPosition());
-//			super.loadVector3f("pointLights"+i+".attenuation", pointLights.get(i).getAttenuation());
-//			super.loadVector3f("pointLights"+i+".ambient", pointLights.get(i).getAmbientLight());
-//			super.loadVector3f("pointLights"+i+".diffuse", pointLights.get(i).getDiffuseLight());
-//			super.loadVector3f("pointLights"+i+".specular", pointLights.get(i).getSpecularLight());
-//		}
+		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
+			super.loadVector3f("pointLights["+i+"].position", pointLights.get(i).getPosition());
+			super.loadVector3f("pointLights["+i+"].attenuation", pointLights.get(i).getAttenuation());
+			super.loadVector3f("pointLights["+i+"].ambient", pointLights.get(i).getAmbientLight());
+			super.loadVector3f("pointLights["+i+"].diffuse", pointLights.get(i).getDiffuseLight());
+			super.loadVector3f("pointLights["+i+"].specular", pointLights.get(i).getSpecularLight());
+			super.loadFloat("pointLights["+i+"].intensity", pointLights.get(i).getIntensity());
+		}
 	}
 	
 	public void loadModelMatrix(Entity entity){

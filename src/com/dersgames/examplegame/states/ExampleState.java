@@ -3,7 +3,6 @@ package com.dersgames.examplegame.states;
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.components.lights.DirectionalLight;
-import com.dersgames.engine.components.lights.Light;
 import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
@@ -16,7 +15,10 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedMesh;
+import com.dersgames.engine.graphics.textures.TerrainTexture;
+import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.components.player.MovementComponent;
 
@@ -72,58 +74,70 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(-0.2f,-1.0f,-0.3f,0), 
+											   new Quaternion(0.0f, -1.0f, 0.3f, 0.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
+		
+		float ambient = 0.06f;
+		float diffuse = 0.5f;
+		float specular = 1.0f;
+		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
-											   new Vector3f(0.2f, 0.2f, 0.2f),
-											   new Vector3f(0.5f, 0.5f, 0.5f),
-											   new Vector3f(1.0f, 1.0f, 1.0f));
+											   new Vector3f(ambient, ambient, ambient),
+											   new Vector3f(diffuse, diffuse, diffuse),
+											   new Vector3f(specular, specular, specular),
+											   0.5f);
 		
 		directionalLight.addComponent(sun);
 		m_Scene.addDirectionalLight(sun);
 		
-//		Entity pointLight1 = new Entity("PointLight1", 200, 20, 100);
-//		PointLight light1 = new PointLight("PointLight1",  new Vector3f(0.2f, 0.2f, 0.2f),
-//				   										   new Vector3f(0.5f, 0.5f, 0.5f),
-//				   										   new Vector3f(1.0f, 1.0f, 1.0f), 
-//				   										   new Vector3f(1, 0.01f, 0.002f));
-//		pointLight1.addComponent(light1);
-//		m_Scene.addPointLight(light1);
-//		
-//		Entity lightSource3 = new Entity("LightSource3", 370, 30, 100);
-//		PointLight light3 = new PointLight("LightSource3", new Vector3f(0.2f, 0.2f, 0.2f),
-//														   new Vector3f(0.5f, 0.5f, 0.5f),
-//														   new Vector3f(1.0f, 1.0f, 1.0f), 
-//														   new Vector3f(1, 0.01f, 0.002f));
-//		lightSource3.addComponent(light3);
-//		m_Scene.addPointLight(light3);
-//		
-//		Entity lightSource4 = new Entity("LightSource4", 293, 40, 100);
-//		PointLight light4 = new PointLight("LightSource4", new Vector3f(0.2f, 0.2f, 0.2f),
-//														   new Vector3f(0.5f, 0.5f, 0.5f),
-//														   new Vector3f(1.0f, 1.0f, 1.0f), 
-//														   new Vector3f(1, 0.01f, 0.002f));
-//		lightSource4.addComponent(light4);
-//		m_Scene.addPointLight(light4);
+		Entity pointLight1 = new Entity("PointLight1", 170.0f, 5.0f, 395.0f);
+		PointLight redLight = new PointLight("PointLight1",  new Vector3f(0.6f, 0.1f, 0.1f),
+				   										   new Vector3f(0.8f, 0.8f, 0.8f),
+				   										   new Vector3f(1.0f, 1.0f, 1.0f), 
+				   										   new Vector3f(0, 0.014f, 0.0007f), 
+				   										   1.8f);
+		redLight.speed = 1.2f;
+		pointLight1.addComponent(redLight);
+		m_Scene.addPointLight(redLight);
+		
+		Entity pointLight2 = new Entity("PointLight2", 370, 10.0f, 395.0f);
+		PointLight greenlight = new PointLight("PointLight2", new Vector3f(0.1f, 0.6f, 0.1f),
+														   new Vector3f(0.8f, 0.8f, 0.8f),
+														   new Vector3f(1.0f, 1.0f, 1.0f), 
+														   new Vector3f(0, 0.014f, 0.0007f),
+														   1.8f);
+		greenlight.speed = 0.6f;
+		pointLight2.addComponent(greenlight);
+		m_Scene.addPointLight(greenlight);
+		
+		Entity pointLight3 = new Entity("PointLight3", 570, 5.0f, 395.0f);
+		PointLight blueLight = new PointLight("PointLight3", new Vector3f(0.1f, 0.1f, 0.6f),
+														   new Vector3f(0.8f, 0.8f, 0.8f),
+														   new Vector3f(1.0f, 1.0f, 1.0f), 
+														   new Vector3f(0, 0.014f, 0.0007f),
+														   1.8f);
+		blueLight.speed = 0.9f;
+		pointLight3.addComponent(blueLight);
+		m_Scene.addPointLight(blueLight);
 	}
 	
 	private void generateTerrain(){
-//		TerrainTexture backgroundTexture = new TerrainTexture(m_Loader.loadModelTexture("grassy"));
-//		TerrainTexture rTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("mud"));
-//		TerrainTexture gTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("grassFlowers"));
-//		TerrainTexture bTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("path"));
-//		TerrainTexture blendMap 		 = new TerrainTexture(m_Loader.loadModelTexture("blendMap"));
-//		
-//		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-//		
-//		Entity terrainEntity = new Entity("Terrain");
-//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-////		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
-//		terrainEntity.addComponent(terrain);
-//		
-//		m_Scene.addEntity(terrainEntity);
+		TerrainTexture backgroundTexture = new TerrainTexture(m_Loader.loadModelTexture("grassy"));
+		TerrainTexture rTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("mud"));
+		TerrainTexture gTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("grassFlowers"));
+		TerrainTexture bTexture 		 = new TerrainTexture(m_Loader.loadModelTexture("path"));
+		TerrainTexture blendMap 		 = new TerrainTexture(m_Loader.loadModelTexture("blendMap"));
+		
+		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+		
+		Entity terrainEntity = new Entity("Terrain");
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+		terrainEntity.addComponent(terrain);
+		
+		m_Scene.addEntity(terrainEntity);
 //	
 //		TextureAtlas fernTexture  = new TextureAtlas(m_Loader.loadModelTexture("fern"), 2);
 //		Material fernMaterial     = new Material(fernTexture, 1.0f, 0.0f, true, false);
@@ -149,14 +163,14 @@ public class ExampleState extends GameState{
 //		
 		TextureAtlas dragonTexture = new TextureAtlas(m_Loader.loadModelTexture("dragontexture"), 1);
 		TexturedMesh dragonMesh    = new TexturedMesh(m_Loader.loadObjFile("dragon"), 
-				                     new Material(dragonTexture, 
-											   new Vector3f(0.5f, 0.5f, 0.5f),
-											   new Vector3f(1.0f, 0.5f, 0.31f),
-											   new Vector3f(0.5f, 0.5f, 0.5f),
-											   32.0f,
-											   m_Renderer.getEntityRenderer().getShader())); 
-		
-		Entity dragon = new Entity("Dragon", 200, 7, 200, 10);
+						                              new Material(dragonTexture, 
+																   new Vector3f(0.5f, 0.5f, 0.5f),
+																   new Vector3f(1.0f, 0.5f, 0.31f),
+																   new Vector3f(0.5f, 0.5f, 0.5f),
+																   32.0f,
+																   m_Renderer.getEntityRenderer().getShader())); 
+				
+		Entity dragon = new Entity("Dragon", 370, 15.0f, 395.0f, 10);
 //		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 9;
 		dragon.addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));

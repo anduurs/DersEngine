@@ -64,8 +64,6 @@ public class TerrainRenderer {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		
-		m_TerrainShader.loadSpecularVariables(1, 0);
-		
 		bindTextures(terrain);
 	}
 	

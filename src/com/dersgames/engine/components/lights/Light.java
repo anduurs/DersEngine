@@ -8,13 +8,15 @@ public class Light extends Component{
 	protected Vector3f m_AmbientLight;
 	protected Vector3f m_DiffuseLight;
 	protected Vector3f m_SpecularLight;
+	protected float m_Intensity;
 	
-	public Light(String tag, Vector3f ambient, Vector3f diffuse, Vector3f specular) {
+	public Light(String tag, Vector3f ambient, Vector3f diffuse, Vector3f specular, float intensity) {
 		super(tag);
 		
 		m_AmbientLight = ambient;
 		m_DiffuseLight = diffuse;
 		m_SpecularLight = specular;
+		m_Intensity = intensity;
 	}
 	
 	@Override
@@ -48,6 +50,14 @@ public class Light extends Component{
 
 	public void setSpecularLight(Vector3f specularLight) {
 		m_SpecularLight = specularLight;
+	}
+
+	public float getIntensity() {
+		return m_Intensity;
+	}
+
+	public void setIntensity(float intensity) {
+		m_Intensity = intensity;
 	}
 
 }
