@@ -1,6 +1,6 @@
 #version 400 core
 
-const int MAX_POINT_LIGHTS = 3;
+const int MAX_POINT_LIGHTS = 4;
 
 in vec2 out_TexCoords;
 in vec3 out_Normal;
@@ -17,6 +17,7 @@ struct Material{
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	vec3 emissive;
 	
 	float shininess;
 };
@@ -58,8 +59,9 @@ vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 	vec3 ambient  = light.ambient * material.ambient;
 	vec3 diffuse  = light.diffuse * material.diffuse * diffuseFactor * textureColor.rgb;
 	vec3 specular = light.specular * material.specular * specularFactor;
+	vec3 emissive = material.emissive * textureColor.rgb;
 	
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular + emissive);
 }
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 viewDirection, vec4 textureColor){
@@ -78,12 +80,13 @@ vec3 calculatePointLight(PointLight light, vec3 normal, vec3 viewDirection, vec4
 	vec3 ambient  = light.ambient * material.ambient;
 	vec3 diffuse  = light.diffuse * material.diffuse * diffuseFactor * textureColor.rgb;
 	vec3 specular = light.specular * material.specular * specularFactor;
+	vec3 emissive = material.emissive * textureColor.rgb;
 	
 	ambient *= attenuationFactor;
 	diffuse *= attenuationFactor;
 	specular *= attenuationFactor;
 	
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular + emissive);
 }
 
 void main(){

@@ -12,6 +12,7 @@ public class Material {
 	private Vector3f m_AmbientLight;
 	private Vector3f m_DiffuseLight;
 	private Vector3f m_SpecularLight;
+	private Vector3f m_EmissiveLight;
 	
 	private float m_Shininess;
 	
@@ -19,11 +20,12 @@ public class Material {
 	private boolean m_UseFakeLighting;
 	
 	public Material(TextureAtlas textureAtlas, 
-			float ambient, float diffuse, float specular, float shininess, Shader shader){
+			float ambient, float diffuse, float specular, float emissive, float shininess, Shader shader){
 		this(   textureAtlas, 
 				new Vector3f(ambient, ambient, ambient),
 				new Vector3f(diffuse, diffuse, diffuse),
 				new Vector3f(specular, specular, specular), 
+				new Vector3f(emissive, emissive, emissive), 
 				shininess, 
 				false, 
 				false,
@@ -32,14 +34,14 @@ public class Material {
 	}
 	
 	public Material(TextureAtlas textureAtlas, Vector3f ambient, 
-			Vector3f diffuse, Vector3f specular, 
+			Vector3f diffuse, Vector3f specular, Vector3f emissive, 
 			float shininess, Shader shader){
 		
-		this(textureAtlas, ambient, diffuse, specular, shininess, false, false, shader);
+		this(textureAtlas, ambient, diffuse, specular, emissive, shininess, false, false, shader);
 	}
 	
 	public Material(TextureAtlas textureAtlas, Vector3f ambient, 
-			Vector3f diffuse, Vector3f specular, float shininess, 
+			Vector3f diffuse, Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
 		m_TextureAtlas = textureAtlas;
@@ -47,6 +49,7 @@ public class Material {
 		m_AmbientLight = ambient;
 		m_DiffuseLight = diffuse;
 		m_SpecularLight = specular;
+		m_EmissiveLight = emissive;
 		
 		m_Shininess = shininess;
 		m_HasTransparency = transparency;
@@ -56,6 +59,7 @@ public class Material {
 		m_Shader.addUniform("material.ambient");
 		m_Shader.addUniform("material.diffuse");
 		m_Shader.addUniform("material.specular");
+		m_Shader.addUniform("material.emissive");
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
@@ -65,6 +69,7 @@ public class Material {
 		m_Shader.loadVector3f("material.ambient", m_AmbientLight);
 		m_Shader.loadVector3f("material.diffuse", m_DiffuseLight);
 		m_Shader.loadVector3f("material.specular", m_SpecularLight);
+		m_Shader.loadVector3f("material.emissive", m_EmissiveLight);
 		
 		m_Shader.loadFloat("material.shininess", shininess);
 		
@@ -134,6 +139,14 @@ public class Material {
 
 	public void setSpecularLight(Vector3f specularLight) {
 		m_SpecularLight = specularLight;
+	}
+	
+	public Vector3f getEmissiveLight() {
+		return m_EmissiveLight;
+	}
+
+	public void setEmissiveLight(Vector3f emissiveLight) {
+		m_EmissiveLight = emissiveLight;
 	}
 
 }

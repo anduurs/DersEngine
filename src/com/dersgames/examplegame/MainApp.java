@@ -6,7 +6,7 @@ import com.dersgames.examplegame.states.ExampleState;
 public class MainApp {
 	
 	public static void main(String[] args){
-		GameApplication game = new GameApplication(800, 600, "TestGame", true);
+		GameApplication game = new GameApplication(800, 600, "DersEngine", true);
 		game.pushStartingState(new ExampleState(game.getGameStateManager()));
 		game.start();
 	}

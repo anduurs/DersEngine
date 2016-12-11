@@ -12,7 +12,7 @@ import com.dersgames.engine.entities.Entity;
 
 public class EntityShader extends Shader{
 	
-	public static final int MAX_POINT_LIGHTS = 3;
+	public static final int MAX_POINT_LIGHTS = 4;
 
 	public EntityShader() {
 		super("vertexShader", "fragmentShader");

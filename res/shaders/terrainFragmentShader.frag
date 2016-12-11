@@ -1,6 +1,6 @@
 #version 400 core
 
-const int MAX_POINT_LIGHTS = 3;
+const int MAX_POINT_LIGHTS = 4;
 
 in vec2 out_TexCoords;
 in vec3 out_Normal;

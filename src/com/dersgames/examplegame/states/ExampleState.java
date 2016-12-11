@@ -74,13 +74,13 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(0.0f, -1.0f, 0.3f, 0.0f), 
+											   new Quaternion(0.0f, -1.0f, 0.5f, 0.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
 		
 		float ambient = 0.06f;
-		float diffuse = 0.5f;
+		float diffuse = 0.3f;
 		float specular = 1.0f;
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
@@ -92,7 +92,7 @@ public class ExampleState extends GameState{
 		directionalLight.addComponent(sun);
 		m_Scene.addDirectionalLight(sun);
 		
-		Entity pointLight1 = new Entity("PointLight1", 170.0f, 5.0f, 395.0f);
+		Entity pointLight1 = new Entity("PointLight1", 170.0f, 5.0f, 200.0f);
 		PointLight redLight = new PointLight("PointLight1",  new Vector3f(0.6f, 0.1f, 0.1f),
 				   										   new Vector3f(0.8f, 0.8f, 0.8f),
 				   										   new Vector3f(1.0f, 1.0f, 1.0f), 
@@ -102,7 +102,7 @@ public class ExampleState extends GameState{
 		pointLight1.addComponent(redLight);
 		m_Scene.addPointLight(redLight);
 		
-		Entity pointLight2 = new Entity("PointLight2", 370, 10.0f, 395.0f);
+		Entity pointLight2 = new Entity("PointLight2", 370, 5.0f, 200.0f);
 		PointLight greenlight = new PointLight("PointLight2", new Vector3f(0.1f, 0.6f, 0.1f),
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
@@ -112,7 +112,7 @@ public class ExampleState extends GameState{
 		pointLight2.addComponent(greenlight);
 		m_Scene.addPointLight(greenlight);
 		
-		Entity pointLight3 = new Entity("PointLight3", 570, 5.0f, 395.0f);
+		Entity pointLight3 = new Entity("PointLight3", 470, 5.0f, 200.0f);
 		PointLight blueLight = new PointLight("PointLight3", new Vector3f(0.1f, 0.1f, 0.6f),
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
@@ -121,6 +121,16 @@ public class ExampleState extends GameState{
 		blueLight.speed = 0.9f;
 		pointLight3.addComponent(blueLight);
 		m_Scene.addPointLight(blueLight);
+		//255, 153, 51
+		Entity pointLight4 = new Entity("PointLight4", 270, 5.0f, 200.0f);
+		PointLight orangelight = new PointLight("PointLight4", new Vector3f(1.0f, 153.0f/255.0f, 51.0f/255.0f),
+														   new Vector3f(0.8f, 0.8f, 0.8f),
+														   new Vector3f(1.0f, 1.0f, 1.0f), 
+														   new Vector3f(0, 0.014f, 0.0007f),
+														   1.8f);
+		orangelight.speed = 0.9f;
+		pointLight4.addComponent(orangelight);
+		m_Scene.addPointLight(orangelight);
 	}
 	
 	private void generateTerrain(){
@@ -167,10 +177,11 @@ public class ExampleState extends GameState{
 																   new Vector3f(0.5f, 0.5f, 0.5f),
 																   new Vector3f(1.0f, 0.5f, 0.31f),
 																   new Vector3f(0.5f, 0.5f, 0.5f),
-																   32.0f,
+																   new Vector3f(0.03f, 0.03f, 0.03f),
+																   16.0f,
 																   m_Renderer.getEntityRenderer().getShader())); 
 				
-		Entity dragon = new Entity("Dragon", 370, 15.0f, 395.0f, 10);
+		Entity dragon = new Entity("Dragon", 370, 0.0f, 395.0f, 10);
 //		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 9;
 		dragon.addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));
