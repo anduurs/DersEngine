@@ -18,6 +18,7 @@ import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.lights.DirectionalLight;
 import com.dersgames.engine.components.lights.PointLight;
+import com.dersgames.engine.components.lights.SpotLight;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
@@ -27,7 +28,7 @@ import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
 
-	private Camera m_Camera;
+	private static Camera m_Camera;
 	
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
@@ -60,13 +61,13 @@ public class RenderEngine {
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
-	public void render(DirectionalLight directionalLight, List<PointLight> pointLights){
+	public void render(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
 		clearFrameBuffer();
 		
 		EntityShader shader = m_EntityRenderer.getShader();
 		shader.enable();
 		shader.loadSkyColor(m_SkyColor);
-		shader.loadLightSources(directionalLight, pointLights);
+		shader.loadLightSources(directionalLight, pointLights, spotLights);
 		shader.loadViewMatrix(m_Camera);
 		m_EntityRenderer.render();
 		shader.disable();
@@ -75,7 +76,7 @@ public class RenderEngine {
 		TerrainShader terrainShader = m_TerrainRenderer.getShader();
 		terrainShader.enable();
 		terrainShader.loadSkyColor(m_SkyColor);
-		terrainShader.loadLightSources(directionalLight, pointLights);
+		terrainShader.loadLightSources(directionalLight, pointLights, spotLights);
 		terrainShader.loadViewMatrix(m_Camera);
 		m_TerrainRenderer.render();
 		terrainShader.disable();
@@ -112,6 +113,10 @@ public class RenderEngine {
 
 	public EntityRenderer getEntityRenderer() {
 		return m_EntityRenderer;
+	}
+	
+	public static Camera getCamera(){
+		return m_Camera;
 	}
 
 }

@@ -24,9 +24,7 @@ void main(){
 	out_TexCoords = textureCoords;
 	out_Normal = (modelMatrix * vec4(normal, 0.0)).xyz;
 	
-	//for(int i = 0; i < 3 ; i++){
-		worldFragPos = worldPos.xyz;
-	//}
+	worldFragPos = worldPos.xyz;
 
 	toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPos.xyz;
 	

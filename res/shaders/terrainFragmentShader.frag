@@ -1,6 +1,7 @@
 #version 400 core
 
 const int MAX_POINT_LIGHTS = 4;
+const int MAX_SPOT_LIGHTS = 4;
 
 in vec2 out_TexCoords;
 in vec3 out_Normal;
@@ -37,10 +38,18 @@ struct PointLight{
 	vec3 specular;
 	
 	float intensity;
+	float range;
+};
+
+struct SpotLight{
+	PointLight pointLight;
+	vec3 direction;
+	float cutOffAngle;
 };
 
 uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 vec4 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec4 textureColor){
 	vec3 lightDirection = normalize(-light.direction);
@@ -56,6 +65,10 @@ vec4 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec4 texture
 vec4 calculatePointLight(PointLight light, vec3 normal, vec4 textureColor){
 	vec3 lightDirection = worldFragPos - light.position;
 	float distance = length(lightDirection);
+	
+	if(distance > light.range)
+		return vec4(0.0,0.0,0.0,0.0);
+		
 	lightDirection = normalize(lightDirection);
 	
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
@@ -68,6 +81,20 @@ vec4 calculatePointLight(PointLight light, vec3 normal, vec4 textureColor){
 	diffuse *= attenuationFactor;
 	
 	return (vec4(ambient, 1.0) + vec4(diffuse, 1.0) * textureColor) * light.intensity;
+}
+
+vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
+	vec3 lightDirection = normalize(worldFragPos - light.pointLight.position);
+	float spotFactor = dot(lightDirection, light.direction); 
+	
+	vec4 resultingShade = vec4(0.0);
+	
+	if(spotFactor < light.cutOffAngle){
+		float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
+		resultingShade = calculatePointLight(light.pointLight, normal, textureColor) * smoothnessFactor;
+	}else resultingShade = vec4(light.pointLight.ambient, 1.0);
+	
+	return resultingShade;
 }
 
 void main(){
@@ -89,6 +116,9 @@ void main(){
 	
 	for(int i = 0; i < MAX_POINT_LIGHTS; i++)
 		resultingShade += calculatePointLight(pointLights[i], normal, totalTextureColor);
+		
+	for(int i = 0; i < MAX_SPOT_LIGHTS; i++)
+		resultingShade += calculateSpotLight(spotLights[i], normal, totalTextureColor);
 	
 	outColor = mix(vec4(skyColor, 1.0), resultingShade, visibility);
 }

@@ -4,6 +4,7 @@ import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.components.lights.DirectionalLight;
 import com.dersgames.engine.components.lights.PointLight;
+import com.dersgames.engine.components.lights.SpotLight;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.core.Quaternion;
@@ -92,12 +93,15 @@ public class ExampleState extends GameState{
 		directionalLight.addComponent(sun);
 		m_Scene.addDirectionalLight(sun);
 		
+		float range = 500.0f;
+		
 		Entity pointLight1 = new Entity("PointLight1", 170.0f, 5.0f, 200.0f);
 		PointLight redLight = new PointLight("PointLight1",  new Vector3f(0.6f, 0.1f, 0.1f),
 				   										   new Vector3f(0.8f, 0.8f, 0.8f),
 				   										   new Vector3f(1.0f, 1.0f, 1.0f), 
 				   										   new Vector3f(0, 0.014f, 0.0007f), 
-				   										   1.8f);
+				   										   1.8f,
+				   										   range);
 		redLight.speed = 1.2f;
 		pointLight1.addComponent(redLight);
 		m_Scene.addPointLight(redLight);
@@ -107,7 +111,8 @@ public class ExampleState extends GameState{
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
 														   new Vector3f(0, 0.014f, 0.0007f),
-														   1.8f);
+														   1.8f,
+														   range);
 		greenlight.speed = 0.6f;
 		pointLight2.addComponent(greenlight);
 		m_Scene.addPointLight(greenlight);
@@ -117,7 +122,8 @@ public class ExampleState extends GameState{
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
 														   new Vector3f(0, 0.014f, 0.0007f),
-														   1.8f);
+														   1.8f,
+														   range);
 		blueLight.speed = 0.9f;
 		pointLight3.addComponent(blueLight);
 		m_Scene.addPointLight(blueLight);
@@ -127,10 +133,24 @@ public class ExampleState extends GameState{
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
 														   new Vector3f(0, 0.014f, 0.0007f),
-														   1.8f);
+														   1.8f,
+														   range);
 		orangelight.speed = 0.9f;
 		pointLight4.addComponent(orangelight);
 		m_Scene.addPointLight(orangelight);
+		
+		Entity spotLight1 = new Entity("SpotLight1", 200.0f, 10.0f, 100.0f);
+		spotLight1.getTransform().setRotationVector(new Quaternion(0f,0f,0f,1.0f));
+		SpotLight orangeSpotlight = new SpotLight("SpotLight1", new Vector3f(0,0.1f,0.1f),
+														   new Vector3f(0.8f, 0.8f, 0.8f),
+														   new Vector3f(1.0f, 1.0f, 1.0f), 
+														   new Vector3f(0, 0.0f, 0.1f),
+														   0.2f,
+														   3000.0f,
+														   0.9f);
+		
+		spotLight1.addComponent(orangeSpotlight);
+//		m_Scene.addSpotLight(orangeSpotlight);
 	}
 	
 	private void generateTerrain(){

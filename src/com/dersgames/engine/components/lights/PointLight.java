@@ -1,19 +1,19 @@
 package com.dersgames.engine.components.lights;
 
 import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.utils.Randomizer;
 
 public class PointLight extends Light{
 	
 	private Vector3f m_Attenuation;
+	private float m_Range;
 	public float speed = 1.0f;
 	
-
 	public PointLight(String tag, Vector3f ambient, Vector3f diffuse, 
-			Vector3f specular, Vector3f attenuation, float intensity) {
+			Vector3f specular, Vector3f attenuation, float intensity, float range) {
 		
 		super(tag, ambient, diffuse, specular, intensity);
 		m_Attenuation = attenuation;
+		m_Range = range;
 	}
 	
 	float temp = 0.0f;
@@ -30,6 +30,14 @@ public class PointLight extends Light{
 
 	public void setAttenuation(Vector3f attenuation) {
 		m_Attenuation = attenuation;
+	}
+
+	public float getRange() {
+		return m_Range;
+	}
+
+	public void setRange(float range) {
+		m_Range = range;
 	}
 
 }
