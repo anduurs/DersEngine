@@ -15,8 +15,8 @@ public class Player extends Entity{
 		super("Player", x, y, z);
 	
 		TextureAtlas atlas = new TextureAtlas(loader.loadModelTexture("player"), 1);
-		Material material = new Material(atlas, 10.0f, 1.0f, false, false);
-		TexturedMesh playerMesh = new TexturedMesh(loader.loadObjFile("player"), material);
+//		Material material = new Material(atlas, 10.0f, 1.0f, false, false);
+//		TexturedMesh playerMesh = new TexturedMesh(loader.loadObjFile("player"), material);
 		
 //		addComponent(new StaticMesh("PlayerMesh", playerMesh));
 		PlayerMovement playerMovement = new PlayerMovement();

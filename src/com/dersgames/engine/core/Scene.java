@@ -4,23 +4,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.dersgames.engine.components.lights.Light;
+import com.dersgames.engine.components.lights.DirectionalLight;
+import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.RenderEngine;
 
 public class Scene {
 	
 	private static List<Entity> m_EntityList;
-	private List<Light> m_LightSources;
+	private DirectionalLight m_Sun;
+	private List<PointLight> m_PointLights;
 	
 	public Scene(){
 		m_EntityList = new ArrayList<Entity>();
-		m_LightSources = new ArrayList<Light>();
+		m_PointLights = new ArrayList<PointLight>();
 	}
 	
-	public void addLightSource(Light lightSource){
-		m_LightSources.add(lightSource);
-		addEntity(lightSource.getEntity());
+	public void addPointLight(PointLight pointLight){
+		m_PointLights.add(pointLight);
+		addEntity(pointLight.getEntity());
+	}
+	
+	public void addDirectionalLight(DirectionalLight directionalLight){
+		m_Sun = directionalLight;
 	}
 	
 	public void addEntity(Entity entity){
@@ -38,7 +44,7 @@ public class Scene {
 		for(Entity entity : getEntities())
 			entity.renderComponents(renderer);
 		
-		renderer.render(m_LightSources);
+		renderer.render(m_Sun, m_PointLights);
 	}
 	
 	public int getEntityCount(){

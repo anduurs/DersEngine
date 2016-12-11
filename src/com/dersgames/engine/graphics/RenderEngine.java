@@ -16,7 +16,8 @@ import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.components.lights.Light;
+import com.dersgames.engine.components.lights.DirectionalLight;
+import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
@@ -31,11 +32,11 @@ public class RenderEngine {
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
 	
-	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
-//	private static Vector3f m_SkyColor = new Vector3f(0.5f, 0.5f, 0.5f);
+//	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
+	private static Vector3f m_SkyColor = new Vector3f(0f, 0f, 0f);
 
 	public RenderEngine(){
-		m_TerrainRenderer = new TerrainRenderer();
+//		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
 		
 		glEnable(GL_DEPTH_TEST);
@@ -59,42 +60,58 @@ public class RenderEngine {
 		else m_EntityRenderer.addRenderable(renderable);
 	}
 	
-	public void render(List<Light> lightSources){
+	public void render(DirectionalLight directionalLight, List<PointLight> pointLights){
 		clearFrameBuffer();
 		
 		EntityShader shader = m_EntityRenderer.getShader();
 		shader.enable();
 		shader.loadSkyColor(m_SkyColor);
-		shader.loadLightSources(lightSources);
+		shader.loadLightSources(directionalLight, pointLights);
 		shader.loadViewMatrix(m_Camera);
-		shader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		m_EntityRenderer.render();
 		shader.disable();
 		m_EntityRenderer.clear();
 		
-		TerrainShader terrainShader = m_TerrainRenderer.getShader();
-		terrainShader.enable();
-		terrainShader.loadSkyColor(m_SkyColor);
-		terrainShader.loadLightSources(lightSources);
-		terrainShader.loadViewMatrix(m_Camera);
-		terrainShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
-		m_TerrainRenderer.render();
-		terrainShader.disable();
-		m_TerrainRenderer.clear();
+//		TerrainShader terrainShader = m_TerrainRenderer.getShader();
+//		terrainShader.enable();
+//		terrainShader.loadSkyColor(m_SkyColor);
+//		terrainShader.loadLightSources(pointLights);
+//		terrainShader.loadViewMatrix(m_Camera);
+//		m_TerrainRenderer.render();
+//		terrainShader.disable();
+//		m_TerrainRenderer.clear();
 	}
 	
 	public void addCamera(Camera camera){
 		m_Camera = camera;
+		
+		EntityShader shader = m_EntityRenderer.getShader();
+		shader.enable();
+		shader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+		shader.disable();
+		
+//		TerrainShader terrainShader = m_TerrainRenderer.getShader();
+//		terrainShader.enable();
+//		terrainShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+//		terrainShader.disable();
 	}
 	
 	public void dispose(){
-		m_TerrainRenderer.dispose();
+//		m_TerrainRenderer.dispose();
 		m_EntityRenderer.dispose();
 	}
 	
 	private void clearFrameBuffer(){
 		glClearColor(m_SkyColor.x, m_SkyColor.y, m_SkyColor.z, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	public TerrainRenderer getTerrainRenderer() {
+		return m_TerrainRenderer;
+	}
+
+	public EntityRenderer getEntityRenderer() {
+		return m_EntityRenderer;
 	}
 
 }

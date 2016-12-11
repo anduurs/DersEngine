@@ -33,7 +33,7 @@ public abstract class Component {
 	}
 	
 	public Vector3f getPosition(){
-		return m_Entity.getTransform().getPosition();
+		return m_Entity.getPosition();
 	}
 	
 	public Quaternion getRotation(){

@@ -2,54 +2,76 @@
 
 in vec2 out_TexCoords;
 in vec3 out_Normal;
-in vec3 toLightVector[4];
 in vec3 toCameraVector;
 in float visibility;
 
 out vec4 outColor;
 
 uniform sampler2D textureSampler;
-
-uniform vec3 lightColor[4];
-uniform vec3 attenuation[4];
-uniform float shininess;
-uniform float reflectivity;
 uniform vec3 skyColor;
 
+struct Material{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	
+	float shininess;
+};
+
+struct DirectionalLight{
+	vec3 direction;
+	
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+//struct PointLight{
+//	vec3 attenuation;
+	
+//	vec3 ambient;
+//	vec3 diffuse;
+//	vec3 specular;
+//}
+
+uniform Material material;
+uniform DirectionalLight directionalLight;
+//uniform PointLight pointLights[0];
+
+vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec4 textureColor){
+	vec3 lightDirection = normalize(-light.direction);
+	
+	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+	
+	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
+	float normalizationFactor = ((material.shininess + 2.0) / 8.0);
+	float specularFactor = pow(max(dot(viewDirection, reflectedLightDirection), 0.0), material.shininess) * normalizationFactor;
+	
+	vec3 ambient  = light.ambient * material.ambient;
+	vec3 diffuse  = light.diffuse * material.diffuse * diffuseFactor * textureColor.rgb;
+	vec3 specular = light.specular * material.specular * specularFactor;
+	
+	return (ambient + diffuse + specular);
+}
+
+
+
 void main(){
-	vec3 unitNormal = normalize(out_Normal);
-	vec3 unitCameraVector = normalize(toCameraVector);
-	
-	vec3 totalDiffuse = vec3(0.0);
-	vec3 totalSpecular = vec3(0.0);
-	
-	for(int i = 0; i < 4; i++){
-		float distance = length(toLightVector[i]);
-		float attenuationFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
-		vec3 unitLightVector = normalize(toLightVector[i]);
-		
-		float brightness = max(dot(unitNormal, unitLightVector), 0.0);
-		vec3 lightDirection = -unitLightVector;
-		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); 
-		float specularFactor = max(dot(reflectedLightDirection, unitCameraVector), 0.0); 
-		float dampedFactor = pow(specularFactor, shininess);
-		
-		if(attenuationFactor == 1){
-			totalDiffuse = totalDiffuse + (brightness * lightColor[i]) * 1;
-		}else {
-			totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attenuationFactor;
-		}
-	
-		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attenuationFactor;
-	}
-	
-	float ambientFactor = 0.01;
-	totalDiffuse = max(totalDiffuse, ambientFactor);
+	vec3 normal = normalize(out_Normal);
+	vec3 viewDirection = normalize(toCameraVector);
 	
 	vec4 textureColor = texture(textureSampler, out_TexCoords);
+	
 	if(textureColor.a < 0.5){
 		discard;
 	}
 	
-	outColor = mix(vec4(skyColor, 1.0), vec4(totalDiffuse, 1.0) * textureColor + vec4(totalSpecular, 1.0), visibility);
+	vec3 resultingShade = calculateDirectionalLight(directionalLight, normal, viewDirection, textureColor);
+	
+	//for(int i = 0; i < 0; i++){
+		//resultingShade += calculatePointLight(pointLights[i], normal, viewDirection, textureColor, i);
+	//}
+	
+	outColor = vec4(resultingShade, 1.0);
+	//outColor = mix(vec4(skyColor, 1.0), vec4(resultingShade, 1.0), visibility);
 }

@@ -5,51 +5,49 @@ import com.dersgames.engine.core.Vector3f;
 
 public class Light extends Component{
 	
-	private Vector3f m_Color;
-	private Vector3f m_Attenuation;
+	protected Vector3f m_AmbientLight;
+	protected Vector3f m_DiffuseLight;
+	protected Vector3f m_SpecularLight;
 	
-	public Light(String tag, Vector3f color) {
+	public Light(String tag, Vector3f ambient, Vector3f diffuse, Vector3f specular) {
 		super(tag);
 		
-		m_Color = color;
-		m_Attenuation = new Vector3f(1, 0, 0);
-	}
-	
-	public Light(String tag, Vector3f color, Vector3f attenuation) {
-		super(tag);
-		
-		m_Color = color;
-		m_Attenuation = attenuation;
+		m_AmbientLight = ambient;
+		m_DiffuseLight = diffuse;
+		m_SpecularLight = specular;
 	}
 	
 	@Override
-	public void init() {
-		
-	}
-	
+	public void init() {}
 	@Override
-	public void update(float dt) {
-		
+	public void update(float dt) {}
+
+
+	public Vector3f getAmbientLight() {
+		return m_AmbientLight;
+	}
+
+	public void setAmbientLight(Vector3f ambientLight) {
+		m_AmbientLight = ambientLight;
 	}
 	
-	public Vector3f getPosition() {
-		return m_Entity.getPosition();
+	public Vector3f getDiffuseLight() {
+		return m_DiffuseLight;
 	}
 
-	public Vector3f getColor() {
-		return m_Color;
+
+	public void setDiffuseLight(Vector3f diffuseLight) {
+		m_DiffuseLight = diffuseLight;
 	}
 
-	public void setColor(Vector3f color) {
-		this.m_Color = color;
+
+	public Vector3f getSpecularLight() {
+		return m_SpecularLight;
 	}
 
-	public Vector3f getAttenuation() {
-		return m_Attenuation;
-	}
 
-	public void setAttenuation(Vector3f attenuation) {
-		m_Attenuation = attenuation;
+	public void setSpecularLight(Vector3f specularLight) {
+		m_SpecularLight = specularLight;
 	}
 
 }

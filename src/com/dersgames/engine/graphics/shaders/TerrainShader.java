@@ -3,7 +3,7 @@ package com.dersgames.engine.graphics.shaders;
 import java.util.List;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.components.lights.Light;
+import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
@@ -49,11 +49,11 @@ public class TerrainShader extends Shader{
 		loadInteger("blendMap", 4);
 	}
 	
-	public void loadLightSources(List<Light> lights){
+	public void loadLightSources(List<PointLight> lights){
 		for(int i = 0; i < MAX_LIGHTS; i++){
 			if(i < lights.size()){
 				super.loadVector3f("lightPosition"+i, lights.get(i).getPosition());
-				super.loadVector3f("lightColor"+i, lights.get(i).getColor());
+//				super.loadVector3f("lightColor"+i, lights.get(i).getColor());
 				super.loadVector3f("attenuation"+i, lights.get(i).getAttenuation());
 			}else{
 				super.loadVector3f("lightPosition"+i, new Vector3f(0,0,0));
@@ -67,8 +67,8 @@ public class TerrainShader extends Shader{
 		loadVector3f("skyColor", skyColor);
 	}
 	
-	public void loadSpecularVariables(float damper, float reflectivity){
-		loadFloat("shininess", damper);
+	public void loadSpecularVariables(float shininess, float reflectivity){
+		loadFloat("shininess", shininess);
 		loadFloat("reflectivity", reflectivity);
 	}
 	

@@ -20,6 +20,15 @@ uniform float shininess;
 uniform float reflectivity;
 uniform vec3 skyColor;
 
+struct Material{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+
+uniform Material material;
+
 void main(){
 	vec4 blendMapColor = texture(blendMap, out_TexCoords);
 	

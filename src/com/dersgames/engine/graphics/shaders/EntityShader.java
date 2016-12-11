@@ -3,7 +3,8 @@ package com.dersgames.engine.graphics.shaders;
 import java.util.List;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.components.lights.Light;
+import com.dersgames.engine.components.lights.DirectionalLight;
+import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
@@ -11,25 +12,37 @@ import com.dersgames.engine.entities.Entity;
 
 public class EntityShader extends Shader{
 	
-	public static final int MAX_LIGHTS = 4;
+	public static final int MAX_LIGHTS = 0;
 
 	public EntityShader() {
 		super("vertexShader", "fragmentShader");
 		
 		addUniform("textureSampler");
+		
 		addUniform("modelMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");
-		addUniform("shininess");
-		addUniform("reflectivity");
-		addUniform("useFakeLighting");
+		
 		addUniform("skyColor");
-		addUniform("numOfRows");
+		
 		addUniform("offset");
 		
-		addUniform("lightPosition", MAX_LIGHTS);
-		addUniform("lightColor", MAX_LIGHTS);
-		addUniform("attenuation", MAX_LIGHTS);
+		addUniform("directionalLight.direction");
+		addUniform("directionalLight.ambient");
+		addUniform("directionalLight.diffuse");
+		addUniform("directionalLight.specular");
+		
+		addUniform("numOfLights", MAX_LIGHTS);
+		
+		addUniform("lightPositions", MAX_LIGHTS);
+//		addUniform("pointLights", MAX_LIGHTS);
+//		
+//		for(int i = 0; i < MAX_LIGHTS; i++){
+//			addUniform("pointLights" + i + ".attenuation");
+//			addUniform("pointLights" + i + ".ambient");
+//			addUniform("pointLights" + i + ".diffuse");
+//			addUniform("pointLights" + i + ".specular");
+//		}
 		
 		enable();
 		loadInteger("textureSampler", 0);
@@ -43,10 +56,6 @@ public class EntityShader extends Shader{
 		super.bindAttribute(2, "normal");
 	}
 	
-	public void loadNumOfRowsInTextureAtlas(float rows){
-		loadFloat("numOfRows", rows);
-	}
-	
 	public void loadTexCoordOffset(Vector2f offset){
 		loadVector2f("offset", offset);
 	}
@@ -55,29 +64,19 @@ public class EntityShader extends Shader{
 		loadVector3f("skyColor", skyColor);
 	}
 	
-	public void loadUseFakeLighting(boolean useFakelighting){
-		if(useFakelighting)
-			loadFloat("useFakeLighting", 1.0f);
-		else loadFloat("useFakeLighting", 0.0f);
-	}
-	
-	public void loadSpecularProperties(float damper, float reflectivity){
-		loadFloat("shininess", damper);
-		loadFloat("reflectivity", reflectivity);
-	}
-	
-	public void loadLightSources(List<Light> lights){
-		for(int i = 0; i < MAX_LIGHTS; i++){
-			if(i < lights.size()){
-				super.loadVector3f("lightPosition"+i, lights.get(i).getPosition());
-				super.loadVector3f("lightColor"+i, lights.get(i).getColor());
-				super.loadVector3f("attenuation"+i, lights.get(i).getAttenuation());
-			}else{
-				super.loadVector3f("lightPosition"+i, new Vector3f(0,0,0));
-				super.loadVector3f("lightColor"+i, new Vector3f(0,0,0));
-				super.loadVector3f("attenuation"+i, new Vector3f(1,0,0));
-			}
-		}
+	public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights){
+		super.loadVector3f("directionalLight.direction", directionalLight.getDirection());
+		super.loadVector3f("directionalLight.ambient", directionalLight.getAmbientLight());
+		super.loadVector3f("directionalLight.diffuse", directionalLight.getDiffuseLight());
+		super.loadVector3f("directionalLight.specular", directionalLight.getSpecularLight());
+		
+//		for(int i = 0; i < MAX_LIGHTS; i++){
+//			super.loadVector3f("lightPositions"+i, pointLights.get(i).getPosition());
+//			super.loadVector3f("pointLights"+i+".attenuation", pointLights.get(i).getAttenuation());
+//			super.loadVector3f("pointLights"+i+".ambient", pointLights.get(i).getAmbientLight());
+//			super.loadVector3f("pointLights"+i+".diffuse", pointLights.get(i).getDiffuseLight());
+//			super.loadVector3f("pointLights"+i+".specular", pointLights.get(i).getSpecularLight());
+//		}
 	}
 	
 	public void loadModelMatrix(Entity entity){

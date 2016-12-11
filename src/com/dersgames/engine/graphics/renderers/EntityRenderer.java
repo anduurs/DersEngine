@@ -72,11 +72,7 @@ public class EntityRenderer {
 		
 		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
-		
-		m_Shader.loadSpecularProperties(material.getShineDamper(), material.getReflectivity());
-		m_Shader.loadUseFakeLighting(material.getUseFakeLighting());
-		m_Shader.loadNumOfRowsInTextureAtlas(material.getTextureAtlas().getNumberOfRows());
-		
+	
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getTextureID());
 	}
