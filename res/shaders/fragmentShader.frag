@@ -70,7 +70,7 @@ vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 	vec3 specular = light.specular * material.specular * specularFactor;
 	vec3 emissive = material.emissive * textureColor.rgb;
 	
-	return (ambient + diffuse + specular + emissive);
+	return ((ambient + diffuse + specular + emissive));
 }
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 viewDirection, vec4 textureColor){
@@ -107,11 +107,11 @@ vec3 calculateSpotLight(SpotLight light, vec3 normal, vec3 viewDirection, vec4 t
 	float spotFactor = dot(lightDirection, light.direction); 
 	
 	vec3 resultingShade = vec3(0.0);
+	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
 	
 	if(spotFactor < light.cutOffAngle){
-		float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
 		resultingShade = calculatePointLight(light.pointLight, normal, viewDirection, textureColor) * smoothnessFactor;
-	}else resultingShade = light.pointLight.ambient * material.ambient;
+	}else resultingShade = light.pointLight.ambient * material.ambient * smoothnessFactor;
 	
 	return resultingShade;
 }

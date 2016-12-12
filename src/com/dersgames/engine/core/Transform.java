@@ -79,11 +79,11 @@ public class Transform{
 	public Quaternion getRotation() {return m_Rotation;}
 	public Vector3f getScale() {return m_Scale;}
 	
-	public void setTranslationVector(Vector3f translation) {
+	public void setTranslation(Vector3f translation) {
 		m_Position = translation;
 	}
 
-	public void setRotationVector(Quaternion rotation) {
+	public void setRotation(Quaternion rotation) {
 		m_Rotation = rotation;
 	}
 

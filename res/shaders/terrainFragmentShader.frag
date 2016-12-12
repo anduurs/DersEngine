@@ -89,6 +89,7 @@ vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
 	
 	vec4 resultingShade = vec4(0.0);
 	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
+	
 	if(spotFactor < light.cutOffAngle){
 		resultingShade = calculatePointLight(light.pointLight, normal, textureColor) * smoothnessFactor;
 	}else resultingShade = vec4(light.pointLight.ambient, 1.0) * smoothnessFactor;

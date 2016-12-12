@@ -20,7 +20,7 @@ public class PointLight extends Light{
 	
 	public void update(float dt) {
 		temp += dt * speed;
-		getTransform().setTranslationVector(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
+		getTransform().setTranslation(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
 				180.0f * (float)(Math.cos(temp) + 1.0/2.0)+200.0f));
 	}
 	

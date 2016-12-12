@@ -15,8 +15,8 @@ public class SpotLight extends PointLight{
 	}
 	
 	public void update(float dt) {
-//		getTransform().setTranslationVector(RenderEngine.getCamera().getPosition());
-//		getTransform().getRotation().getForward().set((RenderEngine.getCamera().getRotation().getForward()));
+//		getTransform().setTranslation(RenderEngine.getCamera().getPosition());
+//		getTransform().setRotation((RenderEngine.getCamera().getRotation()));
 	}
 	
 	public Vector3f getDirection(){

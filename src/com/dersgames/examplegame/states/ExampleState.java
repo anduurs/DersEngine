@@ -80,18 +80,18 @@ public class ExampleState extends GameState{
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
 		
-		float ambient = 0.06f;
-		float diffuse = 0.3f;
-		float specular = 1.0f;
+		float ambient = 0f;
+		float diffuse = 0f;
+		float specular = 0f;
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(ambient, ambient, ambient),
 											   new Vector3f(diffuse, diffuse, diffuse),
 											   new Vector3f(specular, specular, specular),
-											   0.5f);
+											   1);
 		
 		directionalLight.addComponent(sun);
-		m_Scene.addDirectionalLight(sun);
+		
 		
 		float range = 500.0f;
 		
@@ -145,24 +145,24 @@ public class ExampleState extends GameState{
 		
 		Entity spotLight1 = new Entity("SpotLight1", spotLight1Transform );
 		
-		SpotLight orangeSpotlight = new SpotLight("SpotLight1", new Vector3f(0.1f,0.1f,0.6f),
+		SpotLight spotlight = new SpotLight("SpotLight1", new Vector3f(0.3f,0.3f,0.3f),
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
-														   new Vector3f(0, 0.0f, 0.1f),
+														   new Vector3f(0, 0.014f, 0.0007f),
 														   1.8f,
 														   range,
-														   0.7f);
+														   0.9f);
 		
-		spotLight1.addComponent(orangeSpotlight);
+		spotLight1.addComponent(spotlight);
 		
+		m_Scene.addDirectionalLight(sun);
+//		
+//		m_Scene.addPointLight(redLight);
+//		m_Scene.addPointLight(greenlight);
+//		m_Scene.addPointLight(blueLight);
+//		m_Scene.addPointLight(orangelight);
 		
-		m_Scene.addPointLight(redLight);
-		m_Scene.addPointLight(greenlight);
-		m_Scene.addPointLight(blueLight);
-		m_Scene.addPointLight(orangelight);
-		
-		
-		m_Scene.addSpotLight(orangeSpotlight);
+		m_Scene.addSpotLight(spotlight);
 	}
 	
 	private void generateTerrain(){
@@ -175,8 +175,8 @@ public class ExampleState extends GameState{
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
 		Entity terrainEntity = new Entity("Terrain");
-//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 		
 		m_Scene.addEntity(terrainEntity);
@@ -214,7 +214,7 @@ public class ExampleState extends GameState{
 																   m_Renderer.getEntityRenderer().getShader())); 
 				
 		Transform dragonTransform = new Transform(new Vector3f(370, 0.0f, 395.0f), 
-											      new Quaternion(new Vector3f(0,1,0), 0.0f), 
+											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
 											      new Vector3f(10,10,10));
 		
 		Entity dragon = new Entity("Dragon", dragonTransform);
