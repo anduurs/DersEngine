@@ -72,7 +72,7 @@ public class Transform{
 	 * @param angle the rotation angle in degrees
 	 */
 	public void rotate(Vector3f axis, float angle) {
-		m_Rotation = new Quaternion(axis, (float)Math.toRadians(angle)).mul(m_Rotation).normalize();
+		m_Rotation = new Quaternion(axis, angle).mul(m_Rotation).normalize();
 	}
 	
 	public Vector3f getPosition() {return m_Position;}

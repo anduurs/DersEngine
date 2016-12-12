@@ -104,7 +104,7 @@ public class ExampleState extends GameState{
 				   										   range);
 		redLight.speed = 1.2f;
 		pointLight1.addComponent(redLight);
-		m_Scene.addPointLight(redLight);
+		
 		
 		Entity pointLight2 = new Entity("PointLight2", 370, 5.0f, 200.0f);
 		PointLight greenlight = new PointLight("PointLight2", new Vector3f(0.1f, 0.6f, 0.1f),
@@ -115,7 +115,7 @@ public class ExampleState extends GameState{
 														   range);
 		greenlight.speed = 0.6f;
 		pointLight2.addComponent(greenlight);
-		m_Scene.addPointLight(greenlight);
+	
 		
 		Entity pointLight3 = new Entity("PointLight3", 470, 5.0f, 200.0f);
 		PointLight blueLight = new PointLight("PointLight3", new Vector3f(0.1f, 0.1f, 0.6f),
@@ -126,8 +126,8 @@ public class ExampleState extends GameState{
 														   range);
 		blueLight.speed = 0.9f;
 		pointLight3.addComponent(blueLight);
-		m_Scene.addPointLight(blueLight);
-		//255, 153, 51
+		
+	
 		Entity pointLight4 = new Entity("PointLight4", 270, 5.0f, 200.0f);
 		PointLight orangelight = new PointLight("PointLight4", new Vector3f(1.0f, 153.0f/255.0f, 51.0f/255.0f),
 														   new Vector3f(0.8f, 0.8f, 0.8f),
@@ -137,20 +137,32 @@ public class ExampleState extends GameState{
 														   range);
 		orangelight.speed = 0.9f;
 		pointLight4.addComponent(orangelight);
-		m_Scene.addPointLight(orangelight);
+	
 		
-		Entity spotLight1 = new Entity("SpotLight1", 200.0f, 10.0f, 100.0f);
-		spotLight1.getTransform().setRotationVector(new Quaternion(0f,0f,0f,1.0f));
-		SpotLight orangeSpotlight = new SpotLight("SpotLight1", new Vector3f(0,0.1f,0.1f),
+		Transform spotLight1Transform = new Transform(new Vector3f(200.0f, 100.0f, 100.0f), 
+				   									  new Quaternion(new Vector3f(1,0,0), 90.0f), 
+				   									  new Vector3f(1,1,1));
+		
+		Entity spotLight1 = new Entity("SpotLight1", spotLight1Transform );
+		
+		SpotLight orangeSpotlight = new SpotLight("SpotLight1", new Vector3f(0.1f,0.1f,0.6f),
 														   new Vector3f(0.8f, 0.8f, 0.8f),
 														   new Vector3f(1.0f, 1.0f, 1.0f), 
 														   new Vector3f(0, 0.0f, 0.1f),
-														   0.2f,
-														   3000.0f,
-														   0.9f);
+														   1.8f,
+														   range,
+														   0.7f);
 		
 		spotLight1.addComponent(orangeSpotlight);
-//		m_Scene.addSpotLight(orangeSpotlight);
+		
+		
+		m_Scene.addPointLight(redLight);
+		m_Scene.addPointLight(greenlight);
+		m_Scene.addPointLight(blueLight);
+		m_Scene.addPointLight(orangelight);
+		
+		
+		m_Scene.addSpotLight(orangeSpotlight);
 	}
 	
 	private void generateTerrain(){
@@ -163,8 +175,8 @@ public class ExampleState extends GameState{
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
 		Entity terrainEntity = new Entity("Terrain");
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 		
 		m_Scene.addEntity(terrainEntity);
@@ -198,10 +210,14 @@ public class ExampleState extends GameState{
 																   new Vector3f(1.0f, 0.5f, 0.31f),
 																   new Vector3f(0.5f, 0.5f, 0.5f),
 																   new Vector3f(0.03f, 0.03f, 0.03f),
-																   16.0f,
+																   32.0f,
 																   m_Renderer.getEntityRenderer().getShader())); 
 				
-		Entity dragon = new Entity("Dragon", 370, 0.0f, 395.0f, 10);
+		Transform dragonTransform = new Transform(new Vector3f(370, 0.0f, 395.0f), 
+											      new Quaternion(new Vector3f(0,1,0), 0.0f), 
+											      new Vector3f(10,10,10));
+		
+		Entity dragon = new Entity("Dragon", dragonTransform);
 //		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 9;
 		dragon.addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));

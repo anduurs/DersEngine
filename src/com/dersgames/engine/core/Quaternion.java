@@ -19,8 +19,8 @@ public class Quaternion{
 	}
 
 	public Quaternion(Vector3f axis, float angle){
-		float sinHalfAngle = (float)Math.sin(angle / 2.0f);
-		float cosHalfAngle = (float)Math.cos(angle / 2.0f);
+		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle) / 2.0f);
+		float cosHalfAngle = (float)Math.cos(Math.toRadians(angle) / 2.0f);
 
 		x = axis.x * sinHalfAngle;
 		y = axis.y * sinHalfAngle;
