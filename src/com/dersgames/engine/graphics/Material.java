@@ -65,23 +65,6 @@ public class Material {
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
-		
-		m_Shader.enable();
-		m_Shader.loadInteger("material.diffuseMap", 0);
-		m_Shader.loadInteger("material.useSpecularMap", 0);
-		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
-		m_Shader.loadVector3f("material.specular", m_Specular);
-		m_Shader.loadVector3f("material.emissive", m_Emissive);
-		
-		m_Shader.loadFloat("material.shininess", shininess);
-		
-		if(useFakeLighting)
-			m_Shader.loadFloat("useFakeLighting", 1.0f);
-		else m_Shader.loadFloat("useFakeLighting", 0.0f);
-		
-		m_Shader.loadFloat("numOfRows", m_TextureAtlas.getNumberOfRows());
-		
-		m_Shader.disable();
 	}
 	
 	public Material(TextureAtlas textureAtlas, TextureAtlas specularMap, Vector3f baseColor, 
@@ -110,24 +93,27 @@ public class Material {
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
-		
-		m_Shader.enable();
+	}
+	
+	public void updateUniforms(){
 		m_Shader.loadInteger("material.diffuseMap", 0);
-		m_Shader.loadInteger("material.specularMap", 1);
-		m_Shader.loadInteger("material.useSpecularMap", 1);
+		
+		if(m_UseSpecularMap){
+			m_Shader.loadInteger("material.useSpecularMap", 1);
+			m_Shader.loadInteger("material.specularMap", 1);
+		}else m_Shader.loadInteger("material.useSpecularMap", 0);
+		
 		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
 		m_Shader.loadVector3f("material.specular", m_Specular);
 		m_Shader.loadVector3f("material.emissive", m_Emissive);
 		
-		m_Shader.loadFloat("material.shininess", shininess);
+		m_Shader.loadFloat("material.shininess", m_Shininess);
 		
-		if(useFakeLighting)
+		if(m_UseFakeLighting)
 			m_Shader.loadFloat("useFakeLighting", 1.0f);
 		else m_Shader.loadFloat("useFakeLighting", 0.0f);
 		
 		m_Shader.loadFloat("numOfRows", m_TextureAtlas.getNumberOfRows());
-		
-		m_Shader.disable();
 	}
 	
 	public void setUseFakeLighting(boolean fakelight){

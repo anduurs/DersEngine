@@ -73,6 +73,8 @@ public class EntityRenderer {
 		
 		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
+		
+		material.updateUniforms();
 	
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getTextureID());
