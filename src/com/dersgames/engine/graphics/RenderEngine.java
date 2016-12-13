@@ -30,8 +30,8 @@ public class RenderEngine {
 
 	private static Camera m_Camera;
 	
-	private TerrainRenderer m_TerrainRenderer;
-	private EntityRenderer m_EntityRenderer;
+	private static TerrainRenderer m_TerrainRenderer;
+	private static EntityRenderer m_EntityRenderer;
 	
 //	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
@@ -107,11 +107,11 @@ public class RenderEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	public TerrainRenderer getTerrainRenderer() {
+	public static TerrainRenderer getTerrainRenderer() {
 		return m_TerrainRenderer;
 	}
 
-	public EntityRenderer getEntityRenderer() {
+	public static EntityRenderer getEntityRenderer() {
 		return m_EntityRenderer;
 	}
 	

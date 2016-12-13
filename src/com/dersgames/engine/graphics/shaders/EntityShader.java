@@ -7,6 +7,7 @@ import com.dersgames.engine.components.lights.DirectionalLight;
 import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.components.lights.SpotLight;
 import com.dersgames.engine.core.Matrix4f;
+import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
@@ -26,39 +27,31 @@ public class EntityShader extends Shader{
 		addUniform("projectionMatrix");
 		
 		addUniform("skyColor");
+		addUniform("ambientLight");
 		
 		addUniform("offset");
 		
 		addUniform("directionalLight.direction");
-		addUniform("directionalLight.ambient");
-		addUniform("directionalLight.diffuse");
-		addUniform("directionalLight.specular");
+		addUniform("directionalLight.light.color");
+		addUniform("directionalLight.light.intensity");
 		
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			addUniform("pointLights["+i+"].position");
 			addUniform("pointLights["+i+"].attenuation");
-			addUniform("pointLights["+i+"].ambient");
-			addUniform("pointLights["+i+"].diffuse");
-			addUniform("pointLights["+i+"].specular");
-			addUniform("pointLights["+i+"].intensity");
 			addUniform("pointLights["+i+"].range");
+			addUniform("pointLights["+i+"].light.color");
+			addUniform("pointLights["+i+"].light.intensity");
 		}
 		
 		for(int i = 0; i < MAX_SPOT_LIGHTS; i++){
 			addUniform("spotLights["+i+"].pointLight.position");
 			addUniform("spotLights["+i+"].pointLight.attenuation");
-			addUniform("spotLights["+i+"].pointLight.ambient");
-			addUniform("spotLights["+i+"].pointLight.diffuse");
-			addUniform("spotLights["+i+"].pointLight.specular");
-			addUniform("spotLights["+i+"].pointLight.intensity");
 			addUniform("spotLights["+i+"].pointLight.range");
+			addUniform("spotLights["+i+"].pointLight.light.color");
+			addUniform("spotLights["+i+"].pointLight.light.intensity");
 			addUniform("spotLights["+i+"].direction");
 			addUniform("spotLights["+i+"].cutOffAngle");
 		}
-		
-		enable();
-		loadInteger("textureSampler", 0);
-		disable();
 	}
 
 	@Override
@@ -77,20 +70,19 @@ public class EntityShader extends Shader{
 	}
 	
 	public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
+		super.loadVector3f("ambientLight", Scene.getSceneAmbientLight());
+		
 		super.loadVector3f("directionalLight.direction", directionalLight.getDirection());
-		super.loadVector3f("directionalLight.ambient", directionalLight.getAmbientLight());
-		super.loadVector3f("directionalLight.diffuse", directionalLight.getDiffuseLight());
-		super.loadVector3f("directionalLight.specular", directionalLight.getSpecularLight());
+		super.loadVector3f("directionalLight.light.color", directionalLight.getLightColor());
+		super.loadFloat("directionalLight.light.intensity", directionalLight.getIntensity());
 		
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			if(i < pointLights.size() && pointLights.size() != 0){
 				super.loadVector3f("pointLights["+i+"].position", pointLights.get(i).getPosition());
 				super.loadVector3f("pointLights["+i+"].attenuation", pointLights.get(i).getAttenuation());
-				super.loadVector3f("pointLights["+i+"].ambient", pointLights.get(i).getAmbientLight());
-				super.loadVector3f("pointLights["+i+"].diffuse", pointLights.get(i).getDiffuseLight());
-				super.loadVector3f("pointLights["+i+"].specular", pointLights.get(i).getSpecularLight());
+				super.loadVector3f("pointLights["+i+"].light.color", pointLights.get(i).getLightColor());
 				
-				super.loadFloat("pointLights["+i+"].intensity", pointLights.get(i).getIntensity());
+				super.loadFloat("pointLights["+i+"].light.intensity", pointLights.get(i).getIntensity());
 				super.loadFloat("pointLights["+i+"].range", pointLights.get(i).getRange());
 			}
 		}
@@ -99,14 +91,11 @@ public class EntityShader extends Shader{
 			if(i < spotLights.size() && spotLights.size() != 0){
 				super.loadVector3f("spotLights["+i+"].pointLight.position", spotLights.get(i).getPosition());
 				super.loadVector3f("spotLights["+i+"].pointLight.attenuation", spotLights.get(i).getAttenuation());
-				super.loadVector3f("spotLights["+i+"].pointLight.ambient", spotLights.get(i).getAmbientLight());
-				super.loadVector3f("spotLights["+i+"].pointLight.diffuse", spotLights.get(i).getDiffuseLight());
-				super.loadVector3f("spotLights["+i+"].pointLight.specular", spotLights.get(i).getSpecularLight());
-				
-				super.loadFloat("spotLights["+i+"].pointLight.intensity", spotLights.get(i).getIntensity());
-				super.loadFloat("spotLights["+i+"].pointLight.range", spotLights.get(i).getRange());
-				
+				super.loadVector3f("spotLights["+i+"].pointLight.light.color", spotLights.get(i).getLightColor());
 				super.loadVector3f("spotLights["+i+"].direction", spotLights.get(i).getDirection());
+				
+				super.loadFloat("spotLights["+i+"].pointLight.light.intensity", spotLights.get(i).getIntensity());
+				super.loadFloat("spotLights["+i+"].pointLight.range", spotLights.get(i).getRange());
 				super.loadFloat("spotLights["+i+"].cutOffAngle", spotLights.get(i).getCutOffAngle());
 			}
 		}

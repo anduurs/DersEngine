@@ -9,10 +9,9 @@ public class Material {
 	private Shader m_Shader;
 	private TextureAtlas m_TextureAtlas;
 	
-	private Vector3f m_AmbientLight;
-	private Vector3f m_DiffuseLight;
-	private Vector3f m_SpecularLight;
-	private Vector3f m_EmissiveLight;
+	private Vector3f m_BaseColor;
+	private Vector3f m_Specular;
+	private Vector3f m_Emissive;
 	
 	private float m_Shininess;
 	
@@ -20,10 +19,9 @@ public class Material {
 	private boolean m_UseFakeLighting;
 	
 	public Material(TextureAtlas textureAtlas, 
-			float ambient, float diffuse, float specular, float emissive, float shininess, Shader shader){
+			float baseColor, float specular, float emissive, float shininess, Shader shader){
 		this(   textureAtlas, 
-				new Vector3f(ambient, ambient, ambient),
-				new Vector3f(diffuse, diffuse, diffuse),
+				new Vector3f(baseColor, baseColor, baseColor),
 				new Vector3f(specular, specular, specular), 
 				new Vector3f(emissive, emissive, emissive), 
 				shininess, 
@@ -33,31 +31,30 @@ public class Material {
 			);
 	}
 	
-	public Material(TextureAtlas textureAtlas, Vector3f ambient, 
-			Vector3f diffuse, Vector3f specular, Vector3f emissive, 
+	public Material(TextureAtlas textureAtlas, Vector3f baseColor, 
+			 Vector3f specular, Vector3f emissive, 
 			float shininess, Shader shader){
 		
-		this(textureAtlas, ambient, diffuse, specular, emissive, shininess, false, false, shader);
+		this(textureAtlas, baseColor, specular, emissive, shininess, false, false, shader);
 	}
 	
-	public Material(TextureAtlas textureAtlas, Vector3f ambient, 
-			Vector3f diffuse, Vector3f specular, Vector3f emissive, float shininess, 
+	public Material(TextureAtlas textureAtlas, Vector3f baseColor, 
+			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
 		m_TextureAtlas = textureAtlas;
 		
-		m_AmbientLight = ambient;
-		m_DiffuseLight = diffuse;
-		m_SpecularLight = specular;
-		m_EmissiveLight = emissive;
+		m_BaseColor = baseColor;
+		m_Specular = specular;
+		m_Emissive = emissive;
 		
 		m_Shininess = shininess;
 		m_HasTransparency = transparency;
 		m_UseFakeLighting = useFakeLighting;
 		m_Shader = shader;
 		
-		m_Shader.addUniform("material.ambient");
-		m_Shader.addUniform("material.diffuse");
+		m_Shader.addUniform("material.diffuseMap");
+		m_Shader.addUniform("material.baseColor");
 		m_Shader.addUniform("material.specular");
 		m_Shader.addUniform("material.emissive");
 		m_Shader.addUniform("material.shininess");
@@ -65,11 +62,10 @@ public class Material {
 		m_Shader.addUniform("numOfRows");
 		
 		m_Shader.enable();
-		
-		m_Shader.loadVector3f("material.ambient", m_AmbientLight);
-		m_Shader.loadVector3f("material.diffuse", m_DiffuseLight);
-		m_Shader.loadVector3f("material.specular", m_SpecularLight);
-		m_Shader.loadVector3f("material.emissive", m_EmissiveLight);
+		m_Shader.loadInteger("material.diffuseMap", 0);
+		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
+		m_Shader.loadVector3f("material.specular", m_Specular);
+		m_Shader.loadVector3f("material.emissive", m_Emissive);
 		
 		m_Shader.loadFloat("material.shininess", shininess);
 		
@@ -114,39 +110,29 @@ public class Material {
 		m_HasTransparency= hasTransparency;
 	}
 	
-	public Vector3f getAmbientLight() {
-		return m_AmbientLight;
+	public Vector3f getBaseColor() {
+		return m_BaseColor;
 	}
 
-	public void setAmbientLight(Vector3f ambientLight) {
-		m_AmbientLight = ambientLight;
-	}
-	
-	public Vector3f getDiffuseLight() {
-		return m_DiffuseLight;
+	public void setBaseColor(Vector3f baseColor) {
+		m_BaseColor = baseColor;
 	}
 
-
-	public void setDiffuseLight(Vector3f diffuseLight) {
-		m_DiffuseLight = diffuseLight;
+	public Vector3f getSpecular() {
+		return m_Specular;
 	}
 
 
-	public Vector3f getSpecularLight() {
-		return m_SpecularLight;
-	}
-
-
-	public void setSpecularLight(Vector3f specularLight) {
-		m_SpecularLight = specularLight;
+	public void setSpecular(Vector3f specular) {
+		m_Specular = specular;
 	}
 	
-	public Vector3f getEmissiveLight() {
-		return m_EmissiveLight;
+	public Vector3f getEmissive() {
+		return m_Emissive;
 	}
 
-	public void setEmissiveLight(Vector3f emissiveLight) {
-		m_EmissiveLight = emissiveLight;
+	public void setEmissive(Vector3f emissive) {
+		m_Emissive = emissive;
 	}
 
 }

@@ -34,9 +34,9 @@ import com.dersgames.engine.graphics.textures.Texture.TextureType;
 
 public class Loader{
 	
-	private List<Integer> m_vaoIDs;
-	private List<Integer> m_vboIDs;
-	private List<Integer> m_TextureIDs;
+	private static List<Integer> m_vaoIDs;
+	private static List<Integer> m_vboIDs;
+	private static List<Integer> m_TextureIDs;
 	
 	public Loader(){
 		m_vaoIDs = new ArrayList<Integer>();
@@ -44,7 +44,7 @@ public class Loader{
 		m_TextureIDs = new ArrayList<Integer>();
 	}
 	
-	public Mesh loadMesh(float[] positions, float[] textureCoords, float[] normals, int[] indices){
+	public static Mesh loadMesh(float[] positions, float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
@@ -54,7 +54,7 @@ public class Loader{
 		return new Mesh(vaoID, indices.length);
 	}
 	
-	public Mesh loadMesh(float[] positions, float[] textureCoords, int[] indices){
+	public static Mesh loadMesh(float[] positions, float[] textureCoords, int[] indices){
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
@@ -63,7 +63,7 @@ public class Loader{
 		return new Mesh(vaoID, indices.length);
 	}
 	
-	public Mesh loadObjFile(String fileName){
+	public static Mesh loadObjFile(String fileName){
 		List<Vector3f> vertices = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 
 		List<Vector3f> normals = new ArrayList<Vector3f>(); 
@@ -127,21 +127,21 @@ public class Loader{
 		return loadMesh(verticesArray, texCoordsArray, normalsArray, indicesArray);
 	}
 	
-	public int loadModelTexture(String name){
+	public static int loadModelTexture(String name){
 		Texture texture = new Texture(name, TextureType.MODEL);
 		int textureID = texture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;
 	}
 	
-	public int loadGUITexture(String name){
+	public static int loadGUITexture(String name){
 		Texture texture = new Texture(name, TextureType.GUI);
 		int textureID = texture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;
 	}
 	
-	public void dispose(){
+	public static void dispose(){
 		for(Integer i : m_vaoIDs)
 			glDeleteVertexArrays(i);
 		for(Integer i : m_vboIDs)
@@ -167,18 +167,18 @@ public class Loader{
         normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
     }
 	
-	private int createVAO(){
+	private static int createVAO(){
 		int vaoID = glGenVertexArrays();
 		m_vaoIDs.add(vaoID);
 		glBindVertexArray(vaoID);
 		return vaoID;
 	}
 	
-	private void unbindVAO(){
+	private static void unbindVAO(){
 		glBindVertexArray(0);
 	}
 	
-	private void storeDataInAttributeList(int attributeNumber, int numOfFloats, float[] data){
+	private static void storeDataInAttributeList(int attributeNumber, int numOfFloats, float[] data){
 		int vboID = glGenBuffers();
 		m_vboIDs.add(vboID);
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
@@ -188,7 +188,7 @@ public class Loader{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
-	private void createIndexBuffer(int[] indices){
+	private static void createIndexBuffer(int[] indices){
 		int vboID = glGenBuffers();
 		m_vboIDs.add(vboID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
@@ -196,14 +196,14 @@ public class Loader{
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 	}
 
-	private FloatBuffer storeDataInFloatBuffer(float[] data){
+	private static FloatBuffer storeDataInFloatBuffer(float[] data){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
 	}
 	
-	private IntBuffer storeDataInIntBuffer(int[] data){
+	private static IntBuffer storeDataInIntBuffer(int[] data){
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();

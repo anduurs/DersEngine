@@ -17,6 +17,8 @@ public class Scene {
 	private List<PointLight> m_PointLights;
 	private List<SpotLight> m_SpotLights;
 	
+	private static Vector3f m_SceneAmbientLight = new Vector3f(0.01f, 0.01f, 0.01f);
+	
 	public Scene(){
 		m_EntityList = new ArrayList<Entity>();
 		m_PointLights = new ArrayList<PointLight>();
@@ -76,6 +78,14 @@ public class Scene {
 	
 	private static synchronized List<Entity> getEntities(){
 		return m_EntityList;
+	}
+	
+	public static Vector3f getSceneAmbientLight(){
+		return m_SceneAmbientLight;
+	}
+
+	public static void setSceneAmbientLight(Vector3f sceneAmbientLight) {
+		m_SceneAmbientLight = sceneAmbientLight;
 	}
 
 }

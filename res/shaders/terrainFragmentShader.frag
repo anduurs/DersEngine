@@ -3,11 +3,11 @@
 const int MAX_POINT_LIGHTS = 4;
 const int MAX_SPOT_LIGHTS = 4;
 
-in vec2 out_TexCoords;
-in vec3 out_Normal;
-in vec3 toCameraVector;
+in vec2 texCoords;
+in vec3 vertexNormal;
+in vec3 cameraViewDirection;
 in float visibility;
-in vec3 worldFragPos;
+in vec3 vertexPosition;
 
 out vec4 outColor;
 
@@ -18,26 +18,22 @@ uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 
 uniform vec3 skyColor;
+uniform vec3 ambientLight;
 
-struct DirectionalLight{
-	vec3 direction;
-	
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
-	
+struct Light{
+	vec3 color;
 	float intensity;
 };
 
+struct DirectionalLight{
+	Light light;
+	vec3 direction;
+};
+
 struct PointLight{
+	Light light;
 	vec3 position;
 	vec3 attenuation;
-	
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
-	
-	float intensity;
 	float range;
 };
 
@@ -51,57 +47,63 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
-vec4 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec4 textureColor){
-	vec3 lightDirection = normalize(-light.direction);
-	
+vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor){
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+	float shininess = 0.0;
 	
-	vec3 ambient  = light.ambient;
-	vec3 diffuse  = light.diffuse * diffuseFactor;
+	vec3 viewDirection = normalize(cameraViewDirection);
+	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
 	
-	return (vec4(ambient, 1.0) + vec4(diffuse, 1.0) * textureColor) * light.intensity;
+	float normalizationFactor = ((shininess + 2.0) / 8.0);
+	float specularFactor = pow(max(dot(viewDirection, reflectedLightDirection), 0.0), shininess) * normalizationFactor;
+	
+	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor; 
+	vec4 specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor;
+	
+	return diffuseLight + specularLight;
 }
 
-vec4 calculatePointLight(PointLight light, vec3 normal, vec4 textureColor){
-	vec3 lightDirection = worldFragPos - light.position;
+vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor){
+	return calculateLight(directionalLight.light.color, normalize(-directionalLight.direction), directionalLight.light.intensity, normal, textureColor);
+}
+
+vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
+	vec3 lightDirection = vertexPosition - pointLight.position;
 	float distance = length(lightDirection);
 	
-	if(distance > light.range)
-		return vec4(0.0,0.0,0.0,0.0);
-		
-	lightDirection = normalize(lightDirection);
+	if(distance > pointLight.range)
+		return vec4(0.0);
 	
-	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-	float attenuationFactor = 1.0f / (light.attenuation.x + (light.attenuation.y * distance) + (light.attenuation.z * distance * distance) + 0.0001);
+	vec4 lightColor = calculateLight(pointLight.light.color, normalize(-lightDirection), pointLight.light.intensity, normal, textureColor);
 	
-	vec3 ambient  = light.ambient;
-	vec3 diffuse  = light.diffuse * diffuseFactor;
+	float constant = pointLight.attenuation.x;
+	float linear = pointLight.attenuation.y * distance;
+	float quadratic = pointLight.attenuation.z * distance * distance;
 	
-	ambient *= attenuationFactor;
-	diffuse *= attenuationFactor;
-	
-	return (vec4(ambient, 1.0) + vec4(diffuse, 1.0) * textureColor) * light.intensity;
+	float attenuationFactor = 1.0f / (constant + linear + quadratic + 0.0001);
+
+	return lightColor * attenuationFactor;
 }
 
 vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
-	vec3 lightDirection = normalize(worldFragPos - light.pointLight.position);
+	vec3 lightDirection = normalize(vertexPosition - light.pointLight.position);
 	float spotFactor = dot(lightDirection, light.direction); 
 	
-	vec4 resultingShade = vec4(0.0);
+	vec4 totalShade = vec4(0.0);
 	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
 	
-	if(spotFactor < light.cutOffAngle){
-		resultingShade = calculatePointLight(light.pointLight, normal, textureColor) * smoothnessFactor;
-	}else resultingShade = vec4(light.pointLight.ambient, 1.0) * smoothnessFactor;
+	if(spotFactor > light.cutOffAngle)
+		totalShade = calculatePointLight(light.pointLight, normal, textureColor) * smoothnessFactor;
+	else totalShade = vec4(ambientLight, 1.0) * smoothnessFactor;
 	
-	return resultingShade;
+	return totalShade;
 }
 
 void main(){
-	vec4 blendMapColor = texture(blendMap, out_TexCoords);
+	vec4 blendMapColor = texture(blendMap, texCoords);
 	
 	float backTextureAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
-	vec2 tiledCoords = out_TexCoords * 40.0;
+	vec2 tiledCoords = texCoords * 40.0;
 	
 	vec4 backgroundTextureColor = texture(backgroundTexture, tiledCoords) * backTextureAmount;
 	vec4 rTextureColor = texture(rTexture, tiledCoords) * blendMapColor.r;
@@ -110,15 +112,20 @@ void main(){
 	
 	vec4 totalTextureColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
 
-	vec3 normal = normalize(out_Normal);
+	vec3 normal = normalize(vertexNormal);
+
+	vec4 totalShade = vec4(ambientLight, 1.0);
 	
-	vec4 resultingShade = calculateDirectionalLight(directionalLight, normal, totalTextureColor);
+	if(directionalLight.light.intensity > 0)
+		totalShade += calculateDirectionalLight(directionalLight, normal, totalTextureColor);
 	
 	for(int i = 0; i < MAX_POINT_LIGHTS; i++)
-		resultingShade += calculatePointLight(pointLights[i], normal, totalTextureColor);
+		if(pointLights[i].light.intensity > 0)
+			totalShade += calculatePointLight(pointLights[i], normal, totalTextureColor);
 		
 	for(int i = 0; i < MAX_SPOT_LIGHTS; i++)
-		resultingShade += calculateSpotLight(spotLights[i], normal, totalTextureColor);
+		if(spotLights[i].pointLight.light.intensity > 0)
+			totalShade += calculateSpotLight(spotLights[i], normal, totalTextureColor);
 	
-	outColor = mix(vec4(skyColor, 1.0), resultingShade, visibility);
+	outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, visibility);
 }

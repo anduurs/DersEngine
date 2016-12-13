@@ -8,10 +8,10 @@ public class PointLight extends Light{
 	private float m_Range;
 	public float speed = 1.0f;
 	
-	public PointLight(String tag, Vector3f ambient, Vector3f diffuse, 
-			Vector3f specular, Vector3f attenuation, float intensity, float range) {
+	public PointLight(String tag, Vector3f color, Vector3f attenuation,
+			float intensity, float range) {
 		
-		super(tag, ambient, diffuse, specular, intensity);
+		super(tag, color, intensity);
 		m_Attenuation = attenuation;
 		m_Range = range;
 	}
@@ -19,9 +19,9 @@ public class PointLight extends Light{
 	float temp = 0.0f;
 	
 	public void update(float dt) {
-		temp += dt * speed;
-		getTransform().setTranslation(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
-				180.0f * (float)(Math.cos(temp) + 1.0/2.0)+200.0f));
+//		temp += dt * speed;
+//		getTransform().setTranslation(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
+//				180.0f * (float)(Math.cos(temp) + 1.0/2.0)+200.0f));
 	}
 	
 	public Vector3f getAttenuation() {

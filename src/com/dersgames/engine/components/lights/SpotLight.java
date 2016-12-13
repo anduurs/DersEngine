@@ -7,16 +7,16 @@ public class SpotLight extends PointLight{
 	
 	private float m_CutOffAngle;
 
-	public SpotLight(String tag, Vector3f ambient, Vector3f diffuse, Vector3f specular, Vector3f attenuation,
+	public SpotLight(String tag, Vector3f color, Vector3f attenuation,
 			float intensity, float range, float cutOffAngle) {
-		super(tag, ambient, diffuse, specular, attenuation, intensity, range);
+		super(tag, color, attenuation, intensity, range);
 		
 		m_CutOffAngle = cutOffAngle;
 	}
 	
 	public void update(float dt) {
-//		getTransform().setTranslation(RenderEngine.getCamera().getPosition());
-//		getTransform().setRotation((RenderEngine.getCamera().getRotation()));
+		getTransform().setTranslation(RenderEngine.getCamera().getPosition());
+		getTransform().setRotation((RenderEngine.getCamera().getRotation()));
 	}
 	
 	public Vector3f getDirection(){
