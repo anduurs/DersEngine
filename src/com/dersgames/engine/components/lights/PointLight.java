@@ -19,9 +19,11 @@ public class PointLight extends Light{
 	float temp = 0.0f;
 	
 	public void update(float dt) {
-//		temp += dt * speed;
-//		getTransform().setTranslation(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
-//				180.0f * (float)(Math.cos(temp) + 1.0/2.0)+200.0f));
+		temp += dt * speed;
+		if(speed > 0){
+			getTransform().setTranslation(new Vector3f(getTransform().getPosition().x, getTransform().getPosition().y, 
+				180.0f * (float)(Math.cos(temp) + 1.0/2.0)+200.0f));
+		}
 	}
 	
 	public Vector3f getAttenuation() {

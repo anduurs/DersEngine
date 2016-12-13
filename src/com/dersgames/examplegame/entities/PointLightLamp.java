@@ -17,16 +17,17 @@ public class PointLightLamp extends Entity{
 	public PointLightLamp(String tag, float x, float y, float z){
 		super(tag, x, y, z);
 	
-		Entity entity = new Entity("PointLight1", x, y + 14.7f, z);
-		m_PointLight = new PointLight("PointLight4", new Vector3f(2.0f, 0f, 0f), 
-												     new Vector3f(1.0f, 0.01f, 0.001f),
-												     3.0f,
+		Entity entity = new Entity("PointLight1", x, y + 25.0f, z);
+		m_PointLight = new PointLight("PointLight4", new Vector3f(2.0f, 2.0f, 2.0f), 
+												     new Vector3f(1.0f, 0.01f, 0.002f),
+												     2.0f,
 												     500.0f);
 		
+		m_PointLight.speed = 0;
 		entity.addComponent(m_PointLight);
 		
 		TextureAtlas texture = new TextureAtlas(Loader.loadModelTexture("lamp"), 1);
-		Material material = new Material(texture, 1.0f, 0, 0, 0.0f,
+		Material material = new Material(texture, 1.0f, 0, 0, 1.0f,
 				RenderEngine.getEntityRenderer().getShader()); 
 		TexturedMesh lampMesh = new TexturedMesh(Loader.loadObjFile("lamp"), material); 
 		

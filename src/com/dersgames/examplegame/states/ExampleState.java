@@ -5,6 +5,7 @@ import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.components.lights.DirectionalLight;
 import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.components.lights.SpotLight;
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.core.Quaternion;
@@ -75,7 +76,7 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(new Vector3f(1,0,0), 90.0f), 
+											   new Quaternion(new Vector3f(1,0,0), 40.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
@@ -83,8 +84,8 @@ public class ExampleState extends GameState{
 		
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
-											   new Vector3f(0.1f, 0.1f, 0.1f),
-											   0.0f);
+											   new Vector3f(1.0f, 0.6f, 0.6f),
+											   0f);
 		
 		directionalLight.addComponent(sun);
 		
@@ -144,9 +145,9 @@ public class ExampleState extends GameState{
 		
 		m_Scene.addDirectionalLight(sun);
 		
-//		m_Scene.addPointLight(redLight);
-//		m_Scene.addPointLight(greenlight);
-//		m_Scene.addPointLight(blueLight);
+		m_Scene.addPointLight(redLight);
+		m_Scene.addPointLight(greenlight);
+		m_Scene.addPointLight(blueLight);
 //		m_Scene.addPointLight(orangelight);
 		
 		m_Scene.addSpotLight(spotlight);
@@ -191,10 +192,10 @@ public class ExampleState extends GameState{
 //		}
 //		
 		
-//		PointLightLamp lamp = new PointLightLamp("Lamp1", 200.0f, 0, 150.0f);
-//		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-//		m_Scene.addPointLight(lamp.getPointLight());
-//		m_Scene.addEntity(lamp);
+		PointLightLamp lamp = new PointLightLamp("Lamp1", 200.0f, 0, 150.0f);
+		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+		m_Scene.addPointLight(lamp.getPointLight());
+		m_Scene.addEntity(lamp);
 		
 		TextureAtlas dragonTexture = new TextureAtlas(Loader.loadModelTexture("dragontexture"), 1);
 		TexturedMesh dragonMesh    = new TexturedMesh(Loader.loadObjFile("dragon"), 
@@ -207,10 +208,10 @@ public class ExampleState extends GameState{
 				
 		Transform dragonTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
 											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
-											      new Vector3f(10,10,10));
+											      new Vector3f(3,3,3));
 		
 		Entity dragon = new Entity("Dragon", dragonTransform);
-//		box.getPosition().y = terrain.getHeightOfTerrain(box.getPosition().x, box.getPosition().z) + 9;
+		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
 		dragon.addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));
 		m_Scene.addEntity(dragon);
