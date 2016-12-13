@@ -17,7 +17,7 @@ public class Scene {
 	private List<PointLight> m_PointLights;
 	private List<SpotLight> m_SpotLights;
 	
-	private static Vector3f m_SceneAmbientLight = new Vector3f(0.01f, 0.01f, 0.01f);
+	private static Vector3f m_SceneAmbientLight = new Vector3f(0.05f, 0.05f, 0.05f);
 	
 	public Scene(){
 		m_EntityList = new ArrayList<Entity>();

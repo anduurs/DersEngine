@@ -8,6 +8,9 @@ public class Material {
 	
 	private Shader m_Shader;
 	private TextureAtlas m_TextureAtlas;
+	private TextureAtlas m_SpecularMap;
+	
+	private boolean m_UseSpecularMap;
 	
 	private Vector3f m_BaseColor;
 	private Vector3f m_Specular;
@@ -42,6 +45,7 @@ public class Material {
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
+		m_UseSpecularMap = false;
 		m_TextureAtlas = textureAtlas;
 		
 		m_BaseColor = baseColor;
@@ -54,6 +58,7 @@ public class Material {
 		m_Shader = shader;
 		
 		m_Shader.addUniform("material.diffuseMap");
+		m_Shader.addUniform("material.useSpecularMap");
 		m_Shader.addUniform("material.baseColor");
 		m_Shader.addUniform("material.specular");
 		m_Shader.addUniform("material.emissive");
@@ -63,6 +68,53 @@ public class Material {
 		
 		m_Shader.enable();
 		m_Shader.loadInteger("material.diffuseMap", 0);
+		m_Shader.loadInteger("material.useSpecularMap", 0);
+		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
+		m_Shader.loadVector3f("material.specular", m_Specular);
+		m_Shader.loadVector3f("material.emissive", m_Emissive);
+		
+		m_Shader.loadFloat("material.shininess", shininess);
+		
+		if(useFakeLighting)
+			m_Shader.loadFloat("useFakeLighting", 1.0f);
+		else m_Shader.loadFloat("useFakeLighting", 0.0f);
+		
+		m_Shader.loadFloat("numOfRows", m_TextureAtlas.getNumberOfRows());
+		
+		m_Shader.disable();
+	}
+	
+	public Material(TextureAtlas textureAtlas, TextureAtlas specularMap, Vector3f baseColor, 
+			Vector3f specular, Vector3f emissive, float shininess, 
+			boolean transparency, boolean useFakeLighting, Shader shader){
+		
+		m_UseSpecularMap = true;
+		m_SpecularMap = specularMap;
+		m_TextureAtlas = textureAtlas;
+		
+		m_BaseColor = baseColor;
+		m_Specular = specular;
+		m_Emissive = emissive;
+		
+		m_Shininess = shininess;
+		m_HasTransparency = transparency;
+		m_UseFakeLighting = useFakeLighting;
+		m_Shader = shader;
+		
+		m_Shader.addUniform("material.diffuseMap");
+		m_Shader.addUniform("material.specularMap");
+		m_Shader.addUniform("material.useSpecularMap");
+		m_Shader.addUniform("material.baseColor");
+		m_Shader.addUniform("material.specular");
+		m_Shader.addUniform("material.emissive");
+		m_Shader.addUniform("material.shininess");
+		m_Shader.addUniform("useFakeLighting");
+		m_Shader.addUniform("numOfRows");
+		
+		m_Shader.enable();
+		m_Shader.loadInteger("material.diffuseMap", 0);
+		m_Shader.loadInteger("material.specularMap", 1);
+		m_Shader.loadInteger("material.useSpecularMap", 1);
 		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
 		m_Shader.loadVector3f("material.specular", m_Specular);
 		m_Shader.loadVector3f("material.emissive", m_Emissive);
@@ -133,6 +185,14 @@ public class Material {
 
 	public void setEmissive(Vector3f emissive) {
 		m_Emissive = emissive;
+	}
+
+	public int getSpecularMapID() {
+		return m_SpecularMap.getTextureID();
+	}
+
+	public boolean isUsingSpecularMap() {
+		return m_UseSpecularMap;
 	}
 
 }

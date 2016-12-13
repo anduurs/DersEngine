@@ -31,8 +31,8 @@ public class PointLightLamp extends Entity{
 		
 		Entity entity = new Entity("PointLight1", x, y, z);
 		m_PointLight = new PointLight("PointLight4", color , 
-												     new Vector3f(0, 0.014f, 0.0007f),
-												     1.8f,
+												     new Vector3f(1.0f, 0.045f, 0.0075f),
+												     Randomizer.getFloat(3.0f, 6.0f),
 												     500.0f);
 		
 		m_PointLight.speed = Randomizer.getFloat(0,1);

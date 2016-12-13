@@ -45,6 +45,8 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("box", "box.png");
 		ImageManager.addImage("dragontexture", "dragontexture.png");
 		ImageManager.addImage("lamp", "lamp.png");
+		ImageManager.addImage("barrel", "barrel.png");
+		ImageManager.addImage("barrelSpecularMap", "barrelS.png");
 		
 		//TERRAIN TEXTURES
 		ImageManager.addImage("grassy", "grassy2.png");
@@ -53,6 +55,7 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("path", "path.png");
 		ImageManager.addImage("blendMap", "blendMap.png");
 		ImageManager.addImage("heightmap", "heightmap.png");
+		
 		
 		//PLAYER TEXTURE
 		ImageManager.addImage("player", "playerTexture.png");
@@ -77,7 +80,7 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(new Vector3f(1,0,0), 40.0f), 
+											   new Quaternion(new Vector3f(1,1,0), 40.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
@@ -86,7 +89,7 @@ public class ExampleState extends GameState{
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(1.0f, 0.6f, 0.6f),
-											   0.0f);
+											   0.3f);
 		
 		directionalLight.addComponent(sun);
 		
@@ -197,7 +200,7 @@ public class ExampleState extends GameState{
 		for(int i = 0; i < 100; i ++){
 			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
 			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y;
+			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
 			m_Scene.addPointLight(lamp.getPointLight());
 			m_Scene.addEntity(lamp);
 		}
@@ -212,7 +215,7 @@ public class ExampleState extends GameState{
 																   32.0f,
 																   RenderEngine.getEntityRenderer().getShader())); 
 				
-		Transform dragonTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
+		Transform dragonTransform = new Transform(new Vector3f(200.0f, 0.0f, 250.0f), 
 											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
 											      new Vector3f(3,3,3));
 		
@@ -221,6 +224,29 @@ public class ExampleState extends GameState{
 		dragon.addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));
 		m_Scene.addEntity(dragon);
+		
+		
+		
+		TextureAtlas barrelTexture = new TextureAtlas(Loader.loadModelTexture("barrel"), 1);
+		TextureAtlas barrelSpecularMap = new TextureAtlas(Loader.loadModelTexture("barrelSpecularMap"), 1);
+		
+		TexturedMesh barrelMesh    = new TexturedMesh(Loader.loadObjFile("barrel"), 
+						                              new Material(barrelTexture,barrelSpecularMap,
+																   new Vector3f(0.6f, 0.6f, 0.6f),
+																   new Vector3f(0.8f, 0.8f, 0.8f),
+																   new Vector3f(0.0f, 0.0f, 0.0f),
+																   64.0f,false,false,
+																   RenderEngine.getEntityRenderer().getShader())); 
+				
+		Transform barrelTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
+											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
+											      new Vector3f(3,3,3));
+		
+		Entity barrel = new Entity("Barrel", barrelTransform);
+		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 13;
+		barrel.addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));
+		barrel.addComponent(new MovementComponent("BarrelMovement", 10.0f));
+		m_Scene.addEntity(barrel);
 	}
 	
 	@Override

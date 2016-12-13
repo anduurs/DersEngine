@@ -42,6 +42,11 @@ public class Camera extends Component{
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S))
 			getTransform().translate(getRotation().getBack(), speed * dt);
 		
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_D)){
+			getTransform().translate(getRotation().getRight(), speed * dt);
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_A))
+			getTransform().translate(getRotation().getLeft(), speed * dt);
+		
 		float currentMouseX = MouseCursor.getX();
 		float currentMouseY = MouseCursor.getY();
 	
