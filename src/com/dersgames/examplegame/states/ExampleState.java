@@ -1,11 +1,12 @@
 package com.dersgames.examplegame.states;
 
+import java.util.Random;
+
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.components.lights.DirectionalLight;
 import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.components.lights.SpotLight;
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.core.Quaternion;
@@ -85,7 +86,7 @@ public class ExampleState extends GameState{
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(1.0f, 0.6f, 0.6f),
-											   0f);
+											   0.0f);
 		
 		directionalLight.addComponent(sun);
 		
@@ -145,12 +146,12 @@ public class ExampleState extends GameState{
 		
 		m_Scene.addDirectionalLight(sun);
 		
-		m_Scene.addPointLight(redLight);
-		m_Scene.addPointLight(greenlight);
-		m_Scene.addPointLight(blueLight);
+//		m_Scene.addPointLight(redLight);
+//		m_Scene.addPointLight(greenlight);
+//		m_Scene.addPointLight(blueLight);
 //		m_Scene.addPointLight(orangelight);
 		
-		m_Scene.addSpotLight(spotlight);
+//		m_Scene.addSpotLight(spotlight);
 	}
 	
 	private void generateTerrain(){
@@ -191,11 +192,16 @@ public class ExampleState extends GameState{
 //			m_Scene.addEntity(fern);
 //		}
 //		
+		Random random = new Random();
 		
-		PointLightLamp lamp = new PointLightLamp("Lamp1", 200.0f, 0, 150.0f);
-		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-		m_Scene.addPointLight(lamp.getPointLight());
-		m_Scene.addEntity(lamp);
+		for(int i = 0; i < 100; i ++){
+			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y;
+			m_Scene.addPointLight(lamp.getPointLight());
+			m_Scene.addEntity(lamp);
+		}
+		
 		
 		TextureAtlas dragonTexture = new TextureAtlas(Loader.loadModelTexture("dragontexture"), 1);
 		TexturedMesh dragonMesh    = new TexturedMesh(Loader.loadObjFile("dragon"), 

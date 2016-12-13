@@ -115,7 +115,7 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return loader.loadMesh(vertices, textureCoords, normals, indices);
+		return Loader.loadMesh(vertices, textureCoords, normals, indices);
 	}
 	
 	private Mesh generateTerrain(Loader loader){

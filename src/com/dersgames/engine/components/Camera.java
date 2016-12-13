@@ -38,9 +38,9 @@ public class Camera extends Component{
 	
 	private void freeLookCamera(float dt, float speed){
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_W)){
-			getTransform().translate(getRotation().getForward(), speed*dt);
+			getTransform().translate(getRotation().getForward(), speed * dt);
 		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_S))
-			getTransform().translate(getRotation().getBack(), speed*dt);
+			getTransform().translate(getRotation().getBack(), speed * dt);
 		
 		float currentMouseX = MouseCursor.getX();
 		float currentMouseY = MouseCursor.getY();

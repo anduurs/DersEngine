@@ -54,7 +54,6 @@ public abstract class Renderable extends Component{
 		return m_TexturedMesh.getMesh();
 	}
 
-
 	public Material getMaterial() {
 		return m_Material;
 	}

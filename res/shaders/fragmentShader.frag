@@ -1,6 +1,6 @@
 #version 400 core
 
-const int MAX_POINT_LIGHTS = 4;
+const int MAX_POINT_LIGHTS = 100;
 const int MAX_SPOT_LIGHTS = 4;
 
 in vec2 texCoords;

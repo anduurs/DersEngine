@@ -33,6 +33,7 @@ public class TerrainRenderer {
 	public TerrainRenderer(){
 		m_TerrainShader = new TerrainShader();
 		m_Terrains = new ArrayList<Terrain>();
+		
 		m_TerrainShader.enable();
 		m_TerrainShader.connectTextureUnits();
 		m_TerrainShader.disable();

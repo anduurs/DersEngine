@@ -13,7 +13,7 @@ import com.dersgames.engine.entities.Entity;
 
 public class TerrainShader extends Shader{
 	
-	public static final int MAX_POINT_LIGHTS = 4;
+	public static final int MAX_POINT_LIGHTS = 100;
 	public static final int MAX_SPOT_LIGHTS = 4;
 
 	public TerrainShader() {
