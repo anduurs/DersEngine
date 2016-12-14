@@ -89,7 +89,7 @@ public class ExampleState extends GameState{
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(0.8f, 0.8f, 0.8f),
-											   1.0f);
+											   0.2f);
 		
 		directionalLight.addComponent(sun);
 		
@@ -195,15 +195,16 @@ public class ExampleState extends GameState{
 //			m_Scene.addEntity(fern);
 //		}
 //		
-//		Random random = new Random();
-//		
-//		for(int i = 0; i < 4; i ++){
-//			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
-//			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-//			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
-//			m_Scene.addPointLight(lamp.getPointLight());
-//			m_Scene.addEntity(lamp);
-//		}
+		
+		
+		Random random = new Random();
+		for(int i = 0; i < 32; i ++){
+			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
+			m_Scene.addPointLight(lamp.getPointLight());
+			m_Scene.addEntity(lamp);
+		}
 		
 		
 		TextureAtlas dragonTexture = new TextureAtlas(Loader.loadModelTexture("dragontexture"), 1);
@@ -225,8 +226,6 @@ public class ExampleState extends GameState{
 		dragon.addComponent(new MovementComponent("DragonMovement", 10.0f));
 		m_Scene.addEntity(dragon);
 		
-		
-		
 		TextureAtlas barrelTexture = new TextureAtlas(Loader.loadModelTexture("barrel"), 1);
 		Texture barrelSpecularMap = new Texture(Loader.loadGUITexture("barrelSpecularMap"));
 		
@@ -243,7 +242,7 @@ public class ExampleState extends GameState{
 											      new Vector3f(3,3,3));
 		
 		Entity barrel = new Entity("Barrel", barrelTransform);
-		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 13;
+		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 20;
 		barrel.addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));
 		barrel.addComponent(new MovementComponent("BarrelMovement", 10.0f));
 		m_Scene.addEntity(barrel);
