@@ -31,6 +31,7 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL20;
 
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
@@ -67,7 +68,7 @@ public abstract class Shader {
 		System.out.println(":: " + fileName);
 		
 		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile vertexshader: " + fileName +  " correctly");
+			System.err.println("Couldn't compile the vertexshader called: '" + fileName +  "' correctly");
 		
 		glAttachShader(m_ShaderProgram, vertexShader);
 		glDeleteShader(vertexShader);

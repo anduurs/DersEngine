@@ -21,16 +21,16 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.models.Mesh;
-import com.dersgames.engine.graphics.textures.Texture;
-import com.dersgames.engine.graphics.textures.Texture.TextureType;
+import com.dersgames.engine.graphics.textures.TextureData;
+import com.dersgames.engine.graphics.textures.TextureData.TextureType;
 
 public class Loader{
 	
@@ -69,9 +69,13 @@ public class Loader{
 		List<Vector3f> normals = new ArrayList<Vector3f>(); 
 		List<Integer> indices = new ArrayList<Integer>();
 		
-		float[] texCoordsArray = null;
-		float[] normalsArray = null;
-	   
+		HashMap<String, Integer> indexMap = new HashMap<String, Integer>();
+		int totalIndex = 0;
+		
+		List<Vector3f> verticesUnique = new ArrayList<Vector3f>(); 
+		List<Vector2f> texCoordsUnique = new ArrayList<Vector2f>(); 
+		List<Vector3f> normalsUnique = new ArrayList<Vector3f>();
+		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("res/models/" + fileName + ".obj"));
 			String line;
@@ -93,13 +97,22 @@ public class Loader{
 					float z = Float.valueOf(lineArray[3]);
 					normals.add(new Vector3f(x, y, z));
 				}else if(lineArray[0].equals("f")){
-					if(texCoordsArray == null)
-						texCoordsArray = new float[vertices.size() * 2];
-					if(normalsArray == null)
-						normalsArray = new float[vertices.size() * 3];
 					for(int i = 1; i < lineArray.length; i++){
-						String[] vertex = lineArray[i].split("/");
-						processVertex(vertex, indices, texCoords, normals, texCoordsArray, normalsArray);
+						String[] vertexIndices = lineArray[i].split("/");
+						
+						int posIndex = Integer.parseInt(vertexIndices[0]) - 1;
+						int texIndex = Integer.parseInt(vertexIndices[1]) - 1;
+						int normIndex = Integer.parseInt(vertexIndices[2]) - 1;
+						
+						String key = posIndex + "" + texIndex + "" + normIndex;
+						
+						if(!indexMap.containsKey(key)){
+							verticesUnique.add(vertices.get(posIndex));
+							texCoordsUnique.add(texCoords.get(texIndex));
+							normalsUnique.add(normals.get(normIndex));
+							indices.add(totalIndex);
+							indexMap.put(key, totalIndex++);
+						}else indices.add(indexMap.get(key));
 					}
 				}
 			}
@@ -111,13 +124,28 @@ public class Loader{
 			e.printStackTrace();
 		}
 		
-		float[] verticesArray = new float[vertices.size() * 3];
-		
+		float[] verticesArray = new float[verticesUnique.size() * 3];
+		float[] texCoordsArray = new float[texCoordsUnique.size() * 2];
+		float[] normalsArray = new float[normalsUnique.size() * 3];
+ 		
 		int offset = 0;
-		for(Vector3f v : vertices){
+		for(Vector3f v : verticesUnique){
 			verticesArray[offset++] = v.x;
 			verticesArray[offset++] = v.y;
 			verticesArray[offset++] = v.z;
+		}
+		
+		offset = 0;
+		for(Vector2f v : texCoordsUnique){
+			texCoordsArray[offset++] = v.x;
+			texCoordsArray[offset++] = 1 - v.y;
+		}
+		
+		offset = 0;
+		for(Vector3f v : normalsUnique){
+			normalsArray[offset++] = v.x;
+			normalsArray[offset++] = v.y;
+			normalsArray[offset++] = v.z;
 		}
 		
 		int[] indicesArray = new int[indices.size()];
@@ -128,14 +156,14 @@ public class Loader{
 	}
 	
 	public static int loadModelTexture(String name){
-		Texture texture = new Texture(name, TextureType.MODEL);
+		TextureData texture = new TextureData(name, TextureType.MODEL);
 		int textureID = texture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;
 	}
 	
 	public static int loadGUITexture(String name){
-		Texture texture = new Texture(name, TextureType.GUI);
+		TextureData texture = new TextureData(name, TextureType.GUI);
 		int textureID = texture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;
@@ -149,24 +177,7 @@ public class Loader{
 		for(Integer i : m_TextureIDs)
 			glDeleteTextures(i);
 	}
-	
-	private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,
-            List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
-        int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
-        indices.add(currentVertexPointer);
-        
-        Vector2f currentTex = textures.get(Integer.parseInt(vertexData[1]) - 1);
-        
-        textureArray[currentVertexPointer * 2] = currentTex.x;
-        textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
-        
-        Vector3f currentNorm = normals.get(Integer.parseInt(vertexData[2]) - 1);
-        
-        normalsArray[currentVertexPointer * 3] = currentNorm.x;
-        normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
-        normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
-    }
-	
+		
 	private static int createVAO(){
 		int vaoID = glGenVertexArrays();
 		m_vaoIDs.add(vaoID);

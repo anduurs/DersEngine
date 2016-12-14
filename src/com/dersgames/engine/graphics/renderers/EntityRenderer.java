@@ -81,7 +81,7 @@ public class EntityRenderer {
 		
 		if(material.isUsingSpecularMap()){
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getSpecularMapID());
+			glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getSpecularMapTextureID());
 		}
 			
 	}

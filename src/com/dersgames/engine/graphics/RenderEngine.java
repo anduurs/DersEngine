@@ -14,6 +14,8 @@ import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.lights.DirectionalLight;
@@ -42,6 +44,7 @@ public class RenderEngine {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
+//		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		
 		enableCulling();
 	}

@@ -9,7 +9,7 @@ import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Mesh;
-import com.dersgames.engine.graphics.textures.TerrainTexture;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.engine.utils.MathUtil;
@@ -26,10 +26,10 @@ public class Terrain extends Renderable{
 	private Mesh m_Mesh;
 
 	private TerrainTexturePack m_TexturePack;
-	private TerrainTexture m_BlendMap;
+	private Texture m_BlendMap;
 	
 	public Terrain(String tag, int gridX, int gridZ, 
-			Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightmap){
+			Loader loader, TerrainTexturePack texturePack, Texture blendMap, String heightmap){
 		super(tag);
 		m_TexturePack = texturePack;
 		m_BlendMap = blendMap;
@@ -39,7 +39,7 @@ public class Terrain extends Renderable{
 	}
 	
 	public Terrain(String tag, int gridX, int gridZ, 
-			Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap){
+			Loader loader, TerrainTexturePack texturePack, Texture blendMap){
 		super(tag);
 		m_TexturePack = texturePack;
 		m_BlendMap = blendMap;
@@ -244,7 +244,7 @@ public class Terrain extends Renderable{
 		return m_TexturePack;
 	}
 
-	public TerrainTexture getBlendMap() {
+	public Texture getBlendMap() {
 		return m_BlendMap;
 	}
 }

@@ -2,13 +2,13 @@ package com.dersgames.engine.graphics.textures;
 
 public class TerrainTexturePack {
 	
-	private TerrainTexture m_BackgroundTexture;
-	private TerrainTexture m_rTexture;
-	private TerrainTexture m_gTexture;
-	private TerrainTexture m_bTexture;
+	private Texture m_BackgroundTexture;
+	private Texture m_rTexture;
+	private Texture m_gTexture;
+	private Texture m_bTexture;
 	
-	public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture rTexture, 
-			TerrainTexture gTexture, TerrainTexture bTexture) {
+	public TerrainTexturePack(Texture backgroundTexture, Texture rTexture, 
+			Texture gTexture, Texture bTexture) {
 		
 		m_BackgroundTexture = backgroundTexture;
 		m_rTexture = rTexture;
@@ -16,19 +16,19 @@ public class TerrainTexturePack {
 		m_bTexture = bTexture;
 	}
 	
-	public TerrainTexture getBackgroundTexture() {
+	public Texture getBackgroundTexture() {
 		return m_BackgroundTexture;
 	}
 
-	public TerrainTexture getrTexture() {
+	public Texture getrTexture() {
 		return m_rTexture;
 	}
 
-	public TerrainTexture getgTexture() {
+	public Texture getgTexture() {
 		return m_gTexture;
 	}
 
-	public TerrainTexture getbTexture() {
+	public Texture getbTexture() {
 		return m_bTexture;
 	}
 

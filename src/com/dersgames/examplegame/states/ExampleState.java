@@ -18,7 +18,7 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedMesh;
-import com.dersgames.engine.graphics.textures.TerrainTexture;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
 import com.dersgames.engine.terrains.Terrain;
@@ -80,7 +80,7 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(new Vector3f(1,1,0), 40.0f), 
+											   new Quaternion(new Vector3f(1,0.5f,0), 40.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
@@ -88,8 +88,8 @@ public class ExampleState extends GameState{
 		
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
-											   new Vector3f(1.0f, 0.6f, 0.6f),
-											   0.3f);
+											   new Vector3f(0.8f, 0.8f, 0.8f),
+											   1.0f);
 		
 		directionalLight.addComponent(sun);
 		
@@ -141,7 +141,7 @@ public class ExampleState extends GameState{
 		
 		SpotLight spotlight = new SpotLight("SpotLight1", new Vector3f(1.0f, 1.0f, 1.0f), 
 														  new Vector3f(1.0f, 0.01f, 0.002f),
-														  10.0f,
+														  5.0f,
 														  range,
 														  0.9f);
 		
@@ -158,11 +158,11 @@ public class ExampleState extends GameState{
 	}
 	
 	private void generateTerrain(){
-		TerrainTexture backgroundTexture = new TerrainTexture(Loader.loadModelTexture("grassy"));
-		TerrainTexture rTexture 		 = new TerrainTexture(Loader.loadModelTexture("mud"));
-		TerrainTexture gTexture 		 = new TerrainTexture(Loader.loadModelTexture("grassFlowers"));
-		TerrainTexture bTexture 		 = new TerrainTexture(Loader.loadModelTexture("path"));
-		TerrainTexture blendMap 		 = new TerrainTexture(Loader.loadModelTexture("blendMap"));
+		Texture backgroundTexture = new Texture(Loader.loadModelTexture("grassy"));
+		Texture rTexture 		 = new Texture(Loader.loadModelTexture("mud"));
+		Texture gTexture 		 = new Texture(Loader.loadModelTexture("grassFlowers"));
+		Texture bTexture 		 = new Texture(Loader.loadModelTexture("path"));
+		Texture blendMap 		 = new Texture(Loader.loadModelTexture("blendMap"));
 		
 		TerrainTexturePack texturePack   = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		
@@ -195,15 +195,15 @@ public class ExampleState extends GameState{
 //			m_Scene.addEntity(fern);
 //		}
 //		
-		Random random = new Random();
-		
-		for(int i = 0; i < 100; i ++){
-			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
-			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
-			m_Scene.addPointLight(lamp.getPointLight());
-			m_Scene.addEntity(lamp);
-		}
+//		Random random = new Random();
+//		
+//		for(int i = 0; i < 4; i ++){
+//			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
+//			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+//			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
+//			m_Scene.addPointLight(lamp.getPointLight());
+//			m_Scene.addEntity(lamp);
+//		}
 		
 		
 		TextureAtlas dragonTexture = new TextureAtlas(Loader.loadModelTexture("dragontexture"), 1);
@@ -228,10 +228,10 @@ public class ExampleState extends GameState{
 		
 		
 		TextureAtlas barrelTexture = new TextureAtlas(Loader.loadModelTexture("barrel"), 1);
-		TextureAtlas barrelSpecularMap = new TextureAtlas(Loader.loadModelTexture("barrelSpecularMap"), 1);
+		Texture barrelSpecularMap = new Texture(Loader.loadGUITexture("barrelSpecularMap"));
 		
 		TexturedMesh barrelMesh    = new TexturedMesh(Loader.loadObjFile("barrel"), 
-						                              new Material(barrelTexture,barrelSpecularMap,
+						                              new Material(barrelTexture, barrelSpecularMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.0f, 0.0f, 0.0f),

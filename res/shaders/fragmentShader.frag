@@ -65,7 +65,7 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 	vec4 specularLight = vec4(0.0);
 	
 	if(material.useSpecularMap == 1)
-		specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0) * specularMapColor.r;
+		specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * specularMapColor.r;
 	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 	
 
 	return diffuseLight + specularLight;

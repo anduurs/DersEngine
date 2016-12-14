@@ -2,13 +2,14 @@ package com.dersgames.engine.graphics;
 
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.shaders.Shader;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.TextureAtlas;
 
 public class Material {
 	
 	private Shader m_Shader;
 	private TextureAtlas m_TextureAtlas;
-	private TextureAtlas m_SpecularMap;
+	private Texture m_SpecularMap;
 	
 	private boolean m_UseSpecularMap;
 	
@@ -65,9 +66,13 @@ public class Material {
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
+		
+		m_Shader.enable();
+		m_Shader.loadInteger("material.diffuseMap", 0);
+		m_Shader.disable();
 	}
 	
-	public Material(TextureAtlas textureAtlas, TextureAtlas specularMap, Vector3f baseColor, 
+	public Material(TextureAtlas textureAtlas, Texture specularMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
@@ -93,11 +98,13 @@ public class Material {
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
+		
+		m_Shader.enable();
+		m_Shader.loadInteger("material.diffuseMap", 0);
+		m_Shader.disable();
 	}
 	
 	public void updateUniforms(){
-		m_Shader.loadInteger("material.diffuseMap", 0);
-		
 		if(m_UseSpecularMap){
 			m_Shader.loadInteger("material.useSpecularMap", 1);
 			m_Shader.loadInteger("material.specularMap", 1);
@@ -116,11 +123,11 @@ public class Material {
 		m_Shader.loadFloat("numOfRows", m_TextureAtlas.getNumberOfRows());
 	}
 	
-	public void setUseFakeLighting(boolean fakelight){
+	public void useFakeLighting(boolean fakelight){
 		m_UseFakeLighting = fakelight;
 	}
 	
-	public boolean getUseFakeLighting(){
+	public boolean isUsingFakeLighting(){
 		return m_UseFakeLighting;
 	}
 	
@@ -173,7 +180,7 @@ public class Material {
 		m_Emissive = emissive;
 	}
 
-	public int getSpecularMapID() {
+	public int getSpecularMapTextureID() {
 		return m_SpecularMap.getTextureID();
 	}
 
