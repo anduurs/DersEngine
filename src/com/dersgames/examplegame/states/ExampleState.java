@@ -80,7 +80,7 @@ public class ExampleState extends GameState{
 	
 	private void addLightSources(){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(new Vector3f(1,0.5f,0), 40.0f), 
+											   new Quaternion(new Vector3f(1,0,0), 40.0f), 
 											   new Vector3f(1,1,1));
 		
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
@@ -235,11 +235,11 @@ public class ExampleState extends GameState{
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.0f, 0.0f, 0.0f),
-																   64.0f,false,false,
+																   10.0f,false,false,
 																   RenderEngine.getEntityRenderer().getShader())); 
 				
 		Transform barrelTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
-											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
+											      new Quaternion(new Vector3f(0,0,0), 90.0f), 
 											      new Vector3f(3,3,3));
 		
 		Entity barrel = new Entity("Barrel", barrelTransform);
