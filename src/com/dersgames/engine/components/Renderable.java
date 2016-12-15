@@ -1,7 +1,7 @@
 package com.dersgames.engine.components;
 
-import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.TexturedModel;
 

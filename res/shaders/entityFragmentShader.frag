@@ -60,8 +60,8 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 viewDirection = cameraViewDirection;
 	
-	//if(material.useNormalMap)
-		//viewDirection = viewDirection * toTangentSpaceMatrix;
+	if(material.useNormalMap == 1)
+		viewDirection = viewDirection * toTangentSpaceMatrix;
 		
 	viewDirection = normalize(viewDirection);	
 	
@@ -84,8 +84,8 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = directionalLight.direction;
 	
-	//if(material.useNormalMap)
-		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	if(material.useNormalMap == 1)
+		lightDirection = lightDirection * toTangentSpaceMatrix;
 	
 	return calculateLight(directionalLight.light.color, normalize(-lightDirection), 
 							directionalLight.light.intensity, normal, textureColor, specularMapColor);
@@ -96,8 +96,8 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, 
 	
 	float distance = length(lightDirection);
 	
-	//if(material.useNormalMap)
-		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	if(material.useNormalMap == 1)
+		lightDirection = lightDirection * toTangentSpaceMatrix;
 	
 	
 	if(distance > pointLight.range)
@@ -117,8 +117,8 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, 
 vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = normalize(vertexPosition - light.pointLight.position);
 	
-	//if(material.useNormalMap)
-		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	if(material.useNormalMap == 1)
+		lightDirection = lightDirection * toTangentSpaceMatrix;
 	
 	float spotFactor = dot(lightDirection, light.direction); 
 	
@@ -144,11 +144,12 @@ void main(){
 		
 	vec3 normal = normalize(vertexNormal);	
 	
-	if(material.useNormalMap){
+	if(material.useNormalMap == 1){
 		vec3 n = normalize(vertexNormal);
-		vec3 tangent = normalize(-n * dot(n, vertexTangent));
+		vec3 tangent = normalize(vertexTangent);
+		tangent = normalize(tangent - n * dot(n, tangent));
 		vec3 biTangent = normalize(cross(n, tangent));
-		toTangentSpaceMatrix = transpose(mat3(biTangent, n, tangent));
+		toTangentSpaceMatrix = transpose(mat3(biTangent,tangent, n));
 		normal = normalize(texture(material.normalMap, texCoords).rgb * 2.0 - 1.0);
 	} 
 		

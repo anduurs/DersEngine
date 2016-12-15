@@ -17,8 +17,8 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 
 uniform float useFakeLighting;
-
 uniform float numOfRows;
+
 uniform vec2 offset;
 
 const float density = 0.0035;
@@ -26,6 +26,7 @@ const float gradient = 2;
 
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+
 	texCoords = (textureCoords / numOfRows) + offset;
 	vec3 actualNormal = normal;
 	
@@ -34,7 +35,7 @@ void main(){
 	
 	vertexPosition = worldPosition.xyz;
 	vertexNormal = (modelMatrix * vec4(actualNormal, 0.0)).xyz;
-	vertexTangent = (modelMatrix * vec4(tangent, 1.0)).xyz;
+	vertexTangent = (modelMatrix * vec4(tangent, 0.0)).xyz;
 	
 	cameraViewDirection = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
 	

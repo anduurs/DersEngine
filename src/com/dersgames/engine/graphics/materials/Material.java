@@ -1,9 +1,7 @@
-package com.dersgames.engine.graphics;
+package com.dersgames.engine.graphics.materials;
 
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.shaders.PhongShader;
-import com.dersgames.engine.graphics.shaders.Shader;
-import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.Texture;
 
 public class Material {
@@ -62,78 +60,38 @@ public class Material {
 		m_UseFakeLighting = useFakeLighting;
 		m_Shader = shader;
 		
-		m_Shader.addUniform("material.diffuseMap");
-		m_Shader.addUniform("material.useSpecularMap");
-		m_Shader.addUniform("material.useNormalMap");
-		m_Shader.addUniform("material.baseColor");
-		m_Shader.addUniform("material.specular");
-		m_Shader.addUniform("material.emissive");
-		m_Shader.addUniform("material.shininess");
-		m_Shader.addUniform("useFakeLighting");
-		m_Shader.addUniform("numOfRows");
-		
-		m_Shader.enable();
-		m_Shader.loadInteger("material.diffuseMap", 0);
-		m_Shader.disable();
+		addUniforms();
 	}
 	
 	public Material(Texture textureAtlas, Texture specularMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, PhongShader shader){
 		
+		this(textureAtlas, baseColor, specular, emissive, 
+				shininess, transparency, useFakeLighting, shader);
+		
 		m_UseSpecularMap = true;
-		m_UseNormalMap = false;
 		m_SpecularMap = specularMap;
-		m_TextureAtlas = textureAtlas;
 		
-		m_BaseColor = baseColor;
-		m_Specular = specular;
-		m_Emissive = emissive;
-		
-		m_Shininess = shininess;
-		m_HasTransparency = transparency;
-		m_UseFakeLighting = useFakeLighting;
-		m_Shader = shader;
-		
-		m_Shader.addUniform("material.diffuseMap");
 		m_Shader.addUniform("material.specularMap");
-		m_Shader.addUniform("material.useNormalMap");
-		m_Shader.addUniform("material.useSpecularMap");
-		m_Shader.addUniform("material.baseColor");
-		m_Shader.addUniform("material.specular");
-		m_Shader.addUniform("material.emissive");
-		m_Shader.addUniform("material.shininess");
-		m_Shader.addUniform("useFakeLighting");
-		m_Shader.addUniform("numOfRows");
-		
-		m_Shader.enable();
-		m_Shader.loadInteger("material.diffuseMap", 0);
-		m_Shader.disable();
 	}
 	
 	public Material(Texture textureAtlas, Texture specularMap, Texture normalMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, PhongShader shader){
 		
-		m_UseSpecularMap = true;
+		this(textureAtlas, specularMap, baseColor, specular, emissive, 
+				shininess, transparency, useFakeLighting, shader);
+		
 		m_UseNormalMap = true;
-		m_SpecularMap = specularMap;
+		m_UseSpecularMap = false;
 		m_NormalMap = normalMap;
-		
-		m_TextureAtlas = textureAtlas;
-		
-		m_BaseColor = baseColor;
-		m_Specular = specular;
-		m_Emissive = emissive;
-		
-		m_Shininess = shininess;
-		m_HasTransparency = transparency;
-		m_UseFakeLighting = useFakeLighting;
-		m_Shader = shader;
-		
-		m_Shader.addUniform("material.diffuseMap");
-		m_Shader.addUniform("material.specularMap");
+	
 		m_Shader.addUniform("material.normalMap");
+	}
+	
+	private void addUniforms(){
+		m_Shader.addUniform("material.diffuseMap");
 		m_Shader.addUniform("material.useNormalMap");
 		m_Shader.addUniform("material.useSpecularMap");
 		m_Shader.addUniform("material.baseColor");
@@ -142,10 +100,6 @@ public class Material {
 		m_Shader.addUniform("material.shininess");
 		m_Shader.addUniform("useFakeLighting");
 		m_Shader.addUniform("numOfRows");
-		
-		m_Shader.enable();
-		m_Shader.loadInteger("material.diffuseMap", 0);
-		m_Shader.disable();
 	}
 	
 	public void updateUniforms(){
@@ -159,6 +113,7 @@ public class Material {
 			m_Shader.loadInteger("material.normalMap", 2);
 		}else m_Shader.loadInteger("material.useNormalMap", 0);
 		
+		m_Shader.loadInteger("material.diffuseMap", 0);
 		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
 		m_Shader.loadVector3f("material.specular", m_Specular);
 		m_Shader.loadVector3f("material.emissive", m_Emissive);

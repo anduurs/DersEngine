@@ -107,7 +107,7 @@ public class ExampleState extends GameState{
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(0.8f, 0.8f, 0.8f),
-											   0.2f);
+											   1.2f);
 		directionalLight.addComponent(sun);
 		m_Scene.addDirectionalLight(sun);	
 	

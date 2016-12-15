@@ -68,7 +68,8 @@ public abstract class Shader {
 		System.out.println(":: " + fileName);
 		
 		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile the vertexshader called: '" + fileName +  "' correctly");
+			System.err.println("Couldn't compile the vertexshader: '" + fileName +  "' correctly. Error log: " + 
+					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
 		
 		glAttachShader(m_ShaderProgram, vertexShader);
 		glDeleteShader(vertexShader);
@@ -84,7 +85,8 @@ public abstract class Shader {
 		System.out.println(":: " + fileName);
 		
 		if(glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile fragmentShader: "  + fileName + " correctly");
+			System.err.println("Couldn't compile the fragmentshader: '" + fileName +  "' correctly. Error log: " + 
+					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
 		
 		glAttachShader(m_ShaderProgram, fragmentShader);
 		glDeleteShader(fragmentShader);

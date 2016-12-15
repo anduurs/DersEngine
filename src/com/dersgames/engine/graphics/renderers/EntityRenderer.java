@@ -20,8 +20,8 @@ import java.util.Map;
 
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.core.Vector2f;
-import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.shaders.EntityShader;
 

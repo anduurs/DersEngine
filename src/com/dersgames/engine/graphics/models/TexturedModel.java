@@ -1,6 +1,6 @@
 package com.dersgames.engine.graphics.models;
 
-import com.dersgames.engine.graphics.Material;
+import com.dersgames.engine.graphics.materials.Material;
 
 public class TexturedModel {
 	

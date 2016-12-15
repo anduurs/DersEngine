@@ -1,12 +1,13 @@
 package com.dersgames.examplegame.entities;
 
 import com.dersgames.engine.components.StaticMesh;
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.Loader;
-import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.Texture;
@@ -22,11 +23,11 @@ public class Barrel extends Entity{
 		Texture barrelNormalMap = new Texture(Loader.loadGUITexture("barrelNormalMap"));
 		
 		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", true), 
-						                               new Material(barrelTexture, barrelSpecularMap,barrelNormalMap,
+						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.0f, 0.0f, 0.0f),
-																   10.0f,false,false,
+																   8.0f,false,false,
 																   RenderEngine.getEntityRenderer().getShader())); 
 		
 		addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));

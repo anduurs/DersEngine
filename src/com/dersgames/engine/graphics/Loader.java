@@ -226,7 +226,9 @@ public class Loader{
 			Vector2f deltaUV1 = uv2.sub(uv1);
 			Vector2f deltaUV2 = uv3.sub(uv1);
 			
-			Vector3f tangent = deltaPos2.sub(deltaPos1.mul(deltaUV2.y)).div(deltaUV2.x - deltaUV2.y * deltaUV1.x);
+			float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
+			Vector3f tangent = deltaPos1.mul(deltaUV2.y).sub(deltaPos2.mul(deltaUV1.y));
+			tangent = tangent.mul(r);
 			tangents.add(tangent);
 		}
 		
