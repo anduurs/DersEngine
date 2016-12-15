@@ -8,7 +8,7 @@ import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.Mesh;
+import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.utils.ImageManager;
@@ -23,7 +23,7 @@ public class Terrain extends Renderable{
 	private float[][] m_Heights;
 	
 	private float x, z;
-	private Mesh m_Mesh;
+	private Model m_Mesh;
 
 	private TerrainTexturePack m_TexturePack;
 	private Texture m_BlendMap;
@@ -58,7 +58,7 @@ public class Terrain extends Renderable{
 		renderer.submit(this);
 	}
 	
-	private Mesh generateTerrain(Loader loader, String heightmap){
+	private Model generateTerrain(Loader loader, String heightmap){
 		BufferedImage image = ImageManager.getImage(heightmap);
 		int VERTEX_COUNT = image.getHeight();
 		
@@ -115,10 +115,10 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return Loader.loadMesh(vertices, textureCoords, normals, indices);
+		return Loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	
-	private Mesh generateTerrain(Loader loader){
+	private Model generateTerrain(Loader loader){
 		int VERTEX_COUNT = 256;
 		
 		int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -166,7 +166,7 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return loader.loadMesh(vertices, textureCoords, normals, indices);
+		return loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	
 	public float getHeightOfTerrain(float worldX, float worldZ){
@@ -236,7 +236,7 @@ public class Terrain extends Renderable{
 		return z;
 	}
 
-	public Mesh getMesh() {
+	public Model getModel() {
 		return m_Mesh;
 	}
 

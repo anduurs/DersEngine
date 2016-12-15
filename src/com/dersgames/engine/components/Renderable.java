@@ -2,12 +2,12 @@ package com.dersgames.engine.components;
 
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.Mesh;
-import com.dersgames.engine.graphics.models.TexturedMesh;
+import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.TexturedModel;
 
 public abstract class Renderable extends Component{
 	
-	protected TexturedMesh m_TexturedMesh;
+	protected TexturedModel m_TexturedModel;
 	protected Material m_Material;
 	
 	protected int m_TextureIndex;
@@ -16,15 +16,15 @@ public abstract class Renderable extends Component{
 		super(tag);
 	}
 	
-	public Renderable(String tag, TexturedMesh mesh, int textureIndex){
+	public Renderable(String tag, TexturedModel model, int textureIndex){
 		super(tag);
 		
-		m_TexturedMesh = mesh;
-		m_Material = mesh.getMaterial();
+		m_TexturedModel = model;
+		m_Material = model.getMaterial();
 		m_TextureIndex = textureIndex;
 	}
 	
-	public Renderable(String tag, TexturedMesh mesh){
+	public Renderable(String tag, TexturedModel mesh){
 		this(tag, mesh, 0);
 	}
 	
@@ -46,12 +46,12 @@ public abstract class Renderable extends Component{
 		return (float)row / (float)m_Material.getTextureAtlas().getNumberOfRows();
 	}
 
-	public TexturedMesh getTexturedMesh() {
-		return m_TexturedMesh;
+	public TexturedModel getTexturedModel() {
+		return m_TexturedModel;
 	}
 	
-	public Mesh getMesh(){
-		return m_TexturedMesh.getMesh();
+	public Model getModel(){
+		return m_TexturedModel.getModel();
 	}
 
 	public Material getMaterial() {

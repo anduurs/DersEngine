@@ -1,11 +1,11 @@
 package com.dersgames.engine.graphics.models;
 
-public class Mesh {
+public class Model {
 	
 	private int m_vaoID;
 	private int m_VertexCount;
 	
-	public Mesh(int vao, int vertexCount){
+	public Model(int vao, int vertexCount){
 		m_vaoID = vao;
 		m_VertexCount = vertexCount;
 	}

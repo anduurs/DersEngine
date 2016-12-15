@@ -49,7 +49,6 @@ public abstract class PhongShader extends Shader{
 		}
 	}
 
-	
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
@@ -104,4 +103,5 @@ public abstract class PhongShader extends Shader{
 	public void loadProjectionMatrix(Matrix4f projection){
 		loadMatrix4f("projectionMatrix", projection);
 	}
+	
 }

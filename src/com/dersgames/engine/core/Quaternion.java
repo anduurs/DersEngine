@@ -81,7 +81,7 @@ public class Quaternion{
 		Vector3f up = new Vector3f(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
 		Vector3f right = new Vector3f(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
 
-		return new Matrix4f().setRotationMatrix(forward, up, right);
+		return new Matrix4f().setBasis(forward, up, right);
 	}
 
 	public Vector3f getForward(){

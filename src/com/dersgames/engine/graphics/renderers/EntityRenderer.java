@@ -21,28 +21,28 @@ import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.TexturedMesh;
+import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.shaders.EntityShader;
 
 public class EntityRenderer {
 	
 	private EntityShader m_Shader;
-	private Map<TexturedMesh, List<Renderable>> m_Renderables;
+	private Map<TexturedModel, List<Renderable>> m_Renderables;
 	
 	public EntityRenderer(){
 		m_Shader = new EntityShader();
-		m_Renderables = new HashMap<TexturedMesh, List<Renderable>>();
+		m_Renderables = new HashMap<TexturedModel, List<Renderable>>();
 	}
 	
 	public void addRenderable(Renderable renderable){
-		TexturedMesh mesh = renderable.getTexturedMesh();
+		TexturedModel model = renderable.getTexturedModel();
 		
-		if(m_Renderables.containsKey(mesh))
-			m_Renderables.get(mesh).add(renderable);
+		if(m_Renderables.containsKey(model))
+			m_Renderables.get(model).add(renderable);
 		else{
 			List<Renderable> batch = new ArrayList<Renderable>();
 			batch.add(renderable);
-			m_Renderables.put(mesh, batch);
+			m_Renderables.put(model, batch);
 		}
 	}
 	
@@ -51,25 +51,25 @@ public class EntityRenderer {
 	}
 	
 	public void render(){
-		for(TexturedMesh mesh : m_Renderables.keySet()){
-			loadTexturedMeshData(mesh);
-			List<Renderable> batch = m_Renderables.get(mesh);
+		for(TexturedModel model : m_Renderables.keySet()){
+			loadTexturedMeshData(model);
+			List<Renderable> batch = m_Renderables.get(model);
 			for(Renderable renderable : batch){
 				loadRenderableData(renderable);
-				glDrawElements(GL_TRIANGLES, renderable.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, renderable.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
 			}
 			unbind();
 		}
 	}
 	
-	private void loadTexturedMeshData(TexturedMesh texturedMesh){
-		glBindVertexArray(texturedMesh.getMesh().getVaoID());
+	private void loadTexturedMeshData(TexturedModel texturedModel){
+		glBindVertexArray(texturedModel.getModel().getVaoID());
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		
-		Material material = texturedMesh.getMaterial();
+		Material material = texturedModel.getMaterial();
 		
 		if(material.hasTransparency()) 
 			RenderEngine.disableCulling();
@@ -77,11 +77,11 @@ public class EntityRenderer {
 		material.updateUniforms();
 	
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getTextureID());
+		glBindTexture(GL_TEXTURE_2D, texturedModel.getMaterial().getTextureID());
 		
 		if(material.isUsingSpecularMap()){
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, texturedMesh.getMaterial().getSpecularMapTextureID());
+			glBindTexture(GL_TEXTURE_2D, texturedModel.getMaterial().getSpecularMapTextureID());
 		}
 			
 	}

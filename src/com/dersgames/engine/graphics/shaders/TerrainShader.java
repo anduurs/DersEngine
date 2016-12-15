@@ -19,5 +19,5 @@ public class TerrainShader extends PhongShader{
 		loadInteger("bTexture", 3);
 		loadInteger("blendMap", 4);
 	}
-
+	
 }

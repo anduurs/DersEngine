@@ -23,12 +23,13 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.graphics.models.Mesh;
+import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.TextureData;
 import com.dersgames.engine.graphics.textures.TextureData.TextureType;
 
@@ -44,37 +45,49 @@ public class Loader{
 		m_TextureIDs = new ArrayList<Integer>();
 	}
 	
-	public static Mesh loadMesh(float[] positions, float[] textureCoords, float[] normals, int[] indices){
+	public static Model loadModel(float[] positions, float[] textureCoords, float[] normals, float[] tangents, int[] indices){
+		int vaoID = createVAO();
+		createIndexBuffer(indices);
+		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		storeDataInAttributeList(2, 3, normals);
+		storeDataInAttributeList(3, 3, tangents);
+		unbindVAO();
+		return new Model(vaoID, indices.length);
+	}
+	
+	public static Model loadModel(float[] positions, float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
-		return new Mesh(vaoID, indices.length);
+		return new Model(vaoID, indices.length);
 	}
 	
-	public static Mesh loadMesh(float[] positions, float[] textureCoords, int[] indices){
+	public static Model loadModel(float[] positions, float[] textureCoords, int[] indices){
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		unbindVAO();
-		return new Mesh(vaoID, indices.length);
+		return new Model(vaoID, indices.length);
 	}
 	
-	public static Mesh loadObjFile(String fileName){
+	public static Model loadModelFromObjFile(String fileName, boolean calcTangents){
 		List<Vector3f> vertices = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 
-		List<Vector3f> normals = new ArrayList<Vector3f>(); 
-		List<Integer> indices = new ArrayList<Integer>();
-		
-		HashMap<String, Integer> indexMap = new HashMap<String, Integer>();
-		int totalIndex = 0;
+		List<Vector3f> normals = new ArrayList<Vector3f>();
 		
 		List<Vector3f> verticesUnique = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoordsUnique = new ArrayList<Vector2f>(); 
 		List<Vector3f> normalsUnique = new ArrayList<Vector3f>();
+		
+		List<Integer> indices = new ArrayList<Integer>();
+		
+		Map<String, Integer> indexMap = new HashMap<String, Integer>();
+		int totalIndex = 0;
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("res/models/" + fileName + ".obj"));
@@ -127,8 +140,13 @@ public class Loader{
 		float[] verticesArray = new float[verticesUnique.size() * 3];
 		float[] texCoordsArray = new float[texCoordsUnique.size() * 2];
 		float[] normalsArray = new float[normalsUnique.size() * 3];
- 		
+		float[] tangentsArray = new float[normalsUnique.size() * 3];
+		
+		if(calcTangents)
+			tangentsArray = calculateTangents(verticesUnique, texCoordsUnique, tangentsArray.length);
+		
 		int offset = 0;
+		
 		for(Vector3f v : verticesUnique){
 			verticesArray[offset++] = v.x;
 			verticesArray[offset++] = v.y;
@@ -136,12 +154,14 @@ public class Loader{
 		}
 		
 		offset = 0;
+		
 		for(Vector2f v : texCoordsUnique){
 			texCoordsArray[offset++] = v.x;
 			texCoordsArray[offset++] = 1 - v.y;
 		}
 		
 		offset = 0;
+		
 		for(Vector3f v : normalsUnique){
 			normalsArray[offset++] = v.x;
 			normalsArray[offset++] = v.y;
@@ -149,10 +169,26 @@ public class Loader{
 		}
 		
 		int[] indicesArray = new int[indices.size()];
+		
 		for(int i = 0; i < indicesArray.length; i++)
 			indicesArray[i] = indices.get(i);
 		
-		return loadMesh(verticesArray, texCoordsArray, normalsArray, indicesArray);
+		Model model = null;
+		
+		if(calcTangents)
+			model = loadModel(verticesArray, texCoordsArray, normalsArray, tangentsArray, indicesArray);
+		else model = loadModel(verticesArray, texCoordsArray, normalsArray, indicesArray);
+		
+		return model;
+	}
+	
+	private static float[] calculateTangents(List<Vector3f> vertexPositions, 
+			List<Vector2f> texCoords, int numOfTangents){
+		
+		float[] dest = new float[numOfTangents];
+		
+		
+		return dest;
 	}
 	
 	public static int loadModelTexture(String name){

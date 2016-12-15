@@ -2,18 +2,18 @@ package com.dersgames.engine.graphics.models;
 
 import com.dersgames.engine.graphics.Material;
 
-public class TexturedMesh {
+public class TexturedModel {
 	
-	private Mesh m_Mesh;
+	private Model m_Model;
 	private Material m_Material;
 	
-	public TexturedMesh(Mesh mesh, Material material){
-		m_Mesh = mesh;
+	public TexturedModel(Model model, Material material){
+		m_Model = model;
 		m_Material = material;
 	}
 
-	public Mesh getMesh() {
-		return m_Mesh;
+	public Model getModel() {
+		return m_Model;
 	}
 
 	public Material getMaterial() {

@@ -1,15 +1,15 @@
 package com.dersgames.engine.components;
 
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.models.TexturedMesh;
+import com.dersgames.engine.graphics.models.TexturedModel;
 
 public class StaticMesh extends Renderable{
 	
-	public StaticMesh(String tag, TexturedMesh mesh){
+	public StaticMesh(String tag, TexturedModel mesh){
 		this(tag, mesh, 0);
 	}
 	
-	public StaticMesh(String tag, TexturedMesh mesh, int textureIndex){
+	public StaticMesh(String tag, TexturedModel mesh, int textureIndex){
 		super(tag, mesh, textureIndex);
 	}
 	

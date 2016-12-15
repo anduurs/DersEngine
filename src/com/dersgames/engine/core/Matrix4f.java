@@ -96,7 +96,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f setRotationMatrix(Vector3f forward, Vector3f up){
+	public Matrix4f setBasis(Vector3f forward, Vector3f up){
 		Vector3f f = forward.normalize();
 		
 		Vector3f r = up.normalize();
@@ -104,10 +104,10 @@ public class Matrix4f {
 		
 		Vector3f u = f.cross(r);
 
-		return setRotationMatrix(f, u, r);
+		return setBasis(f, u, r);
 	}
 
-	public Matrix4f setRotationMatrix(Vector3f forward, Vector3f up, Vector3f right){
+	public Matrix4f setBasis(Vector3f forward, Vector3f up, Vector3f right){
 		Vector3f f = forward;
 		Vector3f r = right;
 		Vector3f u = up;
