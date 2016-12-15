@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
@@ -31,7 +32,7 @@ public class EntityRenderer {
 	
 	public EntityRenderer(){
 		m_Shader = new EntityShader();
-		m_Renderables = new HashMap<TexturedModel, List<Renderable>>();
+		m_Renderables = new HashMap<>();
 	}
 	
 	public void addRenderable(Renderable renderable){
@@ -82,6 +83,11 @@ public class EntityRenderer {
 		if(material.isUsingSpecularMap()){
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, texturedModel.getMaterial().getSpecularMapTextureID());
+		}
+		
+		if(material.isUsingNormalMap()){
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, texturedModel.getMaterial().getNormalMapTextureID());
 		}
 			
 	}

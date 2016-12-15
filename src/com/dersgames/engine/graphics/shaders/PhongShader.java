@@ -54,6 +54,7 @@ public abstract class PhongShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+		super.bindAttribute(3, "tangent");
 	}
 	
 	public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){

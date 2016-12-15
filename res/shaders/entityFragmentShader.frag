@@ -8,15 +8,20 @@ in vec3 vertexNormal;
 in vec3 cameraViewDirection;
 in float visibility;
 in vec3 vertexPosition;
+in vec3 vertexTangent;
 
 out vec4 outColor;
 
 uniform vec3 skyColor;
 uniform vec3 ambientLight;
 
+mat3 toTangentSpaceMatrix = mat3(0.0);
+
 struct Material{
 	sampler2D diffuseMap;
 	sampler2D specularMap;
+	sampler2D normalMap;
+	int useNormalMap;
 	int useSpecularMap;
 	vec3 baseColor;
 	vec3 specular;
@@ -53,7 +58,12 @@ uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 viewDirection = normalize(cameraViewDirection);
+	vec3 viewDirection = cameraViewDirection;
+	
+	//if(material.useNormalMap)
+		//viewDirection = viewDirection * toTangentSpaceMatrix;
+		
+	viewDirection = normalize(viewDirection);	
 	
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
 	
@@ -72,13 +82,23 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	return calculateLight(directionalLight.light.color, normalize(-directionalLight.direction), 
+	vec3 lightDirection = directionalLight.direction;
+	
+	//if(material.useNormalMap)
+		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	
+	return calculateLight(directionalLight.light.color, normalize(-lightDirection), 
 							directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = vertexPosition - pointLight.position;
+	
 	float distance = length(lightDirection);
+	
+	//if(material.useNormalMap)
+		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	
 	
 	if(distance > pointLight.range)
 		return vec4(0.0);
@@ -96,6 +116,10 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, 
 
 vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = normalize(vertexPosition - light.pointLight.position);
+	
+	//if(material.useNormalMap)
+		//lightDirection = lightDirection * toTangentSpaceMatrix;
+	
 	float spotFactor = dot(lightDirection, light.direction); 
 	
 	vec4 totalShade = vec4(0.0);
@@ -117,9 +141,17 @@ void main(){
 		
 	if(specularMapColor.a < 0.5)
 		discard;
+		
+	vec3 normal = normalize(vertexNormal);	
 	
-	vec3 normal = normalize(vertexNormal);
-	
+	if(material.useNormalMap){
+		vec3 n = normalize(vertexNormal);
+		vec3 tangent = normalize(-n * dot(n, vertexTangent));
+		vec3 biTangent = normalize(cross(n, tangent));
+		toTangentSpaceMatrix = transpose(mat3(biTangent, n, tangent));
+		normal = normalize(texture(material.normalMap, texCoords).rgb * 2.0 - 1.0);
+	} 
+		
 	vec4 emissive = vec4(material.emissive, 1.0) * textureColor; 
 	vec4 ambient = vec4(ambientLight, 1.0);	
 	

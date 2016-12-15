@@ -46,6 +46,9 @@ public class ExampleState extends GameState{
 		//SPECULAR MAPS
 		ImageManager.addImage("barrelSpecularMap", "barrelS.png");
 		
+		//NORMAL MAPS
+		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
+		
 		//TERRAIN TEXTURES
 		ImageManager.addImage("grassy", "grassy2.png");
 		ImageManager.addImage("grassFlowers", "grassFlowers.png");
@@ -124,23 +127,23 @@ public class ExampleState extends GameState{
 		
 		Random random = new Random();
 		
-		for(int i = 0; i < 100; i ++){
-			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
-			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
-			m_Scene.addPointLight(lamp.getPointLight());
+//		for(int i = 0; i < 4; i ++){
+//			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
+//			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+//			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
+//			m_Scene.addPointLight(lamp.getPointLight());
 //			m_Scene.addEntity(lamp);
-		}
+//		}
 	}
 	
 	private void createEntities(Terrain terrain){
-		Transform dragonTransform = new Transform(new Vector3f(250.0f, 0.0f, 200.0f), 
-			      new Quaternion(new Vector3f(0,1,0), 90.0f), 
-			      new Vector3f(3,3,3));
-
-		Dragon dragon = new Dragon("Dragon", dragonTransform);
-		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
-		m_Scene.addEntity(dragon);
+//		Transform dragonTransform = new Transform(new Vector3f(250.0f, 0.0f, 200.0f), 
+//			      new Quaternion(new Vector3f(0,1,0), 90.0f), 
+//			      new Vector3f(3,3,3));
+//
+//		Dragon dragon = new Dragon("Dragon", dragonTransform);
+//		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
+//		m_Scene.addEntity(dragon);
 
 
 		Transform barrelTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 

@@ -3,12 +3,14 @@
 in vec3 position;
 in vec2 textureCoords;
 in vec3 normal;
+in vec3 tangent;
 
 out vec2 texCoords;
 out vec3 vertexNormal;
 out vec3 cameraViewDirection;
 out float visibility;
 out vec3 vertexPosition;
+out vec3 vertexTangent;
 
 uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
@@ -31,8 +33,8 @@ void main(){
 		actualNormal = vec3(0.0, 1.0, 0.0);
 	
 	vertexPosition = worldPosition.xyz;
-	
 	vertexNormal = (modelMatrix * vec4(actualNormal, 0.0)).xyz;
+	vertexTangent = (modelMatrix * vec4(tangent, 1.0)).xyz;
 	
 	cameraViewDirection = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
 	

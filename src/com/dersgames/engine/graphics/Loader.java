@@ -27,8 +27,10 @@ import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.core.Vertex;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.TextureData;
 import com.dersgames.engine.graphics.textures.TextureData.TextureType;
@@ -76,13 +78,15 @@ public class Loader{
 	}
 	
 	public static Model loadModelFromObjFile(String fileName, boolean calcTangents){
-		List<Vector3f> vertices = new ArrayList<Vector3f>(); 
+		List<Vector3f> vertexPositions = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 
 		List<Vector3f> normals = new ArrayList<Vector3f>();
 		
-		List<Vector3f> verticesUnique = new ArrayList<Vector3f>(); 
+		List<Vector3f> vertexPositionsUnique = new ArrayList<Vector3f>(); 
 		List<Vector2f> texCoordsUnique = new ArrayList<Vector2f>(); 
 		List<Vector3f> normalsUnique = new ArrayList<Vector3f>();
+		
+		List<Vertex> vertices = new ArrayList<Vertex>();
 		
 		List<Integer> indices = new ArrayList<Integer>();
 		
@@ -99,7 +103,7 @@ public class Loader{
 					float x = Float.valueOf(lineArray[1]);
 					float y = Float.valueOf(lineArray[2]);
 					float z = Float.valueOf(lineArray[3]);
-					vertices.add(new Vector3f(x, y, z));
+					vertexPositions.add(new Vector3f(x, y, z));
 				}else if(lineArray[0].equals("vt")){
 					float x = Float.valueOf(lineArray[1]);
 					float y = Float.valueOf(lineArray[2]);
@@ -120,9 +124,15 @@ public class Loader{
 						String key = posIndex + "" + texIndex + "" + normIndex;
 						
 						if(!indexMap.containsKey(key)){
-							verticesUnique.add(vertices.get(posIndex));
-							texCoordsUnique.add(texCoords.get(texIndex));
-							normalsUnique.add(normals.get(normIndex));
+							Vector3f vPos = vertexPositions.get(posIndex);
+							Vector2f texCoord = texCoords.get(texIndex);
+							Vector3f normal = normals.get(normIndex);
+							
+							vertices.add(new Vertex(vPos, normal, texCoord));
+							
+							vertexPositionsUnique.add(vPos);
+							texCoordsUnique.add(texCoord);
+							normalsUnique.add(normal);
 							indices.add(totalIndex);
 							indexMap.put(key, totalIndex++);
 						}else indices.add(indexMap.get(key));
@@ -137,17 +147,17 @@ public class Loader{
 			e.printStackTrace();
 		}
 		
-		float[] verticesArray = new float[verticesUnique.size() * 3];
+		float[] verticesArray = new float[vertexPositionsUnique.size() * 3];
 		float[] texCoordsArray = new float[texCoordsUnique.size() * 2];
 		float[] normalsArray = new float[normalsUnique.size() * 3];
 		float[] tangentsArray = new float[normalsUnique.size() * 3];
 		
 		if(calcTangents)
-			tangentsArray = calculateTangents(verticesUnique, texCoordsUnique, tangentsArray.length);
+			tangentsArray = calculateTangents(vertices, tangentsArray.length);
 		
 		int offset = 0;
 		
-		for(Vector3f v : verticesUnique){
+		for(Vector3f v : vertexPositionsUnique){
 			verticesArray[offset++] = v.x;
 			verticesArray[offset++] = v.y;
 			verticesArray[offset++] = v.z;
@@ -182,13 +192,50 @@ public class Loader{
 		return model;
 	}
 	
-	private static float[] calculateTangents(List<Vector3f> vertexPositions, 
-			List<Vector2f> texCoords, int numOfTangents){
+	private static float[] calculateTangents(List<Vertex> vertices, int numOfTangents){
 		
 		float[] dest = new float[numOfTangents];
 		
-		
 		//TODO: CALCULATE TANGENTS
+		//deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
+		//deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
+		// B = deltaPos1 - (deltaUV1.x * T)
+		//deltaPos2 = deltaUV2.x * T + deltaUV2.y * deltaPos1 - deltaUV2.y * deltaUV1.x * T
+		// T * (deltaUV2.x - deltaUV2.y * deltaUV1.x) + deltaUV2.y * deltaPos1 = deltaPos2
+		
+		// T = (deltaPos2 - deltaUV2.y * deltaPos1) / (deltaUV2.x - deltaUV2.y * deltaUV1.x);
+		
+		List<Vector3f> tangents = new ArrayList<Vector3f>();
+		
+		for(int i = 0; i < vertices.size(); i+=3){
+//			Debug.log(i);
+			if(i + 1 == vertices.size() || i == vertices.size() || i + 2 == vertices.size()) break;
+			
+			
+			Vector3f vPos1 = vertices.get(i).getPosition();
+			Vector3f vPos2 = vertices.get(i + 1).getPosition();
+			Vector3f vPos3 = vertices.get(i + 2).getPosition();
+			
+			Vector2f uv1 = vertices.get(i).getTexCoord();
+			Vector2f uv2 = vertices.get(i+1).getTexCoord();
+			Vector2f uv3 = vertices.get(i+2).getTexCoord();
+			
+			Vector3f deltaPos1 = vPos2.sub(vPos1);
+			Vector3f deltaPos2 = vPos3.sub(vPos1);
+			
+			Vector2f deltaUV1 = uv2.sub(uv1);
+			Vector2f deltaUV2 = uv3.sub(uv1);
+			
+			Vector3f tangent = deltaPos2.sub(deltaPos1.mul(deltaUV2.y)).div(deltaUV2.x - deltaUV2.y * deltaUV1.x);
+			tangents.add(tangent);
+		}
+		
+		int offset = 0;
+		for(Vector3f v : tangents){
+			dest[offset++] = v.x;
+			dest[offset++] = v.y;
+			dest[offset++] = v.z;
+		}
 		
 		return dest;
 	}
