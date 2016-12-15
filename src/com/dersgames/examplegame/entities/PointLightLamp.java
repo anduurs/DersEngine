@@ -8,7 +8,7 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedModel;
-import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.utils.Randomizer;
 
 public class PointLightLamp extends Entity{
@@ -37,7 +37,7 @@ public class PointLightLamp extends Entity{
 		m_PointLight.speed = Randomizer.getFloat(0,1);
 		entity.addComponent(m_PointLight);
 		
-		TextureAtlas texture = new TextureAtlas(Loader.loadModelTexture("lamp"), 1);
+		Texture texture = new Texture(Loader.loadModelTexture("lamp"), 1);
 		Material material = new Material(texture, 1.0f, 0.1f, 0.02f, 1.0f,
 				RenderEngine.getEntityRenderer().getShader()); 
 		TexturedModel lampMesh = new TexturedModel(Loader.loadModelFromObjFile("lamp", false), material); 

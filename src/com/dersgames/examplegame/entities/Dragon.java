@@ -8,7 +8,7 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedModel;
-import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.examplegame.components.DragonMovement;
 
 public class Dragon extends Entity{
@@ -16,7 +16,7 @@ public class Dragon extends Entity{
 	public Dragon(String tag, Transform transform){
 		super(tag, transform);
 		
-		TextureAtlas dragonTexture  = new TextureAtlas(Loader.loadModelTexture("dragontexture"), 1);
+		Texture dragonTexture  = new Texture(Loader.loadModelTexture("dragontexture"), 1);
 		TexturedModel dragonMesh    = new TexturedModel(Loader.loadModelFromObjFile("dragon", false), 
 						                                new Material(dragonTexture, 
 																   new Vector3f(0.6f, 0.6f, 0.6f),

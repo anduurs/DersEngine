@@ -134,7 +134,7 @@ public class ExampleState extends GameState{
 	}
 	
 	private void createEntities(Terrain terrain){
-		Transform dragonTransform = new Transform(new Vector3f(200.0f, 0.0f, 250.0f), 
+		Transform dragonTransform = new Transform(new Vector3f(250.0f, 0.0f, 200.0f), 
 			      new Quaternion(new Vector3f(0,1,0), 90.0f), 
 			      new Vector3f(3,3,3));
 

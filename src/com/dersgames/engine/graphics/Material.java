@@ -3,12 +3,12 @@ package com.dersgames.engine.graphics;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.shaders.Shader;
 import com.dersgames.engine.graphics.textures.Texture;
-import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.graphics.textures.Texture;
 
 public class Material {
 	
 	private Shader m_Shader;
-	private TextureAtlas m_TextureAtlas;
+	private Texture m_TextureAtlas;
 	private Texture m_SpecularMap;
 	
 	private boolean m_UseSpecularMap;
@@ -22,7 +22,7 @@ public class Material {
 	private boolean m_HasTransparency;
 	private boolean m_UseFakeLighting;
 	
-	public Material(TextureAtlas textureAtlas, 
+	public Material(Texture textureAtlas, 
 			float baseColor, float specular, float emissive, float shininess, Shader shader){
 		this(   textureAtlas, 
 				new Vector3f(baseColor, baseColor, baseColor),
@@ -35,14 +35,14 @@ public class Material {
 			);
 	}
 	
-	public Material(TextureAtlas textureAtlas, Vector3f baseColor, 
+	public Material(Texture textureAtlas, Vector3f baseColor, 
 			 Vector3f specular, Vector3f emissive, 
 			float shininess, Shader shader){
 		
 		this(textureAtlas, baseColor, specular, emissive, shininess, false, false, shader);
 	}
 	
-	public Material(TextureAtlas textureAtlas, Vector3f baseColor, 
+	public Material(Texture textureAtlas, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
@@ -72,7 +72,7 @@ public class Material {
 		m_Shader.disable();
 	}
 	
-	public Material(TextureAtlas textureAtlas, Texture specularMap, Vector3f baseColor, 
+	public Material(Texture textureAtlas, Texture specularMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, Shader shader){
 		
@@ -135,7 +135,7 @@ public class Material {
 		return m_TextureAtlas.getTextureID();
 	}
 	
-	public TextureAtlas getTextureAtlas(){
+	public Texture getTextureAtlas(){
 		return m_TextureAtlas;
 	}
 

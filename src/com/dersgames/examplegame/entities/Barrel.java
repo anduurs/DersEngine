@@ -9,7 +9,7 @@ import com.dersgames.engine.graphics.Material;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.Texture;
-import com.dersgames.engine.graphics.textures.TextureAtlas;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.examplegame.components.BarrelMovement;
 
 public class Barrel extends Entity{
@@ -17,7 +17,7 @@ public class Barrel extends Entity{
 	public Barrel(String tag, Transform transform){
 		super(tag, transform);
 		
-		TextureAtlas barrelTexture = new TextureAtlas(Loader.loadModelTexture("barrel"), 1);
+		Texture barrelTexture = new Texture(Loader.loadModelTexture("barrel"), 1);
 		Texture barrelSpecularMap  = new Texture(Loader.loadGUITexture("barrelSpecularMap"));
 		
 		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", false), 

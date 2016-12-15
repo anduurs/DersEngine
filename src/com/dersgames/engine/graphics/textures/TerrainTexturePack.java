@@ -6,6 +6,17 @@ public class TerrainTexturePack {
 	private Texture m_rTexture;
 	private Texture m_gTexture;
 	private Texture m_bTexture;
+	private Texture m_aTexture;
+	
+	public TerrainTexturePack(Texture backgroundTexture, Texture rTexture, 
+			Texture gTexture, Texture bTexture, Texture aTexture) {
+		
+		m_BackgroundTexture = backgroundTexture;
+		m_rTexture = rTexture;
+		m_gTexture = gTexture;
+		m_bTexture = bTexture;
+		m_aTexture = aTexture;
+	}
 	
 	public TerrainTexturePack(Texture backgroundTexture, Texture rTexture, 
 			Texture gTexture, Texture bTexture) {
@@ -30,6 +41,10 @@ public class TerrainTexturePack {
 
 	public Texture getbTexture() {
 		return m_bTexture;
+	}
+	
+	public Texture getaTexture() {
+		return m_aTexture;
 	}
 
 }
