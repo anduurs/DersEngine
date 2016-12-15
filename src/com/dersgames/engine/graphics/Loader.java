@@ -188,6 +188,8 @@ public class Loader{
 		float[] dest = new float[numOfTangents];
 		
 		
+		//TODO: CALCULATE TANGENTS
+		
 		return dest;
 	}
 	
