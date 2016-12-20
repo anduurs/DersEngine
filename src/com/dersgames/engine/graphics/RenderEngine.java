@@ -37,8 +37,8 @@ public class RenderEngine {
 	private static TerrainRenderer m_TerrainRenderer;
 	private static EntityRenderer m_EntityRenderer;
 	
-//	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
-	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
+	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
+//	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
 	
 	private boolean m_RenderNormals = false;
 	private boolean m_RenderTangents = false;

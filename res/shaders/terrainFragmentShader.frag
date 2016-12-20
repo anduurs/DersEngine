@@ -156,5 +156,5 @@ void main(){
 		outColor = vec4(fs_in.tangent, 1.0);
 	else if(wireframeMode == 1)
 		outColor = totalTextureColor;
-	else outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, fs_in.visibility);
+	else outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, 1.0);
 }

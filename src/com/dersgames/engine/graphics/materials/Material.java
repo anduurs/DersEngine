@@ -84,7 +84,7 @@ public class Material {
 				shininess, transparency, useFakeLighting, shader);
 		
 		m_UseNormalMap = true;
-		m_UseSpecularMap = true;
+		m_UseSpecularMap = false;
 		m_NormalMap = normalMap;
 	
 		m_Shader.addUniform("material.normalMap");

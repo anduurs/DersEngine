@@ -17,6 +17,7 @@ public class BarrelMovement extends Component{
 	@Override
 	public void update(float dt) {
 		getTransform().rotate(getRotation().getUp(), m_Speed * dt);
+		getTransform().rotate(getRotation().getForward(), m_Speed * dt);
 	}
 
 }
