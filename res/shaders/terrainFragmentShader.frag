@@ -1,7 +1,7 @@
 #version 400 core
 
-const int MAX_POINT_LIGHTS = 100;
-const int MAX_SPOT_LIGHTS = 100;
+const int MAX_POINT_LIGHTS = 10;
+const int MAX_SPOT_LIGHTS = 10;
 
 in VS_Data{
 	vec3 position;
@@ -9,7 +9,7 @@ in VS_Data{
 	vec3 normal;
 	vec3 tangent;
 	vec3 cameraViewDirection;
-	float visibility;
+	float fogFactor;
 	float usingNormalMap;
 	mat3 toTangentSpaceMatrix;
 } fs_in;
@@ -156,5 +156,5 @@ void main(){
 		outColor = vec4(fs_in.tangent, 1.0);
 	else if(wireframeMode == 1)
 		outColor = totalTextureColor;
-	else outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, 1.0);
+	else outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, fs_in.fogFactor);
 }

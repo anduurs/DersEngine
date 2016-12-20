@@ -10,28 +10,26 @@ import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
-import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
-import com.dersgames.examplegame.components.BarrelMovement;
+import com.dersgames.examplegame.components.CrateMovement;
 
-public class Barrel extends Entity{
+public class Crate extends Entity{
 	
-	public Barrel(String tag, Transform transform){
+	public Crate(String tag, Transform transform){
 		super(tag, transform);
 		
-		Texture barrelTexture = new Texture(Loader.loadModelTexture("barrel"), 1);
-		SpecularMap barrelSpecularMap  = new SpecularMap(Loader.loadModelTexture("barrelSpecularMap"));
-		NormalMap barrelNormalMap = new NormalMap(Loader.loadModelTexture("barrelNormalMap"));
+		Texture crateTexture = new Texture(Loader.loadModelTexture("crate"), 1);
+		NormalMap crateNormalMap = new NormalMap(Loader.loadModelTexture("crateNormalMap"));
 		
-		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", true), 
-						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
+		TexturedModel crateMesh   = new TexturedModel(Loader.loadModelFromObjFile("crate", true), 
+						                               new Material(crateTexture, crateNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.02f, 0.02f, 0.02f),
 																   8.0f, false, false,
 																   RenderEngine.getEntityRenderer().getShader())); 
 		
-		addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));
-		addComponent(new BarrelMovement("BarrelMovement", 15.0f));
+		addComponent(new StaticMesh("CrateStaticMesh", crateMesh));
+		addComponent(new CrateMovement("CrateMovement", 15.0f));
 	}
 
 }

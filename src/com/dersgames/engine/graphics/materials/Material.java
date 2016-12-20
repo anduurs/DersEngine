@@ -3,13 +3,15 @@ package com.dersgames.engine.graphics.materials;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
+import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
 
 public class Material {
 	
 	private PhongShader m_Shader;
 	private Texture m_TextureAtlas;
-	private Texture m_SpecularMap;
-	private Texture m_NormalMap;
+	private SpecularMap m_SpecularMap;
+	private NormalMap m_NormalMap;
 	
 	private boolean m_UseSpecularMap;
 	private boolean m_UseNormalMap;
@@ -63,7 +65,7 @@ public class Material {
 		addUniforms();
 	}
 	
-	public Material(Texture textureAtlas, Texture specularMap, Vector3f baseColor, 
+	public Material(Texture textureAtlas, SpecularMap specularMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, PhongShader shader){
 		
@@ -76,7 +78,20 @@ public class Material {
 		m_Shader.addUniform("material.specularMap");
 	}
 	
-	public Material(Texture textureAtlas, Texture specularMap, Texture normalMap, Vector3f baseColor, 
+	public Material(Texture textureAtlas, NormalMap normalMap, Vector3f baseColor, 
+			Vector3f specular, Vector3f emissive, float shininess, 
+			boolean transparency, boolean useFakeLighting, PhongShader shader){
+		
+		this(textureAtlas, baseColor, specular, emissive, 
+				shininess, transparency, useFakeLighting, shader);
+		
+		m_UseNormalMap = true;
+		m_NormalMap = normalMap;
+	
+		m_Shader.addUniform("material.normalMap");
+	}
+	
+	public Material(Texture textureAtlas, SpecularMap specularMap, NormalMap normalMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
 			boolean transparency, boolean useFakeLighting, PhongShader shader){
 		
@@ -84,7 +99,6 @@ public class Material {
 				shininess, transparency, useFakeLighting, shader);
 		
 		m_UseNormalMap = true;
-		m_UseSpecularMap = false;
 		m_NormalMap = normalMap;
 	
 		m_Shader.addUniform("material.normalMap");

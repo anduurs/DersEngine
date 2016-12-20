@@ -166,7 +166,7 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return loader.loadModel(vertices, textureCoords, normals, indices);
+		return Loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	
 	public float getHeightOfTerrain(float worldX, float worldZ){

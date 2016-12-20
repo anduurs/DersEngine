@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 import java.util.List;
 
@@ -24,8 +25,10 @@ import com.dersgames.engine.components.lights.PointLight;
 import com.dersgames.engine.components.lights.SpotLight;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
+import com.dersgames.engine.graphics.renderers.SkyboxRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
 import com.dersgames.engine.graphics.shaders.EntityShader;
+import com.dersgames.engine.graphics.shaders.SkyboxShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.terrains.Terrain;
@@ -36,6 +39,7 @@ public class RenderEngine {
 	
 	private static TerrainRenderer m_TerrainRenderer;
 	private static EntityRenderer m_EntityRenderer;
+	private static SkyboxRenderer m_SkyboxRenderer;
 	
 	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 //	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
@@ -47,9 +51,11 @@ public class RenderEngine {
 	public RenderEngine(){
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
+		m_SkyboxRenderer = new SkyboxRenderer();
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_MULTISAMPLE);
 		
 		enableCulling();
 	}
@@ -149,6 +155,12 @@ public class RenderEngine {
 		m_TerrainRenderer.render();
 		terrainShader.disable();
 		m_TerrainRenderer.clear();
+		
+		SkyboxShader skyboxShader = m_SkyboxRenderer.getShader();
+		skyboxShader.enable();
+		skyboxShader.loadViewMatrix(m_Camera);
+		m_SkyboxRenderer.render();
+		skyboxShader.disable();
 	}
 	
 	public void addCamera(Camera camera){
@@ -163,6 +175,11 @@ public class RenderEngine {
 		terrainShader.enable();
 		terrainShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		terrainShader.disable();
+		
+		SkyboxShader skyboxShader = m_SkyboxRenderer.getShader();
+		skyboxShader.enable();
+		skyboxShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+		skyboxShader.disable();
 	}
 	
 	public void dispose(){

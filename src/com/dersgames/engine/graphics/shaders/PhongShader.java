@@ -13,8 +13,8 @@ import com.dersgames.engine.entities.Entity;
 
 public abstract class PhongShader extends Shader{
 	
-	public static final int MAX_POINT_LIGHTS = 100;
-	public static final int MAX_SPOT_LIGHTS = 100;
+	public static final int MAX_POINT_LIGHTS = 10;
+	public static final int MAX_SPOT_LIGHTS = 10;
 
 	public PhongShader(String vertShader, String fragShader) {
 		super(vertShader, fragShader);

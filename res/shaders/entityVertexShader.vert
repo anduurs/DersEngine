@@ -1,5 +1,8 @@
 #version 400 core
 
+const float density = 0.0035;
+const float gradient = 2;
+
 in vec3 position;
 in vec2 textureCoords;
 in vec3 normal;
@@ -11,7 +14,7 @@ out VS_Data{
 	vec3 normal;
 	vec3 tangent;
 	vec3 cameraViewDirection;
-	float visibility;
+	float fogFactor;
 	float usingNormalMap;
 	mat3 toTangentSpaceMatrix;
 } vs_out;
@@ -25,9 +28,6 @@ uniform float numOfRows;
 
 uniform vec2 offset;
 uniform float usingNormalMap;
-
-const float density = 0.0035;
-const float gradient = 2;
 
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
@@ -57,8 +57,8 @@ void main(){
 	}
 	
 	float distance = length(viewSpacePosition.xyz);
-	float visibility = exp(-pow((distance * density), gradient));
-	vs_out.visibility = clamp(visibility, 0.0, 1.0);
+	float fogFactor = exp(-pow((distance * density), gradient));
+	vs_out.fogFactor = 1.0;//clamp(fogFactor, 0.0, 1.0);
 	
 	gl_Position = projectionMatrix * viewSpacePosition;
 }

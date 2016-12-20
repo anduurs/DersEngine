@@ -19,8 +19,8 @@ import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.entities.Barrel;
+import com.dersgames.examplegame.entities.Crate;
 import com.dersgames.examplegame.entities.Dragon;
-import com.dersgames.examplegame.entities.PointLightLamp;
 
 public class ExampleState extends GameState{
 	
@@ -51,6 +51,14 @@ public class ExampleState extends GameState{
 		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
 		ImageManager.addImage("crateNormalMap", "crateNormal.png");
 		
+		//CUBE MAPS
+		ImageManager.addImage("top", "cubemaps/top.png");
+		ImageManager.addImage("bottom", "cubemaps/bottom.png");
+		ImageManager.addImage("right", "cubemaps/right.png");
+		ImageManager.addImage("left", "cubemaps/left.png");
+		ImageManager.addImage("front", "cubemaps/front.png");
+		ImageManager.addImage("back", "cubemaps/back.png");
+		
 		//TERRAIN TEXTURES
 		ImageManager.addImage("grassy", "grassy2.png");
 		ImageManager.addImage("grassFlowers", "grassFlowers.png");
@@ -62,8 +70,8 @@ public class ExampleState extends GameState{
 		//PLAYER TEXTURE
 		ImageManager.addImage("player", "playerTexture.png");
 		
-		m_Renderer = new RenderEngine();
 		m_Loader   = new Loader();
+		m_Renderer = new RenderEngine();
 		m_Scene    = new Scene();
 		
 		createCamera();
@@ -96,7 +104,7 @@ public class ExampleState extends GameState{
 //		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 		
-//		m_Scene.addEntity(terrainEntity);
+		m_Scene.addEntity(terrainEntity);
 		
 		return terrain;
 	}
@@ -141,25 +149,29 @@ public class ExampleState extends GameState{
 	}
 	
 	private void createEntities(Terrain terrain){
-//		Transform dragonTransform = new Transform(new Vector3f(250.0f, 0.0f, 200.0f), 
-//			      new Quaternion(new Vector3f(0,1,0), 90.0f), 
-//			      new Vector3f(3,3,3));
-//
-//		Dragon dragon = new Dragon("Dragon", dragonTransform);
-//		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
-//		m_Scene.addEntity(dragon);
+		Transform dragonTransform = new Transform(new Vector3f(250.0f, 0.0f, 200.0f), 
+											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
+											      new Vector3f(3,3,3));
 
-
+		Dragon dragon = new Dragon("Dragon", dragonTransform);
+		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
+		
+		Transform crateTransform = new Transform(new Vector3f(140.0f, 0.0f, 200.0f), 
+											     new Quaternion(new Vector3f(0,0,0), 0.0f), 
+											     new Vector3f(0.2f,0.2f,0.2f));
+		
+		Crate crate = new Crate("Crate", crateTransform);
+		crate.getPosition().y = terrain.getHeightOfTerrain(crate.getPosition().x, crate.getPosition().z) + 32;
+		
 		Transform barrelTransform = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
-					      new Quaternion(new Vector3f(0,0,0), 90.0f), 
-					      new Vector3f(0.25f,0.25f,0.25f));
+								    new Quaternion(new Vector3f(0,0,0), 90.0f), 
+								    new Vector3f(3f,3f,3f));
 		
-		Transform barrelTransform2 = new Transform(new Vector3f(200.0f, 0.0f, 200.0f), 
-			      new Quaternion(new Vector3f(0,0,0), 90.0f), 
-			      new Vector3f(3f,3f,3f));
+		Barrel barrel = new Barrel("Barrel", barrelTransform);
+		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 25;
 		
-		Barrel barrel = new Barrel("Barrel", barrelTransform2, m_Loader);
-		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 20;
+		m_Scene.addEntity(dragon);
+		m_Scene.addEntity(crate);
 		m_Scene.addEntity(barrel);
 	}
 	

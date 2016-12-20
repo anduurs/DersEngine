@@ -26,7 +26,7 @@ public class Dragon extends Entity{
 																   RenderEngine.getEntityRenderer().getShader())); 
 		
 		addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));
-		addComponent(new DragonMovement("DragonMovement", 10.0f));
+		addComponent(new DragonMovement("DragonMovement", 20.0f));
 	}
 
 }

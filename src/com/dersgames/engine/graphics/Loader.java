@@ -77,6 +77,13 @@ public class Loader{
 		return new Model(vaoID, indices.length);
 	}
 	
+	public static Model loadModel(float[] positions, int dimensions){
+		int vaoID = createVAO();
+		storeDataInAttributeList(0, dimensions, positions);
+		unbindVAO();
+		return new Model(vaoID, positions.length / dimensions);
+	}
+	
 	public static Model loadModelFromObjFile(String fileName, boolean calculateTangents){
 		List<Vector3f> vertexPositions = new ArrayList<>(); 
 		List<Vector2f> texCoords = new ArrayList<>(); 
@@ -265,6 +272,13 @@ public class Loader{
 	public static int loadGUITexture(String name){
 		TextureData texture = new TextureData(name, TextureType.GUI);
 		int textureID = texture.getID();
+		m_TextureIDs.add(textureID);
+		return textureID;
+	}
+	
+	public static int loadCubeMapTexture(String[] images){
+		TextureData cubeMapTexture = new TextureData(images);
+		int textureID = cubeMapTexture.getID();
 		m_TextureIDs.add(textureID);
 		return textureID;
 	}

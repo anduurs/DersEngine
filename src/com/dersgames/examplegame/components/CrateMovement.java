@@ -2,11 +2,11 @@ package com.dersgames.examplegame.components;
 
 import com.dersgames.engine.components.Component;
 
-public class BarrelMovement extends Component{
+public class CrateMovement extends Component{
 	
 	private float m_Speed;
 	
-	public BarrelMovement(String tag, float speed){
+	public CrateMovement(String tag, float speed){
 		super(tag);
 		m_Speed = speed;
 	}
@@ -17,7 +17,7 @@ public class BarrelMovement extends Component{
 	@Override
 	public void update(float dt) {
 		getTransform().rotate(getRotation().getUp(), m_Speed * dt);
-		//getTransform().rotate(getRotation().getForward(), m_Speed * dt);
+		getTransform().rotate(getRotation().getForward(), m_Speed * dt);
 	}
 
 }
