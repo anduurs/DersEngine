@@ -33,21 +33,8 @@ public class BasicShader extends Shader{
 		loadFloat("numOfRows", rows);
 	}
 	
-	public void loadOffset(Vector2f offset){
+	public void loadTexCoordOffset(Vector2f offset){
 		loadVector2f("offset", offset);
 	}
-	
-	public void loadModelMatrix(Entity entity){
-		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
-	}
-	
-	public void loadViewMatrix(Camera camera){
-		loadMatrix4f("viewMatrix", camera.getViewMatrix());
-	}
-	
-	public void loadProjectionMatrix(Matrix4f projection){
-		loadMatrix4f("projectionMatrix", projection);
-	}
-	
 
 }

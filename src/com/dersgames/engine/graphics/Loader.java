@@ -77,20 +77,21 @@ public class Loader{
 		return new Model(vaoID, indices.length);
 	}
 	
-	public static Model loadModelFromObjFile(String fileName, boolean calcTangents){
-		List<Vector3f> vertexPositions = new ArrayList<Vector3f>(); 
-		List<Vector2f> texCoords = new ArrayList<Vector2f>(); 
-		List<Vector3f> normals = new ArrayList<Vector3f>();
+	public static Model loadModelFromObjFile(String fileName, boolean calculateTangents){
+		List<Vector3f> vertexPositions = new ArrayList<>(); 
+		List<Vector2f> texCoords = new ArrayList<>(); 
+		List<Vector3f> normals = new ArrayList<>();
 		
-		List<Vector3f> vertexPositionsUnique = new ArrayList<Vector3f>(); 
-		List<Vector2f> texCoordsUnique = new ArrayList<Vector2f>(); 
-		List<Vector3f> normalsUnique = new ArrayList<Vector3f>();
+		List<Vector3f> vertexPositionsUnique = new ArrayList<>(); 
+		List<Vector2f> texCoordsUnique = new ArrayList<>(); 
+		List<Vector3f> normalsUnique = new ArrayList<>();
+		List<Vector3f> tangents = new ArrayList<>();
 		
-		List<Vertex> vertices = new ArrayList<Vertex>();
+		List<Vertex> vertices = new ArrayList<>();
+		List<Integer> indices = new ArrayList<>();
 		
-		List<Integer> indices = new ArrayList<Integer>();
+		Map<String, Integer> indexMap = new HashMap<>();
 		
-		Map<String, Integer> indexMap = new HashMap<String, Integer>();
 		int totalIndex = 0;
 		
 		try {
@@ -114,6 +115,19 @@ public class Loader{
 					float z = Float.valueOf(lineArray[3]);
 					normals.add(new Vector3f(x, y, z));
 				}else if(lineArray[0].equals("f")){
+					String[] v0Indices = lineArray[1].split("/");
+					String[] v1Indices = lineArray[2].split("/");
+					String[] v2Indices = lineArray[3].split("/");
+					
+					Vertex v0 = generateVertex(v0Indices, vertexPositions, texCoords, normals);
+					Vertex v1 = generateVertex(v1Indices, vertexPositions, texCoords, normals);
+					Vertex v2 = generateVertex(v2Indices, vertexPositions, texCoords, normals);
+					
+					Vector3f tangent = null;
+					
+					if(calculateTangents)
+						tangent = calculateTangent(v0, v1, v2);
+					
 					for(int i = 1; i < lineArray.length; i++){
 						String[] vertexIndices = lineArray[i].split("/");
 						
@@ -133,6 +147,10 @@ public class Loader{
 							vertexPositionsUnique.add(vPos);
 							texCoordsUnique.add(texCoord);
 							normalsUnique.add(normal);
+							
+							if(calculateTangents)
+								tangents.add(tangent);
+							
 							indices.add(totalIndex);
 							indexMap.put(key, totalIndex++);
 						}else indices.add(indexMap.get(key));
@@ -150,10 +168,12 @@ public class Loader{
 		float[] verticesArray = new float[vertexPositionsUnique.size() * 3];
 		float[] texCoordsArray = new float[texCoordsUnique.size() * 2];
 		float[] normalsArray = new float[normalsUnique.size() * 3];
-		float[] tangentsArray = new float[normalsUnique.size() * 3];
+		float[] tangentsArray = new float[tangents.size() * 3];
 		
-		if(calcTangents)
-			tangentsArray = calculateTangents(vertices, tangentsArray.length);
+//		Debug.log("VertexPositions: " + vertexPositionsUnique.size());
+//		Debug.log("TextureCoordinates: " + texCoordsUnique.size());
+//		Debug.log("Normals: " + normalsUnique.size());
+//		Debug.log("Tangents: " + tangents.size());
 		
 		int offset = 0;
 		
@@ -178,6 +198,17 @@ public class Loader{
 			normalsArray[offset++] = v.z;
 		}
 		
+		if(calculateTangents){
+			offset = 0;
+			
+			for(Vector3f v : tangents){
+				tangentsArray[offset++] = v.x;
+				tangentsArray[offset++] = v.y;
+				tangentsArray[offset++] = v.z;
+			}
+		}
+		
+		
 		int[] indicesArray = new int[indices.size()];
 		
 		for(int i = 0; i < indicesArray.length; i++)
@@ -185,61 +216,43 @@ public class Loader{
 		
 		Model model = null;
 		
-		if(calcTangents)
+		if(calculateTangents)
 			model = loadModel(verticesArray, texCoordsArray, normalsArray, tangentsArray, indicesArray);
 		else model = loadModel(verticesArray, texCoordsArray, normalsArray, indicesArray);
 		
 		return model;
 	}
 	
-	private static float[] calculateTangents(List<Vertex> vertices, int numOfTangents){
+	private static Vertex generateVertex(String[] indexData, List<Vector3f> positions, 
+			List<Vector2f> texCoords, List<Vector3f> normals){
 		
-		float[] dest = new float[numOfTangents];
+		int posIndex = Integer.parseInt(indexData[0]) - 1;
+		int textureIndex = Integer.parseInt(indexData[1]) - 1;
+		int normalIndex = Integer.parseInt(indexData[2]) - 1;
 		
-		//TODO: CALCULATE TANGENTS
-		//deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
-		//deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
-		// B = deltaPos1 - (deltaUV1.x * T)
-		//deltaPos2 = deltaUV2.x * T + deltaUV2.y * deltaPos1 - deltaUV2.y * deltaUV1.x * T
-		// T * (deltaUV2.x - deltaUV2.y * deltaUV1.x) + deltaUV2.y * deltaPos1 = deltaPos2
+		Vector3f pos = positions.get(posIndex);
+		Vector2f texCoord = texCoords.get(textureIndex);
+		Vector3f normal = normals.get(normalIndex);
 		
-		// T = (deltaPos2 - deltaUV2.y * deltaPos1) / (deltaUV2.x - deltaUV2.y * deltaUV1.x);
+		return new Vertex(pos, normal, texCoord);
+	}
+	
+	private static Vector3f calculateTangent(Vertex v0, Vertex v1, Vertex v2){
+		Vector3f edge1 = v1.getPosition().sub(v0.getPosition());
+		Vector3f edge2 = v2.getPosition().sub(v0.getPosition());
 		
-		List<Vector3f> tangents = new ArrayList<Vector3f>();
+		float deltaU1 = v1.getTexCoords().x - v0.getTexCoords().x;
+		float deltaV1 = v1.getTexCoords().y - v0.getTexCoords().y;
+		float deltaU2 = v2.getTexCoords().x - v0.getTexCoords().x;
+		float deltaV2 = v2.getTexCoords().y - v0.getTexCoords().y;
 		
-		for(int i = 0; i < vertices.size(); i+=3){
-//			Debug.log(i);
-			if(i + 1 == vertices.size() || i == vertices.size() || i + 2 == vertices.size()) break;
-			
-			
-			Vector3f vPos1 = vertices.get(i).getPosition();
-			Vector3f vPos2 = vertices.get(i + 1).getPosition();
-			Vector3f vPos3 = vertices.get(i + 2).getPosition();
-			
-			Vector2f uv1 = vertices.get(i).getTexCoord();
-			Vector2f uv2 = vertices.get(i+1).getTexCoord();
-			Vector2f uv3 = vertices.get(i+2).getTexCoord();
-			
-			Vector3f deltaPos1 = vPos2.sub(vPos1);
-			Vector3f deltaPos2 = vPos3.sub(vPos1);
-			
-			Vector2f deltaUV1 = uv2.sub(uv1);
-			Vector2f deltaUV2 = uv3.sub(uv1);
-			
-			float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
-			Vector3f tangent = deltaPos1.mul(deltaUV2.y).sub(deltaPos2.mul(deltaUV1.y));
-			tangent = tangent.mul(r);
-			tangents.add(tangent);
-		}
+		float f = 1.0f / (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+	
+		Vector3f tangent = new Vector3f(f * (deltaV2 * edge1.x - deltaV1 * edge2.x),
+										f * (deltaV2 * edge1.y - deltaV1 * edge2.y),
+										f * (deltaV2 * edge1.z - deltaV1 * edge2.z));
 		
-		int offset = 0;
-		for(Vector3f v : tangents){
-			dest[offset++] = v.x;
-			dest[offset++] = v.y;
-			dest[offset++] = v.z;
-		}
-		
-		return dest;
+		return tangent;
 	}
 	
 	public static int loadModelTexture(String name){

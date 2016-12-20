@@ -5,45 +5,60 @@ in vec2 textureCoords;
 in vec3 normal;
 in vec3 tangent;
 
-out vec2 texCoords;
-out vec3 vertexNormal;
-out vec3 cameraViewDirection;
-out float visibility;
-out vec3 vertexPosition;
-out vec3 vertexTangent;
+out VS_Data{
+	vec3 position;
+	vec2 textureCoords;
+	vec3 normal;
+	vec3 tangent;
+	vec3 cameraViewDirection;
+	float visibility;
+	float usingNormalMap;
+	mat3 toTangentSpaceMatrix;
+} vs_out;
 
 uniform mat4 modelMatrix;
-uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 uniform float useFakeLighting;
 uniform float numOfRows;
 
 uniform vec2 offset;
+uniform float usingNormalMap;
 
 const float density = 0.0035;
 const float gradient = 2;
 
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+	vec4 viewSpacePosition = viewMatrix * worldPosition;
 
-	texCoords = (textureCoords / numOfRows) + offset;
+	vs_out.textureCoords = (textureCoords / numOfRows) + offset;
+	vs_out.usingNormalMap = usingNormalMap;
 	vec3 actualNormal = normal;
 	
 	if(useFakeLighting == 1.0)
 		actualNormal = vec3(0.0, 1.0, 0.0);
+
+	vs_out.normal = normalize((modelMatrix * vec4(actualNormal, 0.0)).xyz);
+	vs_out.position = worldPosition.xyz;
 	
-	vertexPosition = worldPosition.xyz;
-	vertexNormal = (modelMatrix * vec4(actualNormal, 0.0)).xyz;
-	vertexTangent = (modelMatrix * vec4(tangent, 0.0)).xyz;
+	vs_out.cameraViewDirection = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+	vs_out.tangent = normalize((modelMatrix * vec4(tangent, 0.0)).xyz);
+
+	if(usingNormalMap == 1.0){
+		vec3 vertexTangent = normalize((modelMatrix * vec4(tangent, 0.0)).xyz);
+		//re-orthogonalize the tangent vector
+		vertexTangent =  normalize(vertexTangent - vs_out.normal * dot(vertexTangent, vs_out.normal));
+		vs_out.tangent = vertexTangent;
+		vec3 vertexBiTangent = normalize(cross(vs_out.normal, vertexTangent));
+		vs_out.toTangentSpaceMatrix = mat3(vs_out.tangent, vertexBiTangent, vs_out.normal);
+		vs_out.cameraViewDirection = ((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz) * vs_out.toTangentSpaceMatrix;
+	}
 	
-	cameraViewDirection = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+	float distance = length(viewSpacePosition.xyz);
+	float visibility = exp(-pow((distance * density), gradient));
+	vs_out.visibility = clamp(visibility, 0.0, 1.0);
 	
-	vec4 positionRelativeToCamera = viewMatrix * worldPosition;
-	
-	float distance = length(positionRelativeToCamera.xyz);
-	visibility = exp(-pow((distance * density), gradient));
-	visibility = clamp(visibility, 0.0, 1.0);
-	
-	gl_Position = projectionMatrix * positionRelativeToCamera;
+	gl_Position = projectionMatrix * viewSpacePosition;
 }

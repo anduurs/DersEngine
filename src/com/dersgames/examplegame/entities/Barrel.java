@@ -1,7 +1,6 @@
 package com.dersgames.examplegame.entities;
 
 import com.dersgames.engine.components.StaticMesh;
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
@@ -15,7 +14,7 @@ import com.dersgames.examplegame.components.BarrelMovement;
 
 public class Barrel extends Entity{
 	
-	public Barrel(String tag, Transform transform){
+	public Barrel(String tag, Transform transform, Loader loader){
 		super(tag, transform);
 		
 		Texture barrelTexture = new Texture(Loader.loadModelTexture("barrel"), 1);
@@ -26,8 +25,8 @@ public class Barrel extends Entity{
 						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
-																   new Vector3f(0.0f, 0.0f, 0.0f),
-																   8.0f,false,false,
+																   new Vector3f(0.02f, 0.02f, 0.02f),
+																   8.0f, false, false,
 																   RenderEngine.getEntityRenderer().getShader())); 
 		
 		addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));

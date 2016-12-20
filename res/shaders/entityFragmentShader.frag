@@ -1,28 +1,26 @@
 #version 400 core
 
 const int MAX_POINT_LIGHTS = 100;
-const int MAX_SPOT_LIGHTS = 4;
+const int MAX_SPOT_LIGHTS = 100;
 
-in vec2 texCoords;
-in vec3 vertexNormal;
-in vec3 cameraViewDirection;
-in float visibility;
-in vec3 vertexPosition;
-in vec3 vertexTangent;
+in VS_Data{
+	vec3 position;
+	vec2 textureCoords;
+	vec3 normal;
+	vec3 tangent;
+	vec3 cameraViewDirection;
+	float visibility;
+	float usingNormalMap;
+	mat3 toTangentSpaceMatrix;
+} fs_in;
 
 out vec4 outColor;
-
-uniform vec3 skyColor;
-uniform vec3 ambientLight;
-
-mat3 toTangentSpaceMatrix = mat3(0.0);
 
 struct Material{
 	sampler2D diffuseMap;
 	sampler2D specularMap;
 	sampler2D normalMap;
-	int useNormalMap;
-	int useSpecularMap;
+	float useSpecularMap;
 	vec3 baseColor;
 	vec3 specular;
 	vec3 emissive;
@@ -57,48 +55,49 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+uniform vec3 skyColor;
+uniform vec3 ambientLight;
+
+uniform int renderNormals;
+uniform int renderTangents;
+uniform int wireframeMode;
+
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 viewDirection = cameraViewDirection;
-	
-	if(material.useNormalMap == 1)
-		viewDirection = viewDirection * toTangentSpaceMatrix;
-		
-	viewDirection = normalize(viewDirection);	
-	
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
 	
+	vec3 viewDirection = normalize(fs_in.cameraViewDirection);
 	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
+
 	float normalizationFactor = ((material.shininess + 2.0) / 8.0);
 	float specularFactor = pow(max(dot(viewDirection, reflectedLightDirection), 0.0), material.shininess) * normalizationFactor;
 	
 	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor; 
 	vec4 specularLight = vec4(0.0);
 	
-	if(material.useSpecularMap == 1)
+	if(material.useSpecularMap == 1.0)
 		specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0) * specularMapColor.r;
-	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 	
-
+	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 
+		
 	return diffuseLight + specularLight;
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = directionalLight.direction;
-	
-	if(material.useNormalMap == 1)
-		lightDirection = lightDirection * toTangentSpaceMatrix;
-	
-	return calculateLight(directionalLight.light.color, normalize(-lightDirection), 
-							directionalLight.light.intensity, normal, textureColor, specularMapColor);
+	vec3 lightDirection = -directionalLight.direction;
+
+	if(fs_in.usingNormalMap == 1.0)
+		lightDirection = normalize(-directionalLight.direction * fs_in.toTangentSpaceMatrix);
+
+	return calculateLight(directionalLight.light.color, lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = vertexPosition - pointLight.position;
-	
+	vec3 lightDirection = fs_in.position - pointLight.position;
 	float distance = length(lightDirection);
-	
-	if(material.useNormalMap == 1)
-		lightDirection = lightDirection * toTangentSpaceMatrix;
-	
+
+	if(fs_in.usingNormalMap == 1.0){
+		lightDirection = lightDirection * fs_in.toTangentSpaceMatrix;
+		distance = length(lightDirection);
+	}
 	
 	if(distance > pointLight.range)
 		return vec4(0.0);
@@ -115,13 +114,13 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, 
 }
 
 vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = normalize(vertexPosition - light.pointLight.position);
-	
-	if(material.useNormalMap == 1)
-		lightDirection = lightDirection * toTangentSpaceMatrix;
-	
+	vec3 lightDirection = normalize(fs_in.position - light.pointLight.position);
+
 	float spotFactor = dot(lightDirection, light.direction); 
-	
+
+	if(fs_in.usingNormalMap == 1.0)
+		spotFactor = dot(normalize(lightDirection * fs_in.toTangentSpaceMatrix), normalize(light.direction * fs_in.toTangentSpaceMatrix)); 
+
 	vec4 totalShade = vec4(0.0);
 	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
 	
@@ -133,26 +132,17 @@ vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor, vec4 sp
 }
 
 void main(){
-	vec4 textureColor = texture(material.diffuseMap, texCoords);
-	vec4 specularMapColor = texture(material.specularMap, texCoords);
+	vec4 textureColor = texture(material.diffuseMap, fs_in.textureCoords);
+	vec4 specularMapColor = texture(material.specularMap, fs_in.textureCoords);
 	
 	if(textureColor.a < 0.5)
 		discard;
 		
-	if(specularMapColor.a < 0.5)
-		discard;
-		
-	vec3 normal = normalize(vertexNormal);	
+	vec3 normal = fs_in.normal;
+
+	if(fs_in.usingNormalMap == 1.0)
+		normal = normalize(texture(material.normalMap, fs_in.textureCoords).rgb * 2.0 - 1.0);
 	
-	if(material.useNormalMap == 1){
-		vec3 n = normalize(vertexNormal);
-		vec3 tangent = normalize(vertexTangent);
-		tangent = normalize(tangent - n * dot(n, tangent));
-		vec3 biTangent = normalize(cross(n, tangent));
-		toTangentSpaceMatrix = transpose(mat3(biTangent,tangent, n));
-		normal = normalize(texture(material.normalMap, texCoords).rgb * 2.0 - 1.0);
-	} 
-		
 	vec4 emissive = vec4(material.emissive, 1.0) * textureColor; 
 	vec4 ambient = vec4(ambientLight, 1.0);	
 	
@@ -169,5 +159,11 @@ void main(){
 		if(spotLights[i].pointLight.light.intensity > 0)
 			totalShade += calculateSpotLight(spotLights[i], normal, textureColor, specularMapColor);
 	
-	outColor = mix(vec4(skyColor, 1.0), totalShade, visibility);
+	if(renderNormals == 1)
+		outColor = vec4(normal, 1.0);
+	else if(renderTangents == 1)
+		outColor = vec4(fs_in.tangent, 1.0);
+	else if(wireframeMode == 1)
+		outColor = textureColor;
+	else outColor = mix(vec4(skyColor, 1.0), totalShade, fs_in.visibility);
 }

@@ -33,9 +33,11 @@ import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.entities.Entity;
 
 public abstract class Shader {
 	
@@ -68,8 +70,8 @@ public abstract class Shader {
 		System.out.println(":: " + fileName);
 		
 		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile the vertexshader: '" + fileName +  "' correctly. Error log: " + 
-					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
+			System.err.println("Couldn't compile the vertexshader: '" + fileName +  "' correctly.\nError log:\n" + 
+					GL20.glGetShaderInfoLog(vertexShader, GL20.glGetShaderi(vertexShader, GL20.GL_INFO_LOG_LENGTH)));
 		
 		glAttachShader(m_ShaderProgram, vertexShader);
 		glDeleteShader(vertexShader);
@@ -85,8 +87,8 @@ public abstract class Shader {
 		System.out.println(":: " + fileName);
 		
 		if(glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile the fragmentshader: '" + fileName +  "' correctly. Error log: " + 
-					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
+			System.err.println("Couldn't compile the fragmentshader: '" + fileName +  "' correctly.\nError log:\n" + 
+					GL20.glGetShaderInfoLog(fragmentShader, GL20.glGetShaderi(fragmentShader, GL20.GL_INFO_LOG_LENGTH)));
 		
 		glAttachShader(m_ShaderProgram, fragmentShader);
 		glDeleteShader(fragmentShader);
@@ -94,6 +96,9 @@ public abstract class Shader {
 	
 	private void createShaderProgram(){
 		glLinkProgram(m_ShaderProgram);
+		if(GL20.glGetProgrami(m_ShaderProgram, GL20.GL_LINK_STATUS) == GL_FALSE)
+			System.err.println("Failed to link shaderprogram.\nError log: " + 
+					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
 		glValidateProgram(m_ShaderProgram);
 	}
 	
@@ -135,6 +140,18 @@ public abstract class Shader {
 		buffer.flip();
 		
 		glUniformMatrix4fv(m_Uniforms.get(uniformName), true, buffer);
+	}
+	
+	public void loadModelMatrix(Entity entity){
+		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
+	}
+	
+	public void loadViewMatrix(Camera camera){
+		loadMatrix4f("viewMatrix", camera.getViewMatrix());
+	}
+	
+	public void loadProjectionMatrix(Matrix4f projection){
+		loadMatrix4f("projectionMatrix", projection);
 	}
 	
 	public void enable(){

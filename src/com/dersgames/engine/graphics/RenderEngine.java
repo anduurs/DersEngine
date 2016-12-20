@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.List;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.dersgames.engine.components.Camera;
@@ -26,6 +27,7 @@ import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
 import com.dersgames.engine.graphics.shaders.EntityShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
+import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
@@ -37,6 +39,10 @@ public class RenderEngine {
 	
 //	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
+	
+	private boolean m_RenderNormals = false;
+	private boolean m_RenderTangents = false;
+	private boolean m_WireFrameMode = false;
 
 	public RenderEngine(){
 		m_TerrainRenderer = new TerrainRenderer();
@@ -44,7 +50,6 @@ public class RenderEngine {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
-//		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		
 		enableCulling();
 	}
@@ -67,8 +72,48 @@ public class RenderEngine {
 	public void render(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
 		clearFrameBuffer();
 		
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_N)){
+			m_RenderNormals = true;
+			m_RenderTangents = false;
+			m_WireFrameMode = false;
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_T)){
+			m_RenderNormals = false;
+			m_RenderTangents = true;
+			m_WireFrameMode = false;
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_P)){
+			m_RenderNormals = false;
+			m_RenderTangents = false;
+			m_WireFrameMode = true;
+			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+		}else if(KeyInput.isKeyDown(GLFW.GLFW_KEY_SPACE)){
+			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+			m_RenderNormals = false;
+			m_RenderTangents = false;
+			m_WireFrameMode = false;
+		}
+			
 		EntityShader shader = m_EntityRenderer.getShader();
 		shader.enable();
+		
+		if(m_RenderNormals){
+			shader.loadInteger("renderNormals", 1);
+			shader.loadInteger("renderTangents", 0);
+			shader.loadInteger("wireframeMode", 0);
+		}
+		else if(m_RenderTangents){
+			shader.loadInteger("renderTangents", 1);
+			shader.loadInteger("renderNormals", 0);
+			shader.loadInteger("wireframeMode", 0);
+		}else if(m_WireFrameMode){
+			shader.loadInteger("wireframeMode", 1);
+			shader.loadInteger("renderTangents", 0);
+			shader.loadInteger("renderNormals", 0);
+		}else {
+			shader.loadInteger("renderTangents", 0);
+			shader.loadInteger("renderNormals", 0);
+			shader.loadInteger("wireframeMode", 0);
+		}
+		
 		shader.loadSkyColor(m_SkyColor);
 		shader.loadLightSources(directionalLight, pointLights, spotLights);
 		shader.loadViewMatrix(m_Camera);
@@ -78,6 +123,26 @@ public class RenderEngine {
 		
 		TerrainShader terrainShader = m_TerrainRenderer.getShader();
 		terrainShader.enable();
+		
+		if(m_RenderNormals){
+			terrainShader.loadInteger("renderNormals", 1);
+//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("wireframeMode", 0);
+//		}
+//		else if(m_RenderTangents){
+//			terrainShader.loadInteger("renderTangents", 1);
+//			terrainShader.loadInteger("renderNormals", 0);
+//			terrainShader.loadInteger("wireframeMode", 0);
+		}else if(m_WireFrameMode){
+			terrainShader.loadInteger("wireframeMode", 1);
+//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("renderNormals", 0);
+		}else {
+//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("renderNormals", 0);
+			terrainShader.loadInteger("wireframeMode", 0);
+		}
+		
 		terrainShader.loadSkyColor(m_SkyColor);
 		terrainShader.loadLightSources(directionalLight, pointLights, spotLights);
 		terrainShader.loadViewMatrix(m_Camera);

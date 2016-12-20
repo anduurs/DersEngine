@@ -14,7 +14,7 @@ import com.dersgames.engine.entities.Entity;
 public abstract class PhongShader extends Shader{
 	
 	public static final int MAX_POINT_LIGHTS = 100;
-	public static final int MAX_SPOT_LIGHTS = 4;
+	public static final int MAX_SPOT_LIGHTS = 100;
 
 	public PhongShader(String vertShader, String fragShader) {
 		super(vertShader, fragShader);
@@ -29,6 +29,10 @@ public abstract class PhongShader extends Shader{
 		addUniform("directionalLight.direction");
 		addUniform("directionalLight.light.color");
 		addUniform("directionalLight.light.intensity");
+		
+		addUniform("renderNormals");
+		addUniform("renderTangents");
+		addUniform("wireframeMode");
 		
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			addUniform("pointLights["+i+"].position");
@@ -69,7 +73,6 @@ public abstract class PhongShader extends Shader{
 				super.loadVector3f("pointLights["+i+"].position", pointLights.get(i).getPosition());
 				super.loadVector3f("pointLights["+i+"].attenuation", pointLights.get(i).getAttenuation());
 				super.loadVector3f("pointLights["+i+"].light.color", pointLights.get(i).getLightColor());
-				
 				super.loadFloat("pointLights["+i+"].light.intensity", pointLights.get(i).getIntensity());
 				super.loadFloat("pointLights["+i+"].range", pointLights.get(i).getRange());
 			}
@@ -81,7 +84,6 @@ public abstract class PhongShader extends Shader{
 				super.loadVector3f("spotLights["+i+"].pointLight.attenuation", spotLights.get(i).getAttenuation());
 				super.loadVector3f("spotLights["+i+"].pointLight.light.color", spotLights.get(i).getLightColor());
 				super.loadVector3f("spotLights["+i+"].direction", spotLights.get(i).getDirection());
-				
 				super.loadFloat("spotLights["+i+"].pointLight.light.intensity", spotLights.get(i).getIntensity());
 				super.loadFloat("spotLights["+i+"].pointLight.range", spotLights.get(i).getRange());
 				super.loadFloat("spotLights["+i+"].cutOffAngle", spotLights.get(i).getCutOffAngle());
@@ -91,18 +93,6 @@ public abstract class PhongShader extends Shader{
 	
 	public void loadSkyColor(Vector3f skyColor){
 		loadVector3f("skyColor", skyColor);
-	}
-	
-	public void loadModelMatrix(Entity entity){
-		loadMatrix4f("modelMatrix", entity.getTransform().getModelMatrix());
-	}
-	
-	public void loadViewMatrix(Camera camera){
-		loadMatrix4f("viewMatrix", camera.getViewMatrix());
-	}
-	
-	public void loadProjectionMatrix(Matrix4f projection){
-		loadMatrix4f("projectionMatrix", projection);
 	}
 	
 }

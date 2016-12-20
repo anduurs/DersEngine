@@ -32,7 +32,7 @@ public class Vertex {
 		return m_Normal;
 	}
 	
-	public Vector2f getTexCoord() {
+	public Vector2f getTexCoords() {
 		return m_TexCoord;
 	}
 

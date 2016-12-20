@@ -107,7 +107,7 @@ public class ExampleState extends GameState{
 		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
 											   new Vector3f(0.8f, 0.8f, 0.8f),
-											   1.2f);
+											   0.2f);
 		directionalLight.addComponent(sun);
 		m_Scene.addDirectionalLight(sun);	
 	
@@ -121,19 +121,21 @@ public class ExampleState extends GameState{
 														  new Vector3f(1.0f, 0.01f, 0.002f),
 														  5.0f,
 														  500.0f,
-														  0.9f);
+														  0.95f);
 		flashLight.addComponent(spotLight);
 //		m_Scene.addSpotLight(spotLight);
 		
 		Random random = new Random();
 		
-//		for(int i = 0; i < 4; i ++){
-//			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
-//			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-//			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
-//			m_Scene.addPointLight(lamp.getPointLight());
-//			m_Scene.addEntity(lamp);
-//		}
+		
+		
+		for(int i = 0; i < 32; i ++){
+			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
+			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
+			m_Scene.addPointLight(lamp.getPointLight());
+			m_Scene.addEntity(lamp);
+		}
 	}
 	
 	private void createEntities(Terrain terrain){
@@ -150,7 +152,7 @@ public class ExampleState extends GameState{
 					      new Quaternion(new Vector3f(0,0,0), 90.0f), 
 					      new Vector3f(3,3,3));
 		
-		Barrel barrel = new Barrel("Barrel", barrelTransform);
+		Barrel barrel = new Barrel("Barrel", barrelTransform, m_Loader);
 		barrel.getPosition().y = terrain.getHeightOfTerrain(barrel.getPosition().x, barrel.getPosition().z) + 20;
 		m_Scene.addEntity(barrel);
 	}

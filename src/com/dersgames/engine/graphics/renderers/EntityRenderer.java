@@ -69,6 +69,7 @@ public class EntityRenderer {
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
 		
 		Material material = texturedModel.getMaterial();
 		
@@ -107,6 +108,7 @@ public class EntityRenderer {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
 		
 		glBindVertexArray(0);
 	}

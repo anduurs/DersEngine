@@ -1,24 +1,20 @@
 #version 400 core
 
 const int MAX_POINT_LIGHTS = 100;
-const int MAX_SPOT_LIGHTS = 4;
+const int MAX_SPOT_LIGHTS = 100;
 
-in vec2 texCoords;
-in vec3 vertexNormal;
-in vec3 cameraViewDirection;
-in float visibility;
-in vec3 vertexPosition;
+in VS_Data{
+	vec3 position;
+	vec2 textureCoords;
+	vec3 normal;
+	vec3 tangent;
+	vec3 cameraViewDirection;
+	float visibility;
+	float usingNormalMap;
+	mat3 toTangentSpaceMatrix;
+} fs_in;
 
 out vec4 outColor;
-
-uniform sampler2D backgroundTexture;
-uniform sampler2D rTexture;
-uniform sampler2D gTexture;
-uniform sampler2D bTexture;
-uniform sampler2D blendMap;
-
-uniform vec3 skyColor;
-uniform vec3 ambientLight;
 
 struct Light{
 	vec3 color;
@@ -47,11 +43,24 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+uniform sampler2D backgroundTexture;
+uniform sampler2D rTexture;
+uniform sampler2D gTexture;
+uniform sampler2D bTexture;
+uniform sampler2D blendMap;
+
+uniform vec3 skyColor;
+uniform vec3 ambientLight;
+
+uniform int renderNormals;
+uniform int renderTangents;
+uniform int wireframeMode;
+
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor){
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
 	float shininess = 0.0;
 	
-	vec3 viewDirection = normalize(cameraViewDirection);
+	vec3 viewDirection = normalize(fs_in.cameraViewDirection);
 	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
 	
 	float normalizationFactor = ((shininess + 2.0) / 8.0);
@@ -64,12 +73,22 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor){
-	return calculateLight(directionalLight.light.color, normalize(-directionalLight.direction), directionalLight.light.intensity, normal, textureColor);
+	vec3 lightDirection = -directionalLight.direction;
+
+	if(fs_in.usingNormalMap == 1.0)
+		lightDirection = normalize(-directionalLight.direction * fs_in.toTangentSpaceMatrix);
+
+	return calculateLight(directionalLight.light.color, lightDirection, directionalLight.light.intensity, normal, textureColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
-	vec3 lightDirection = vertexPosition - pointLight.position;
+	vec3 lightDirection = fs_in.position - pointLight.position;
 	float distance = length(lightDirection);
+
+	if(fs_in.usingNormalMap == 1.0){
+		lightDirection = lightDirection * fs_in.toTangentSpaceMatrix;
+		distance = length(lightDirection);
+	}
 	
 	if(distance > pointLight.range)
 		return vec4(0.0);
@@ -80,14 +99,18 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
 	float linear = pointLight.attenuation.y * distance;
 	float quadratic = pointLight.attenuation.z * distance * distance;
 	
-	float attenuationFactor = 1.0f / (constant + linear + quadratic + 0.0001);
+	float attenuationFactor = 1.0 / (constant + linear + quadratic + 0.0001);
 
 	return lightColor * attenuationFactor;
 }
 
 vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
-	vec3 lightDirection = normalize(vertexPosition - light.pointLight.position);
+	vec3 lightDirection = normalize(fs_in.position - light.pointLight.position);
+
 	float spotFactor = dot(lightDirection, light.direction); 
+
+	if(fs_in.usingNormalMap == 1.0)
+		spotFactor = dot(normalize(lightDirection * fs_in.toTangentSpaceMatrix), normalize(light.direction * fs_in.toTangentSpaceMatrix)); 
 	
 	vec4 totalShade = vec4(0.0);
 	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
@@ -100,10 +123,10 @@ vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
 }
 
 void main(){
-	vec4 blendMapColor = texture(blendMap, texCoords);
+	vec4 blendMapColor = texture(blendMap, fs_in.textureCoords);
 	
 	float backTextureAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
-	vec2 tiledCoords = texCoords * 40.0;
+	vec2 tiledCoords = fs_in.textureCoords * 40.0;
 	
 	vec4 backgroundTextureColor = texture(backgroundTexture, tiledCoords) * backTextureAmount;
 	vec4 rTextureColor = texture(rTexture, tiledCoords) * blendMapColor.r;
@@ -112,7 +135,7 @@ void main(){
 	
 	vec4 totalTextureColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
 
-	vec3 normal = normalize(vertexNormal);
+	vec3 normal = fs_in.normal;
 
 	vec4 totalShade = vec4(ambientLight, 1.0);
 	
@@ -127,5 +150,11 @@ void main(){
 		if(spotLights[i].pointLight.light.intensity > 0)
 			totalShade += calculateSpotLight(spotLights[i], normal, totalTextureColor);
 	
-	outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, visibility);
+	if(renderNormals == 1)
+		outColor = vec4(normal, 1.0);
+	else if(renderTangents == 1)
+		outColor = vec4(fs_in.tangent, 1.0);
+	else if(wireframeMode == 1)
+		outColor = totalTextureColor;
+	else outColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, fs_in.visibility);
 }

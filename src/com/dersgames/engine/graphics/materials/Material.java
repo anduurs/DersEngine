@@ -84,7 +84,7 @@ public class Material {
 				shininess, transparency, useFakeLighting, shader);
 		
 		m_UseNormalMap = true;
-		m_UseSpecularMap = false;
+		m_UseSpecularMap = true;
 		m_NormalMap = normalMap;
 	
 		m_Shader.addUniform("material.normalMap");
@@ -92,7 +92,7 @@ public class Material {
 	
 	private void addUniforms(){
 		m_Shader.addUniform("material.diffuseMap");
-		m_Shader.addUniform("material.useNormalMap");
+		m_Shader.addUniform("usingNormalMap");
 		m_Shader.addUniform("material.useSpecularMap");
 		m_Shader.addUniform("material.baseColor");
 		m_Shader.addUniform("material.specular");
@@ -104,14 +104,16 @@ public class Material {
 	
 	public void updateUniforms(){
 		if(m_UseSpecularMap){
-			m_Shader.loadInteger("material.useSpecularMap", 1);
+			m_Shader.loadFloat("material.useSpecularMap", 1.0f);
 			m_Shader.loadInteger("material.specularMap", 1);
-		}else m_Shader.loadInteger("material.useSpecularMap", 0);
+		}else m_Shader.loadFloat("material.useSpecularMap", 0.0f);
 		
 		if(m_UseNormalMap){
-			m_Shader.loadInteger("material.useNormalMap", 1);
+			m_Shader.loadFloat("usingNormalMap", 1.0f);
 			m_Shader.loadInteger("material.normalMap", 2);
-		}else m_Shader.loadInteger("material.useNormalMap", 0);
+		}else{
+			m_Shader.loadFloat("usingNormalMap", 0.0f);
+		}
 		
 		m_Shader.loadInteger("material.diffuseMap", 0);
 		m_Shader.loadVector3f("material.baseColor", m_BaseColor);
