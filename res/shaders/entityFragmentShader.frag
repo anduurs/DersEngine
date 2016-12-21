@@ -108,7 +108,7 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, 
 	float linear = pointLight.attenuation.y * distance;
 	float quadratic = pointLight.attenuation.z * distance * distance;
 	
-	float attenuationFactor = 1.0f / (constant + linear + quadratic + 0.0001);
+	float attenuationFactor = 1.0 / (constant + linear + quadratic + 0.0001);
 
 	return lightColor * attenuationFactor;
 }
@@ -141,7 +141,7 @@ void main(){
 	vec3 normal = fs_in.normal;
 
 	if(fs_in.usingNormalMap == 1.0)
-		normal = normalize(texture(material.normalMap, fs_in.textureCoords).rgb * 2.0 - 1.0);
+		normal = normalize( (2.0 * texture(material.normalMap, fs_in.textureCoords).rgb - 1.0));
 	
 	vec4 emissive = vec4(material.emissive, 1.0) * textureColor; 
 	vec4 ambient = vec4(ambientLight, 1.0);	

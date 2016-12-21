@@ -25,9 +25,9 @@ uniform mat4 projectionMatrix;
 
 uniform float useFakeLighting;
 uniform float numOfRows;
+uniform float usingNormalMap;
 
 uniform vec2 offset;
-uniform float usingNormalMap;
 
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);

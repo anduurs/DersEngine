@@ -125,6 +125,7 @@ public class Terrain extends Renderable{
 		
 		float[] vertices = new float[count * 3];
 		float[] normals = new float[count * 3];
+		float[] tangents = new float[count * 3];
 		float[] textureCoords = new float[count*2];
 		int[] indices = new int[6*(VERTEX_COUNT-1)*(VERTEX_COUNT-1)];
 		int vertexPointer = 0;
@@ -141,6 +142,10 @@ public class Terrain extends Renderable{
 				normals[vertexPointer*3]   = 0;
 				normals[vertexPointer*3+1] = 1;
 				normals[vertexPointer*3+2] = 0;
+				
+				tangents[vertexPointer*3]   = 0;
+				tangents[vertexPointer*3+1] = 0;
+				tangents[vertexPointer*3+2] = 1;
 				
 				textureCoords[vertexPointer*2]   = (float)j/((float)VERTEX_COUNT - 1);
 				textureCoords[vertexPointer*2+1] = (float)i/((float)VERTEX_COUNT - 1);
@@ -166,7 +171,7 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return Loader.loadModel(vertices, textureCoords, normals, indices);
+		return Loader.loadModel(vertices, textureCoords, normals, tangents, indices);
 	}
 	
 	public float getHeightOfTerrain(float worldX, float worldZ){

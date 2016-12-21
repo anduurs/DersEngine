@@ -31,7 +31,9 @@ public abstract class Renderable extends Component{
 	@Override
 	public void init() {}
 	
-	public abstract void render(RenderEngine renderer);
+	public void render(RenderEngine renderer){
+		renderer.submit(this);
+	}
 
 	@Override
 	public void update(float dt) {}

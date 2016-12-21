@@ -57,16 +57,19 @@ public class SkyboxRenderer {
 	     SIZE, -SIZE,  SIZE
 	};
 	
-	private static String[] CUBEMAP_TEXTURES = {"right", "left", "top", "bottom", "back", "front"};
+	private static String[] CUBEMAP_TEXTURES_DAY = {"right", "left", "top", "bottom", "back", "front"};
+	private static String[] CUBEMAP_TEXTURES_NIGHT = {"nightRight", "nightLeft", "nightTop", "nightBottom", "nightBack", "nightFront"};
 	
-	private int m_Texture;
+	private int m_DayTexture;
+	private int m_NightTexture;
 	
 	private Model m_Cube;
 	private SkyboxShader m_Shader;
 	
 	public SkyboxRenderer(){
 		m_Cube = Loader.loadModel(VERTICES, 3);
-		m_Texture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES);
+		m_DayTexture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES_DAY);
+		m_NightTexture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES_NIGHT);
 		m_Shader = new SkyboxShader();
 	}
 	
@@ -74,8 +77,13 @@ public class SkyboxRenderer {
 		glBindVertexArray(m_Cube.getVaoID());
 		glEnableVertexAttribArray(0);
 		
+		m_Shader.loadBlendFactor(1.0f);
+		
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, m_Texture);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_DayTexture);
+		
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_NightTexture);
 		
 		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
 		glDisableVertexAttribArray(0);

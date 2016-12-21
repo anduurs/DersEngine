@@ -16,6 +16,17 @@ in VS_Data{
 
 out vec4 outColor;
 
+struct Material{
+	sampler2D diffuseMap;
+	sampler2D specularMap;
+	sampler2D normalMap;
+	float useSpecularMap;
+	vec3 baseColor;
+	vec3 specular;
+	vec3 emissive;
+	float shininess;
+};
+
 struct Light{
 	vec3 color;
 	float intensity;
@@ -39,6 +50,7 @@ struct SpotLight{
 	float cutOffAngle;
 };
 
+uniform Material material;
 uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
@@ -56,32 +68,35 @@ uniform int renderNormals;
 uniform int renderTangents;
 uniform int wireframeMode;
 
-vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor){
+vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-	float shininess = 0.0;
 	
 	vec3 viewDirection = normalize(fs_in.cameraViewDirection);
 	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
+
+	float normalizationFactor = ((material.shininess + 2.0) / 8.0);
+	float specularFactor = pow(max(dot(viewDirection, reflectedLightDirection), 0.0), material.shininess) * normalizationFactor;
 	
-	float normalizationFactor = ((shininess + 2.0) / 8.0);
-	float specularFactor = pow(max(dot(viewDirection, reflectedLightDirection), 0.0), shininess) * normalizationFactor;
+	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor; 
+	vec4 specularLight = vec4(0.0);
 	
-	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor; 
-	vec4 specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor;
-	
+	if(material.useSpecularMap == 1.0)
+		specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0) * specularMapColor.r;
+	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 
+		
 	return diffuseLight + specularLight;
 }
 
-vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor){
+vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = -directionalLight.direction;
 
 	if(fs_in.usingNormalMap == 1.0)
 		lightDirection = normalize(-directionalLight.direction * fs_in.toTangentSpaceMatrix);
 
-	return calculateLight(directionalLight.light.color, lightDirection, directionalLight.light.intensity, normal, textureColor);
+	return calculateLight(directionalLight.light.color, lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
-vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
+vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = fs_in.position - pointLight.position;
 	float distance = length(lightDirection);
 
@@ -93,7 +108,7 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
 	if(distance > pointLight.range)
 		return vec4(0.0);
 	
-	vec4 lightColor = calculateLight(pointLight.light.color, normalize(-lightDirection), pointLight.light.intensity, normal, textureColor);
+	vec4 lightColor = calculateLight(pointLight.light.color, normalize(-lightDirection), pointLight.light.intensity, normal, textureColor, specularMapColor);
 	
 	float constant = pointLight.attenuation.x;
 	float linear = pointLight.attenuation.y * distance;
@@ -104,19 +119,19 @@ vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor){
 	return lightColor * attenuationFactor;
 }
 
-vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
+vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor, vec4 specularMapColor){
 	vec3 lightDirection = normalize(fs_in.position - light.pointLight.position);
 
 	float spotFactor = dot(lightDirection, light.direction); 
 
 	if(fs_in.usingNormalMap == 1.0)
 		spotFactor = dot(normalize(lightDirection * fs_in.toTangentSpaceMatrix), normalize(light.direction * fs_in.toTangentSpaceMatrix)); 
-	
+
 	vec4 totalShade = vec4(0.0);
 	float smoothnessFactor = 1.0 - ((1.0 - spotFactor) / (1.0 - light.cutOffAngle));
 	
 	if(spotFactor > light.cutOffAngle)
-		totalShade = calculatePointLight(light.pointLight, normal, textureColor) * smoothnessFactor;
+		totalShade = calculatePointLight(light.pointLight, normal, textureColor, specularMapColor) * smoothnessFactor;
 	else totalShade = vec4(ambientLight, 1.0) * smoothnessFactor;
 	
 	return totalShade;
@@ -124,6 +139,7 @@ vec4 calculateSpotLight(SpotLight light, vec3 normal, vec4 textureColor){
 
 void main(){
 	vec4 blendMapColor = texture(blendMap, fs_in.textureCoords);
+	vec4 specularMapColor = texture(material.specularMap, fs_in.textureCoords);
 	
 	float backTextureAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
 	vec2 tiledCoords = fs_in.textureCoords * 40.0;
@@ -137,18 +153,21 @@ void main(){
 
 	vec3 normal = fs_in.normal;
 
+	if(fs_in.usingNormalMap == 1.0)
+		normal = normalize(texture(material.normalMap, fs_in.textureCoords).rgb * 2.0 - 1.0);
+
 	vec4 totalShade = vec4(ambientLight, 1.0);
 	
 	if(directionalLight.light.intensity > 0)
-		totalShade += calculateDirectionalLight(directionalLight, normal, totalTextureColor);
+		totalShade += calculateDirectionalLight(directionalLight, normal, totalTextureColor, specularMapColor);
 	
 	for(int i = 0; i < MAX_POINT_LIGHTS; i++)
 		if(pointLights[i].light.intensity > 0)
-			totalShade += calculatePointLight(pointLights[i], normal, totalTextureColor);
+			totalShade += calculatePointLight(pointLights[i], normal, totalTextureColor, specularMapColor);
 		
 	for(int i = 0; i < MAX_SPOT_LIGHTS; i++)
 		if(spotLights[i].pointLight.light.intensity > 0)
-			totalShade += calculateSpotLight(spotLights[i], normal, totalTextureColor);
+			totalShade += calculateSpotLight(spotLights[i], normal, totalTextureColor, specularMapColor);
 	
 	if(renderNormals == 1)
 		outColor = vec4(normal, 1.0);

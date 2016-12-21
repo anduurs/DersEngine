@@ -15,26 +15,26 @@ public class PointLightLamp extends Entity{
 	
 	private PointLight m_PointLight;
 	
-	public PointLightLamp(String tag, float x, float y, float z){
-		super(tag, x, y, z);
+	public PointLightLamp(String tag, Vector3f pos, Vector3f color){
+		super(tag, pos.x, pos.y, pos.z);
 		
-		int randomNum = Randomizer.getInt(0, 3);
-		Vector3f color = new Vector3f(0,0,0);
-		if(randomNum == 0){
-			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
-		}else if(randomNum == 1){
-			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
-		}else if(randomNum == 2){
-			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
-		}
+//		int randomNum = Randomizer.getInt(0, 3);
+//		Vector3f color = new Vector3f(0,0,0);
+//		if(randomNum == 0){
+//			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
+//		}else if(randomNum == 1){
+//			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
+//		}else if(randomNum == 2){
+//			color = new Vector3f(Randomizer.getFloat(0,1), Randomizer.getFloat(0,1), Randomizer.getFloat(0,1));
+//		}
 		
-		Entity entity = new Entity("PointLight1", x, y, z);
-		m_PointLight = new PointLight("PointLight4", color , 
-												     new Vector3f(1.0f, 0.045f, 0.0075f),
-												     Randomizer.getFloat(3.0f, 6.0f),
-												     500.0f);
+		Entity entity = new Entity("PointLight1", pos.x, pos.y, pos.z);
+		m_PointLight = new PointLight("PointLight4",  color , 
+												     new Vector3f(1.0f, 0.045f, 0.00075f),
+												     3.0f,
+												     200.0f);
 		
-		m_PointLight.speed = Randomizer.getFloat(0,1);
+		m_PointLight.speed = 0;//Randomizer.getFloat(0,1);
 		entity.addComponent(m_PointLight);
 		
 		Texture texture = new Texture(Loader.loadModelTexture("lamp"), 1);

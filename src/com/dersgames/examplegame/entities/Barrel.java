@@ -23,7 +23,7 @@ public class Barrel extends Entity{
 		NormalMap barrelNormalMap = new NormalMap(Loader.loadModelTexture("barrelNormalMap"));
 		
 		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", true), 
-						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
+						                               new Material(barrelTexture,barrelSpecularMap, barrelNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.02f, 0.02f, 0.02f),

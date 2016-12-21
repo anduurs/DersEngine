@@ -19,10 +19,10 @@ public class Dragon extends Entity{
 		Texture dragonTexture  = new Texture(Loader.loadModelTexture("dragontexture"), 1);
 		TexturedModel dragonMesh    = new TexturedModel(Loader.loadModelFromObjFile("dragon", false), 
 						                                new Material(dragonTexture, 
-																   new Vector3f(0.6f, 0.6f, 0.6f),
-																   new Vector3f(0.5f, 0.5f, 0.5f),
-																   new Vector3f(0.01f, 0.01f, 0.01f),
-																   16.0f,
+						                                		 	new Vector3f(0.6f, 0.6f, 0.6f),
+																   new Vector3f(0.8f, 0.8f, 0.8f),
+																   new Vector3f(0.02f, 0.02f, 0.02f),
+																   8.0f, false, false,
 																   RenderEngine.getEntityRenderer().getShader())); 
 		
 		addComponent(new StaticMesh("DragonStaticMesh", dragonMesh));

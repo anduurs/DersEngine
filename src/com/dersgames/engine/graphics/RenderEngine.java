@@ -41,8 +41,8 @@ public class RenderEngine {
 	private static EntityRenderer m_EntityRenderer;
 	private static SkyboxRenderer m_SkyboxRenderer;
 	
-	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
-//	private static Vector3f m_SkyColor = new Vector3f(0.1f, 0.1f, 0.1f);
+//	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
+	private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
 	
 	private boolean m_RenderNormals = false;
 	private boolean m_RenderTangents = false;
@@ -98,33 +98,33 @@ public class RenderEngine {
 			m_WireFrameMode = false;
 		}
 			
-		EntityShader shader = m_EntityRenderer.getShader();
-		shader.enable();
+		EntityShader entityShader = m_EntityRenderer.getShader();
+		entityShader.enable();
 		
 		if(m_RenderNormals){
-			shader.loadInteger("renderNormals", 1);
-			shader.loadInteger("renderTangents", 0);
-			shader.loadInteger("wireframeMode", 0);
+			entityShader.loadInteger("renderNormals", 1);
+			entityShader.loadInteger("renderTangents", 0);
+			entityShader.loadInteger("wireframeMode", 0);
 		}
 		else if(m_RenderTangents){
-			shader.loadInteger("renderTangents", 1);
-			shader.loadInteger("renderNormals", 0);
-			shader.loadInteger("wireframeMode", 0);
+			entityShader.loadInteger("renderTangents", 1);
+			entityShader.loadInteger("renderNormals", 0);
+			entityShader.loadInteger("wireframeMode", 0);
 		}else if(m_WireFrameMode){
-			shader.loadInteger("wireframeMode", 1);
-			shader.loadInteger("renderTangents", 0);
-			shader.loadInteger("renderNormals", 0);
+			entityShader.loadInteger("wireframeMode", 1);
+			entityShader.loadInteger("renderTangents", 0);
+			entityShader.loadInteger("renderNormals", 0);
 		}else {
-			shader.loadInteger("renderTangents", 0);
-			shader.loadInteger("renderNormals", 0);
-			shader.loadInteger("wireframeMode", 0);
+			entityShader.loadInteger("renderTangents", 0);
+			entityShader.loadInteger("renderNormals", 0);
+			entityShader.loadInteger("wireframeMode", 0);
 		}
 		
-		shader.loadSkyColor(m_SkyColor);
-		shader.loadLightSources(directionalLight, pointLights, spotLights);
-		shader.loadViewMatrix(m_Camera);
+		entityShader.loadSkyColor(m_SkyColor);
+		entityShader.loadLightSources(directionalLight, pointLights, spotLights);
+		entityShader.loadViewMatrix(m_Camera);
 		m_EntityRenderer.render();
-		shader.disable();
+		entityShader.disable();
 		m_EntityRenderer.clear();
 		
 		TerrainShader terrainShader = m_TerrainRenderer.getShader();
@@ -132,19 +132,19 @@ public class RenderEngine {
 		
 		if(m_RenderNormals){
 			terrainShader.loadInteger("renderNormals", 1);
-//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("renderTangents", 0);
 			terrainShader.loadInteger("wireframeMode", 0);
-//		}
-//		else if(m_RenderTangents){
-//			terrainShader.loadInteger("renderTangents", 1);
-//			terrainShader.loadInteger("renderNormals", 0);
-//			terrainShader.loadInteger("wireframeMode", 0);
+		}
+		else if(m_RenderTangents){
+			terrainShader.loadInteger("renderTangents", 1);
+			terrainShader.loadInteger("renderNormals", 0);
+			terrainShader.loadInteger("wireframeMode", 0);
 		}else if(m_WireFrameMode){
 			terrainShader.loadInteger("wireframeMode", 1);
-//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("renderTangents", 0);
 			terrainShader.loadInteger("renderNormals", 0);
 		}else {
-//			terrainShader.loadInteger("renderTangents", 0);
+			terrainShader.loadInteger("renderTangents", 0);
 			terrainShader.loadInteger("renderNormals", 0);
 			terrainShader.loadInteger("wireframeMode", 0);
 		}
@@ -159,6 +159,7 @@ public class RenderEngine {
 		SkyboxShader skyboxShader = m_SkyboxRenderer.getShader();
 		skyboxShader.enable();
 		skyboxShader.loadViewMatrix(m_Camera);
+		skyboxShader.loadFogColor(m_SkyColor);
 		m_SkyboxRenderer.render();
 		skyboxShader.disable();
 	}

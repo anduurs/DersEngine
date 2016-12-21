@@ -23,7 +23,11 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
+uniform float useFakeLighting;
+uniform float numOfRows;
 uniform float usingNormalMap;
+
+uniform vec2 offset;
 
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
@@ -31,8 +35,13 @@ void main(){
 
 	vs_out.usingNormalMap = usingNormalMap;
 
-	vs_out.textureCoords = textureCoords;
-	vs_out.normal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+	vec3 actualNormal = normal;
+	
+	if(useFakeLighting == 1.0)
+		actualNormal = vec3(0.0, 1.0, 0.0);
+
+	vs_out.textureCoords = (textureCoords / numOfRows) + offset;
+	vs_out.normal = normalize((modelMatrix * vec4(actualNormal, 0.0)).xyz);
 	vs_out.position = worldPosition.xyz;
 	
 	vs_out.cameraViewDirection = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;

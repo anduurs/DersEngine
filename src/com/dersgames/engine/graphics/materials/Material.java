@@ -25,6 +25,18 @@ public class Material {
 	private boolean m_HasTransparency;
 	private boolean m_UseFakeLighting;
 	
+	public Material(Texture textureAtlas, PhongShader shader){
+		this(   textureAtlas, 
+				new Vector3f(1.0f, 1.0f, 1.0f),
+				new Vector3f(0.2f, 0.2f, 0.2f), 
+				new Vector3f(0, 0, 0), 
+				1f, 
+				false, 
+				false,
+				shader
+			);
+	}
+	
 	public Material(Texture textureAtlas, 
 			float baseColor, float specular, float emissive, float shininess, PhongShader shader){
 		this(   textureAtlas, 

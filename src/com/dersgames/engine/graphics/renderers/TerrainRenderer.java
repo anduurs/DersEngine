@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
@@ -72,19 +74,16 @@ public class TerrainRenderer {
 	private void bindTextures(Terrain terrain){
 		TerrainTexturePack texturePack = terrain.getTexturePack();
 		
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureID());
+		int samplerSlot = 0;
+
+		for(Material mat : texturePack.getTerrainMaterials()){
+			mat.updateUniforms();
+			glActiveTexture(GL_TEXTURE0 + samplerSlot);
+			glBindTexture(GL_TEXTURE_2D, mat.getTextureID());
+			samplerSlot++;
+		}
 		
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texturePack.getrTexture().getTextureID());
-		
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, texturePack.getgTexture().getTextureID());
-		
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, texturePack.getbTexture().getTextureID());
-		
-		glActiveTexture(GL_TEXTURE4);
+		glActiveTexture(GL_TEXTURE0 + samplerSlot);
 		glBindTexture(GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
