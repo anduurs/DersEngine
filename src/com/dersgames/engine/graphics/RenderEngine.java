@@ -13,24 +13,24 @@ import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
-import java.util.List;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.components.lights.DirectionalLight;
-import com.dersgames.engine.components.lights.PointLight;
-import com.dersgames.engine.components.lights.SpotLight;
+import com.dersgames.engine.components.StaticMesh;
+import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
+import com.dersgames.engine.graphics.renderers.ParticleRenderer;
 import com.dersgames.engine.graphics.renderers.SkyboxRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
 import com.dersgames.engine.graphics.shaders.EntityShader;
+import com.dersgames.engine.graphics.shaders.ParticleShader;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.input.KeyInput;
+import com.dersgames.engine.particles.Particle;
 import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
@@ -40,6 +40,7 @@ public class RenderEngine {
 	private static TerrainRenderer m_TerrainRenderer;
 	private static EntityRenderer m_EntityRenderer;
 	private static SkyboxRenderer m_SkyboxRenderer;
+	private static ParticleRenderer m_ParticleRenderer;
 	
 //	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
@@ -52,6 +53,7 @@ public class RenderEngine {
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
 		m_SkyboxRenderer = new SkyboxRenderer();
+		m_ParticleRenderer = new ParticleRenderer();
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
@@ -72,10 +74,11 @@ public class RenderEngine {
 	public void submit(Renderable renderable){
 		if(renderable instanceof Terrain)
 			m_TerrainRenderer.addTerrain((Terrain)renderable);
-		else m_EntityRenderer.addRenderable(renderable);
+		else if(renderable instanceof StaticMesh) 
+			m_EntityRenderer.addStaticMesh((StaticMesh)renderable);
 	}
 	
-	public void render(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
+	public void render(){
 		clearFrameBuffer();
 		
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_N)){
@@ -121,7 +124,7 @@ public class RenderEngine {
 		}
 		
 		entityShader.loadSkyColor(m_SkyColor);
-		entityShader.loadLightSources(directionalLight, pointLights, spotLights);
+		entityShader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
 		entityShader.loadViewMatrix(m_Camera);
 		m_EntityRenderer.render();
 		entityShader.disable();
@@ -150,7 +153,7 @@ public class RenderEngine {
 		}
 		
 		terrainShader.loadSkyColor(m_SkyColor);
-		terrainShader.loadLightSources(directionalLight, pointLights, spotLights);
+		terrainShader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
 		terrainShader.loadViewMatrix(m_Camera);
 		m_TerrainRenderer.render();
 		terrainShader.disable();
@@ -162,6 +165,11 @@ public class RenderEngine {
 		skyboxShader.loadFogColor(m_SkyColor);
 		m_SkyboxRenderer.render();
 		skyboxShader.disable();
+		
+		ParticleShader particleShader = m_ParticleRenderer.getShader();
+		particleShader.enable();
+		m_ParticleRenderer.render(m_Camera);
+		particleShader.disable();
 	}
 	
 	public void addCamera(Camera camera){
@@ -181,11 +189,18 @@ public class RenderEngine {
 		skyboxShader.enable();
 		skyboxShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		skyboxShader.disable();
+		
+		ParticleShader particleShader = m_ParticleRenderer.getShader();
+		particleShader.enable();
+		particleShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+		particleShader.disable();
 	}
 	
 	public void dispose(){
 		m_TerrainRenderer.dispose();
 		m_EntityRenderer.dispose();
+		m_SkyboxRenderer.dispose();
+		m_ParticleRenderer.dispose();
 	}
 	
 	private void clearFrameBuffer(){
@@ -199,6 +214,14 @@ public class RenderEngine {
 
 	public static EntityRenderer getEntityRenderer() {
 		return m_EntityRenderer;
+	}
+	
+	public static SkyboxRenderer getSkyboxRenderer() {
+		return m_SkyboxRenderer;
+	}
+	
+	public static ParticleRenderer getParticleRenderer(){
+		return m_ParticleRenderer;
 	}
 	
 	public static Camera getCamera(){

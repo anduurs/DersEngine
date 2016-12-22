@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
@@ -28,21 +28,21 @@ import com.dersgames.engine.graphics.shaders.EntityShader;
 public class EntityRenderer {
 	
 	private EntityShader m_Shader;
-	private Map<TexturedModel, List<Renderable>> m_Renderables;
+	private Map<TexturedModel, List<StaticMesh>> m_Renderables;
 	
 	public EntityRenderer(){
 		m_Shader = new EntityShader();
 		m_Renderables = new HashMap<>();
 	}
 	
-	public void addRenderable(Renderable renderable){
-		TexturedModel model = renderable.getTexturedModel();
+	public void addStaticMesh(StaticMesh staticMesh){
+		TexturedModel model = staticMesh.getTexturedModel();
 		
 		if(m_Renderables.containsKey(model))
-			m_Renderables.get(model).add(renderable);
+			m_Renderables.get(model).add(staticMesh);
 		else{
-			List<Renderable> batch = new ArrayList<Renderable>();
-			batch.add(renderable);
+			List<StaticMesh> batch = new ArrayList<>();
+			batch.add(staticMesh);
 			m_Renderables.put(model, batch);
 		}
 	}
@@ -54,10 +54,10 @@ public class EntityRenderer {
 	public void render(){
 		for(TexturedModel model : m_Renderables.keySet()){
 			loadTexturedMeshData(model);
-			List<Renderable> batch = m_Renderables.get(model);
-			for(Renderable renderable : batch){
-				loadRenderableData(renderable);
-				glDrawElements(GL_TRIANGLES, renderable.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			List<StaticMesh> batch = m_Renderables.get(model);
+			for(StaticMesh staticMesh : batch){
+				loadRenderableData(staticMesh);
+				glDrawElements(GL_TRIANGLES, staticMesh.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
 			}
 			unbind();
 		}
@@ -93,11 +93,11 @@ public class EntityRenderer {
 			
 	}
 	
-	private void loadRenderableData(Renderable renderable){
-		m_Shader.loadModelMatrix(renderable.getEntity());
+	private void loadRenderableData(StaticMesh staticMesh){
+		m_Shader.loadModelMatrix(staticMesh.getEntity());
 		
-		float xOffset = renderable.getTextureXOffset();
-		float yOffset = renderable.getTextureYOffset();
+		float xOffset = staticMesh.getTextureXOffset();
+		float yOffset = staticMesh.getTextureYOffset();
 		
 		m_Shader.loadTexCoordOffset(new Vector2f(xOffset, yOffset));
 	}

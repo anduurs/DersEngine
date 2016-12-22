@@ -6,6 +6,7 @@ import java.util.List;
 import com.dersgames.engine.components.Component;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.core.Quaternion;
+import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.RenderEngine;

@@ -80,7 +80,7 @@ public class Window {
 		
 		GL.createCapabilities();
 		
-		System.out.println("OpenGL: " + glGetString(GL_VERSION));
+		System.out.println("OpenGL version: " + glGetString(GL_VERSION) + "\n");
 	}
 	
 	public void setTitle(String title){
@@ -89,6 +89,13 @@ public class Window {
 	
 	public void update(){
 		glfwPollEvents();
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_V)){
+			glfwSwapInterval(1);
+		}
+		
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_O)){
+			glfwSwapInterval(0);
+		}
 	}
 	
 	public void swapBuffers(){

@@ -2,9 +2,9 @@ package com.dersgames.examplegame.states;
 
 import java.util.Random;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.components.lights.DirectionalLight;
-import com.dersgames.engine.components.lights.SpotLight;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
 import com.dersgames.engine.core.Quaternion;
@@ -12,18 +12,23 @@ import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.entities.lights.DirectionalLight;
+import com.dersgames.engine.entities.lights.PointLight;
+import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
+import com.dersgames.engine.input.KeyInput;
+import com.dersgames.engine.particles.Particle;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.entities.Barrel;
 import com.dersgames.examplegame.entities.Crate;
 import com.dersgames.examplegame.entities.Dragon;
-import com.dersgames.examplegame.entities.PointLightLamp;
+import com.dersgames.examplegame.entities.LampPost;
 
 public class ExampleState extends GameState{
 	
@@ -149,11 +154,10 @@ public class ExampleState extends GameState{
 											   new Quaternion(new Vector3f(1,0,0), 35.0f), 
 											   new Vector3f(1,1,1));
 		
-		Entity directionalLight = new Entity("DirectionalLight", sunTransform);
-		DirectionalLight sun = new DirectionalLight("DirectionalLight", 
+		DirectionalLight sun = new DirectionalLight("DirectionalLight", sunTransform,
 											   new Vector3f(0.8f, 0.8f, 0.8f),
 											   0.3f);
-		directionalLight.addComponent(sun);
+		
 		m_Scene.addDirectionalLight(sun);	
 	
 		
@@ -161,54 +165,58 @@ public class ExampleState extends GameState{
 				   									  new Quaternion(new Vector3f(1,0,0), 90.0f), 
 				   									  new Vector3f(1,1,1));
 		
-		Entity flashLight = new Entity("SpotLight1", spotLight1Transform);
-		SpotLight spotLight = new SpotLight("SpotLight1", new Vector3f(1.0f, 1.0f, 1.0f), 
+		SpotLight spotLight = new SpotLight("SpotLight1",spotLight1Transform, new Vector3f(1.0f, 1.0f, 1.0f), 
 														  new Vector3f(1.0f, 0.01f, 0.002f),
 														  5.0f,
 														  500.0f,
 														  0.95f);
-		flashLight.addComponent(spotLight);
 //		m_Scene.addSpotLight(spotLight);
 		
 		
-		Random random = new Random();
 		
-		PointLightLamp lamp = new PointLightLamp("Lamp1", new Vector3f(200.0f, 0.0f, 150.0f), 
-				new Vector3f(1.0f, 1.0f, 0.0f));
-//		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-		lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 20;
-		m_Scene.addPointLight(lamp.getPointLight());
+		
+		LampPost lamp = new LampPost("Lamp1", new Vector3f(200.0f, 0.0f, 150.0f));
+		PointLight pointLight1 = new PointLight("PointLight", lamp.getPosition(),new Vector3f(1.0f, 1.0f, 0.0f), 
+			     new Vector3f(1.0f, 0.045f, 0.00075f),
+			     3.0f,
+			     200.0f);
+
+		pointLight1.getPosition().y = lamp.getPosition().y + 20;
+		m_Scene.addPointLight(pointLight1);
 		m_Scene.addEntity(lamp);
 		
-		PointLightLamp lamp2 = new PointLightLamp("Lamp2", new Vector3f(200.0f, 0.0f, 250.0f), 
-				new Vector3f(1.0f, 0.0f, 0.0f));
-//		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-		lamp2.getPointLight().getEntity().getPosition().y = lamp2.getPosition().y + 20;
-		m_Scene.addPointLight(lamp2.getPointLight());
+		LampPost lamp2 = new LampPost("Lamp2", new Vector3f(200.0f, 0.0f, 250.0f));
+		PointLight pointLight2 = new PointLight("PointLight", lamp2.getPosition(), new Vector3f(1.0f, 0.0f, 0.0f), 
+			     new Vector3f(1.0f, 0.045f, 0.00075f),
+			     3.0f,
+			     200.0f);
+
+		pointLight2.getPosition().y = lamp2.getPosition().y + 20;
+		
+		m_Scene.addPointLight(pointLight2);
 		m_Scene.addEntity(lamp2);
 		
-		PointLightLamp lamp3 = new PointLightLamp("Lamp3", new Vector3f(300.0f, 0.0f, 200.0f), 
-				new Vector3f(0.0f, 1.0f, 0.0f));
-//		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-		lamp3.getPointLight().getEntity().getPosition().y = lamp3.getPosition().y + 20;
-		m_Scene.addPointLight(lamp3.getPointLight());
+		LampPost lamp3 = new LampPost("Lamp3", new Vector3f(300.0f, 0.0f, 200.0f));
+		PointLight pointLight3 = new PointLight("PointLight", lamp3.getPosition(), new Vector3f(0.0f, 1.0f, 0.0f), 
+			     new Vector3f(1.0f, 0.045f, 0.00075f),
+			     3.0f,
+			     200.0f);
+
+		pointLight3.getPosition().y = lamp3.getPosition().y + 20;
+		
+		m_Scene.addPointLight(pointLight3);
 		m_Scene.addEntity(lamp3);
 		
-		PointLightLamp lamp4 = new PointLightLamp("Lamp3", new Vector3f(100.0f, 0.0f, 200.0f), 
-				new Vector3f(0.0f, 0.0f, 1.0f));
-//		lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-		lamp4.getPointLight().getEntity().getPosition().y = lamp4.getPosition().y + 20;
-		m_Scene.addPointLight(lamp4.getPointLight());
+		LampPost lamp4 = new LampPost("Lamp3", new Vector3f(100.0f, 0.0f, 200.0f));
+		PointLight pointLight4 = new PointLight("PointLight", lamp4.getPosition(), new Vector3f(0.0f, 0.0f, 1.0f), 
+			     new Vector3f(1.0f, 0.045f, 0.00075f),
+			     3.0f,
+			     200.0f);
+		
+		pointLight4.getPosition().y = lamp4.getPosition().y + 20;
+		
+		m_Scene.addPointLight(pointLight4);
 		m_Scene.addEntity(lamp4);
-		
-		
-//		for(int i = 0; i < 32; i ++){
-//			PointLightLamp lamp = new PointLightLamp("Lamp1", random.nextFloat() * 800, 0, random.nextFloat() * 800);
-//			lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
-//			lamp.getPointLight().getEntity().getPosition().y = lamp.getPosition().y + 5;
-//			m_Scene.addPointLight(lamp.getPointLight());
-//			m_Scene.addEntity(lamp);
-//		}
 	}
 	
 	private void createEntities(Terrain terrain){
@@ -235,11 +243,22 @@ public class ExampleState extends GameState{
 		
 //		m_Scene.addEntity(dragon);
 		m_Scene.addEntity(crate);
-		m_Scene.addEntity(barrel);
+//		m_Scene.addEntity(barrel);
+		
+		
 	}
 	
 	@Override
 	public void update(float dt) {
+		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_R)){
+			Transform transform = new Transform(new Vector3f(240.0f, 40.0f, 200.0f), 
+											    new Quaternion(new Vector3f(0,1,0), 0.0f), 
+											    new Vector3f(2f,2f,2f));
+			
+			Entity e = new Entity("Particle", transform);
+			e.addComponent(new Particle("Particle", new Vector3f(0,30,0), 0, 1, 4));
+			m_Scene.addParticle(e);
+		}
 		m_Scene.update(dt);
 	}
 

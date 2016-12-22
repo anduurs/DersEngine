@@ -77,17 +77,25 @@ public class SkyboxRenderer {
 		glBindVertexArray(m_Cube.getVaoID());
 		glEnableVertexAttribArray(0);
 		
-		m_Shader.loadBlendFactor(1.0f);
+		bindTextures();
+		
+		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
+		glDisableVertexAttribArray(0);
+		glBindVertexArray(0);
+	}
+	
+	private void bindTextures(){
+		m_Shader.loadBlendFactor(0.8f);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_DayTexture);
 		
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_NightTexture);
-		
-		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
+	}
+	
+	public void dispose(){
+		m_Shader.deleteShaderProgram();
 	}
 
 	public SkyboxShader getShader() {

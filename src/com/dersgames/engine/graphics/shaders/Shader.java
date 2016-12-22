@@ -67,7 +67,7 @@ public abstract class Shader {
 		glShaderSource(vertexShader, vertexShaderSource);
 		glCompileShader(vertexShader);
 		
-		System.out.println(":: " + fileName);
+		System.out.println("compiling shader: " + fileName);
 		
 		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
 			System.err.println("Couldn't compile the vertexshader: '" + fileName +  "' correctly.\nError log:\n" + 
@@ -84,7 +84,7 @@ public abstract class Shader {
 		glShaderSource(fragmentShader, fragmentShaderSource);
 		glCompileShader(fragmentShader);
 		
-		System.out.println(":: " + fileName);
+		System.out.println("compiling shader: " + fileName);
 		
 		if(glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
 			System.err.println("Couldn't compile the fragmentshader: '" + fileName +  "' correctly.\nError log:\n" + 

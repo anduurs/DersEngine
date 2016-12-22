@@ -2,14 +2,11 @@ package com.dersgames.engine.graphics.shaders;
 
 import java.util.List;
 
-import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.components.lights.DirectionalLight;
-import com.dersgames.engine.components.lights.PointLight;
-import com.dersgames.engine.components.lights.SpotLight;
-import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.entities.lights.DirectionalLight;
+import com.dersgames.engine.entities.lights.PointLight;
+import com.dersgames.engine.entities.lights.SpotLight;
 
 public abstract class PhongShader extends Shader{
 	
