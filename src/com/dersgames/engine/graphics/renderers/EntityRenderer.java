@@ -74,7 +74,7 @@ public class EntityRenderer {
 		Material material = texturedModel.getMaterial();
 		
 		if(material.hasTransparency()) 
-			RenderEngine.disableCulling();
+			RenderEngine.disableFaceCulling();
 		
 		material.updateUniforms();
 	
@@ -103,7 +103,7 @@ public class EntityRenderer {
 	}
 	
 	private void unbind(){
-		RenderEngine.enableCulling();
+		RenderEngine.enableFaceCulling();
 		
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);

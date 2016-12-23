@@ -6,10 +6,6 @@ import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
@@ -19,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
@@ -92,7 +87,7 @@ public class TerrainRenderer {
 	}
 	
 	private void unbindTexturedModel(){
-		RenderEngine.enableCulling();
+		RenderEngine.enableFaceCulling();
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);

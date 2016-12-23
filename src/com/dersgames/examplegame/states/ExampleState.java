@@ -13,7 +13,9 @@ import com.dersgames.engine.entities.lights.PointLight;
 import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.graphics.gui.GUIComponent;
+import com.dersgames.engine.graphics.gui.GUIEntity;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
@@ -92,12 +94,9 @@ public class ExampleState extends GameState{
 		createLightSources(terrain);
 		createEntities(terrain);
 		
-		Transform transform = new Transform(new Vector3f(0.5f, 0.5f, 1.0f), 
-											new Quaternion(new Vector3f(0,0,0), 0.0f), 
-											new Vector3f(0.25f, 0.25f, 1f));
-		
-		Entity guiEntity = new Entity("gui", transform);
-		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("socuwan"))));
+		GUIEntity guiEntity = new GUIEntity("gui", -0.7f, 0.85f, 200f, 30f);
+//		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("dragontexture"))));
+		guiEntity.addComponent(new GUIComponent("Gui", new Vector3f(1,0,0)));
 		m_Scene.addEntity(guiEntity);
 	}
 	

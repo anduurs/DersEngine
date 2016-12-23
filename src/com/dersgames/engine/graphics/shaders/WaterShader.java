@@ -1,7 +1,5 @@
 package com.dersgames.engine.graphics.shaders;
 
-import com.dersgames.engine.graphics.shaders.Shader;
-
 public class WaterShader extends Shader{
 
 	public WaterShader() {

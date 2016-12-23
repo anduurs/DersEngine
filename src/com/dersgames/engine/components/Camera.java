@@ -2,7 +2,6 @@ package com.dersgames.engine.components;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.Window;

@@ -1,5 +1,11 @@
 package com.dersgames.engine.graphics.renderers;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +13,6 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.WaterShader;
 import com.dersgames.engine.graphics.water.WaterTile;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
 
 public class WaterRenderer {
 	

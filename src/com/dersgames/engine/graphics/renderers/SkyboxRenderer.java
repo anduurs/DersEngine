@@ -1,13 +1,19 @@
 package com.dersgames.engine.graphics.renderers;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
 
 public class SkyboxRenderer {
 	

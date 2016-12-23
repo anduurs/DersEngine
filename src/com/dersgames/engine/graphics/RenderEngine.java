@@ -55,8 +55,6 @@ public class RenderEngine {
 	private boolean m_RenderTangents = false;
 	private boolean m_WireFrameMode = false;
 	
-//	private Matrix4f ortho = new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -1.0f, 1.0f);
-
 	public RenderEngine(){
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
@@ -70,15 +68,15 @@ public class RenderEngine {
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_MULTISAMPLE);
 		
-		enableCulling();
+		enableFaceCulling();
 	}
 	
-	public static void enableCulling(){
+	public static void enableFaceCulling(){
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
 	}
 	
-	public static void disableCulling(){
+	public static void disableFaceCulling(){
 		glDisable(GL_CULL_FACE);
 	}
 	
@@ -219,11 +217,6 @@ public class RenderEngine {
 		waterShader.enable();
 		waterShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		waterShader.disable();
-		
-//		GUIShader guiShader = m_GUIRenderer.getShader();
-//		guiShader.enable();
-//		guiShader.loadProjectionMatrix(ortho);
-//		guiShader.disable();
 	}
 	
 	public void dispose(){

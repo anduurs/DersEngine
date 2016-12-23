@@ -16,7 +16,6 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,7 +28,6 @@ import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.core.Vertex;

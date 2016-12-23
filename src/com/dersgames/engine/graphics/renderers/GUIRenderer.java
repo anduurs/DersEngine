@@ -1,6 +1,16 @@
 package com.dersgames.engine.graphics.renderers;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -36,7 +46,7 @@ public class GUIRenderer {
 	}
 	
 	private void begin(){
-		RenderEngine.disableCulling();
+		RenderEngine.disableFaceCulling();
 		glBindVertexArray(m_Quad.getVaoID());
 		glEnableVertexAttribArray(0);
 		glEnable(GL_BLEND);
@@ -48,9 +58,15 @@ public class GUIRenderer {
 		begin();
 		
 		for(GUIComponent gui : m_GUIComponents){
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, gui.getTexture().getTextureID());
+			m_Shader.loadUsingColor(gui.isUsingColor());
+			if(!gui.isUsingColor()){
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, gui.getTexture().getTextureID());
+			}
+			
 			m_Shader.loadModelMatrix(gui.getEntity());
+			m_Shader.loadColor(gui.getColor());
+			
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, m_Quad.getVertexCount());
 		}
 		
@@ -58,7 +74,7 @@ public class GUIRenderer {
 	}
 
 	private void end(){
-		RenderEngine.enableCulling();
+		RenderEngine.enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);

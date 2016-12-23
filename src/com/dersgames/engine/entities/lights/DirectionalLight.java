@@ -1,6 +1,5 @@
 package com.dersgames.engine.entities.lights;
 
-import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.core.Vector3f;
 
