@@ -20,7 +20,7 @@ public class ImageManager {
 	private static synchronized BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(ImageManager.class.getResource("/textures/" + path));
+			img = ImageIO.read(Class.class.getResourceAsStream("/textures/" + path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

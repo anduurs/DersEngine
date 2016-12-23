@@ -18,12 +18,12 @@ public class Barrel extends Entity{
 	public Barrel(String tag, Transform transform){
 		super(tag, transform);
 		
-		Texture barrelTexture = new Texture(Loader.loadModelTexture("barrel"), 1);
+		Texture barrelTexture = new Texture(Loader.loadModelTexture("barrel"));
 		SpecularMap barrelSpecularMap  = new SpecularMap(Loader.loadModelTexture("barrelSpecularMap"));
 		NormalMap barrelNormalMap = new NormalMap(Loader.loadModelTexture("barrelNormalMap"));
 		
 		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", true), 
-						                               new Material(barrelTexture,barrelSpecularMap, barrelNormalMap,
+						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.02f, 0.02f, 0.02f),

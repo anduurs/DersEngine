@@ -25,8 +25,9 @@ import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -67,11 +68,13 @@ public abstract class Shader {
 		glShaderSource(vertexShader, vertexShaderSource);
 		glCompileShader(vertexShader);
 		
-		System.out.println("compiling shader: " + fileName);
+		System.out.println("Compiling shader: " + fileName + ".vert");
 		
-		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile the vertexshader: '" + fileName +  "' correctly.\nError log:\n" + 
+		if(glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE){
+			System.err.println("Couldn't compile the vertexshader: '" + fileName + ".vert" + "' correctly.\nError log:\n" + 
 					GL20.glGetShaderInfoLog(vertexShader, GL20.glGetShaderi(vertexShader, GL20.GL_INFO_LOG_LENGTH)));
+			System.exit(0);
+		}
 		
 		glAttachShader(m_ShaderProgram, vertexShader);
 		glDeleteShader(vertexShader);
@@ -84,11 +87,13 @@ public abstract class Shader {
 		glShaderSource(fragmentShader, fragmentShaderSource);
 		glCompileShader(fragmentShader);
 		
-		System.out.println("compiling shader: " + fileName);
+		System.out.println("Compiling shader: " + fileName + ".frag");
 		
-		if(glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
-			System.err.println("Couldn't compile the fragmentshader: '" + fileName +  "' correctly.\nError log:\n" + 
+		if(glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE){
+			System.err.println("Couldn't compile the fragmentshader: '" + fileName + ".frag" +  "' correctly.\nError log:\n" + 
 					GL20.glGetShaderInfoLog(fragmentShader, GL20.glGetShaderi(fragmentShader, GL20.GL_INFO_LOG_LENGTH)));
+			System.exit(0);
+		}
 		
 		glAttachShader(m_ShaderProgram, fragmentShader);
 		glDeleteShader(fragmentShader);
@@ -96,9 +101,11 @@ public abstract class Shader {
 	
 	private void createShaderProgram(){
 		glLinkProgram(m_ShaderProgram);
-		if(GL20.glGetProgrami(m_ShaderProgram, GL20.GL_LINK_STATUS) == GL_FALSE)
+		if(GL20.glGetProgrami(m_ShaderProgram, GL20.GL_LINK_STATUS) == GL_FALSE){
 			System.err.println("Failed to link shaderprogram.\nError log: " + 
 					GL20.glGetProgramInfoLog(m_ShaderProgram, GL20.glGetProgrami(m_ShaderProgram, GL20.GL_INFO_LOG_LENGTH)));
+			System.exit(0);
+		}
 		glValidateProgram(m_ShaderProgram);
 	}
 	
@@ -170,7 +177,8 @@ public abstract class Shader {
 		StringBuilder shaderSource = new StringBuilder();
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("res/shaders/" + fileName));
+			InputStream in = Class.class.getResourceAsStream("/shaders/" + fileName);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while((line = reader.readLine()) != null)
 				shaderSource.append(line).append('\n');

@@ -53,7 +53,7 @@ public class EntityRenderer {
 	
 	public void render(){
 		for(TexturedModel model : m_Renderables.keySet()){
-			loadTexturedMeshData(model);
+			loadTexturedModelData(model);
 			List<StaticMesh> batch = m_Renderables.get(model);
 			for(StaticMesh staticMesh : batch){
 				loadRenderableData(staticMesh);
@@ -63,7 +63,7 @@ public class EntityRenderer {
 		}
 	}
 	
-	private void loadTexturedMeshData(TexturedModel texturedModel){
+	private void loadTexturedModelData(TexturedModel texturedModel){
 		glBindVertexArray(texturedModel.getModel().getVaoID());
 		
 		glEnableVertexAttribArray(0);

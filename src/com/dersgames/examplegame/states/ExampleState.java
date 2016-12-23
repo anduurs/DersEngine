@@ -1,9 +1,5 @@
 package com.dersgames.examplegame.states;
 
-import java.util.Random;
-
-import org.lwjgl.glfw.GLFW;
-
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.core.GameState;
 import com.dersgames.engine.core.GameStateManager;
@@ -17,17 +13,16 @@ import com.dersgames.engine.entities.lights.PointLight;
 import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.gui.GUIComponent;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
-import com.dersgames.engine.input.KeyInput;
-import com.dersgames.engine.particles.Particle;
+import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.terrains.Terrain;
 import com.dersgames.engine.utils.ImageManager;
 import com.dersgames.examplegame.entities.Barrel;
 import com.dersgames.examplegame.entities.Crate;
-import com.dersgames.examplegame.entities.Dragon;
 import com.dersgames.examplegame.entities.LampPost;
 
 public class ExampleState extends GameState{
@@ -43,14 +38,13 @@ public class ExampleState extends GameState{
 	@Override
 	public void init() {
 		//ENTITIES TEXTURES
-		ImageManager.addImage("grassTexture", "grassTexture.png");
-		ImageManager.addImage("fern", "fern.png");
-		ImageManager.addImage("tree", "tree.png");
-		ImageManager.addImage("box", "box.png");
 		ImageManager.addImage("dragontexture", "dragontexture.png");
 		ImageManager.addImage("lamp", "lamp.png");
 		ImageManager.addImage("barrel", "barrel.png");
 		ImageManager.addImage("crate", "crate.png");
+		
+		//GUI TEXTURES
+		ImageManager.addImage("socuwan", "socuwan.png");
 		
 		//SPECULAR MAPS
 		ImageManager.addImage("barrelSpecularMap", "barrelS.png");
@@ -97,6 +91,14 @@ public class ExampleState extends GameState{
 		
 		createLightSources(terrain);
 		createEntities(terrain);
+		
+		Transform transform = new Transform(new Vector3f(0.5f, 0.5f, 1.0f), 
+											new Quaternion(new Vector3f(0,0,0), 0.0f), 
+											new Vector3f(0.25f, 0.25f, 1f));
+		
+		Entity guiEntity = new Entity("gui", transform);
+		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("socuwan"))));
+		m_Scene.addEntity(guiEntity);
 	}
 	
 	private void createCamera(){
@@ -145,6 +147,12 @@ public class ExampleState extends GameState{
 		terrainEntity.addComponent(terrain);
 		
 		m_Scene.addEntity(terrainEntity);
+		
+		Entity water = new Entity("Water", 300, 5, 70);
+		WaterTile tile  = new WaterTile("WaterTile");
+		water.getTransform().scale(WaterTile.TILE_SIZE, WaterTile.TILE_SIZE, WaterTile.TILE_SIZE);
+		water.addComponent(tile);
+		m_Scene.addEntity(water);
 		
 		return terrain;
 	}
@@ -224,7 +232,7 @@ public class ExampleState extends GameState{
 											      new Quaternion(new Vector3f(0,1,0), 90.0f), 
 											      new Vector3f(3,3,3));
 
-		Dragon dragon = new Dragon("Dragon", dragonTransform);
+//		Dragon dragon = new Dragon("Dragon", dragonTransform);
 //		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
 		
 		Transform crateTransform = new Transform(new Vector3f(140.0f, 40.0f, 200.0f), 
@@ -243,22 +251,11 @@ public class ExampleState extends GameState{
 		
 //		m_Scene.addEntity(dragon);
 		m_Scene.addEntity(crate);
-//		m_Scene.addEntity(barrel);
-		
-		
+		m_Scene.addEntity(barrel);
 	}
 	
 	@Override
 	public void update(float dt) {
-		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_R)){
-			Transform transform = new Transform(new Vector3f(240.0f, 40.0f, 200.0f), 
-											    new Quaternion(new Vector3f(0,1,0), 0.0f), 
-											    new Vector3f(2f,2f,2f));
-			
-			Entity e = new Entity("Particle", transform);
-			e.addComponent(new Particle("Particle", new Vector3f(0,30,0), 0, 1, 4));
-			m_Scene.addParticle(e);
-		}
 		m_Scene.update(dt);
 	}
 

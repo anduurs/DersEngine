@@ -42,13 +42,11 @@ public class TextureData {
 	
 	private int m_ID;
 	private int m_Width, m_Height;
-	public enum TextureType {MODEL, GUI, CUBEMAP};
+	public enum TextureType {MODEL, GUI};
 	private TextureType m_Type;
 	
 	public TextureData(String name, TextureType type){
 		m_Type = type;
-		
-		getImageData(name);
 		
 		m_ID = glGenTextures();
 		

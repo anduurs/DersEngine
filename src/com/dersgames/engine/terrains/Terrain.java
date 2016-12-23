@@ -16,7 +16,7 @@ import com.dersgames.engine.utils.MathUtil;
 
 public class Terrain extends Renderable{
 	
-	private static final float SIZE = 800.0f;
+	private static final float SIZE = 400.0f;
 	private static final int MAX_HEIGHT = 40;
 	private static final int MAX_PIXEL_COLOR = 256 * 256 * 256;
 	
@@ -119,7 +119,7 @@ public class Terrain extends Renderable{
 	}
 	
 	private Model generateTerrain(Loader loader){
-		int VERTEX_COUNT = 256;
+		int VERTEX_COUNT = 64;
 		
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		

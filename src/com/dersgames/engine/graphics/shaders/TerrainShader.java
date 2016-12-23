@@ -3,7 +3,7 @@ package com.dersgames.engine.graphics.shaders;
 public class TerrainShader extends PhongShader{
 
 	public TerrainShader() {
-		super("terrainVertexShader", "terrainFragmentShader");
+		super("terrain/terrainVertexShader", "terrain/terrainFragmentShader");
 	
 		addUniform("backgroundTexture");
 		addUniform("rTexture");

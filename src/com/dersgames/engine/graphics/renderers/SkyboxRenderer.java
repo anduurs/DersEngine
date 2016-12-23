@@ -80,6 +80,7 @@ public class SkyboxRenderer {
 		bindTextures();
 		
 		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
+		
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 	}

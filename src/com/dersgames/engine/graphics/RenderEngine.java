@@ -19,18 +19,23 @@ import org.lwjgl.opengl.GL11;
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
+import com.dersgames.engine.core.Debug;
+import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.graphics.gui.GUIComponent;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
-import com.dersgames.engine.graphics.renderers.ParticleRenderer;
+import com.dersgames.engine.graphics.renderers.GUIRenderer;
 import com.dersgames.engine.graphics.renderers.SkyboxRenderer;
 import com.dersgames.engine.graphics.renderers.TerrainRenderer;
+import com.dersgames.engine.graphics.renderers.WaterRenderer;
 import com.dersgames.engine.graphics.shaders.EntityShader;
-import com.dersgames.engine.graphics.shaders.ParticleShader;
+import com.dersgames.engine.graphics.shaders.GUIShader;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
+import com.dersgames.engine.graphics.shaders.WaterShader;
+import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.input.KeyInput;
-import com.dersgames.engine.particles.Particle;
 import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
@@ -40,7 +45,8 @@ public class RenderEngine {
 	private static TerrainRenderer m_TerrainRenderer;
 	private static EntityRenderer m_EntityRenderer;
 	private static SkyboxRenderer m_SkyboxRenderer;
-	private static ParticleRenderer m_ParticleRenderer;
+	private static WaterRenderer m_WaterRenderer;
+	private static GUIRenderer m_GUIRenderer;
 	
 //	private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
@@ -48,12 +54,17 @@ public class RenderEngine {
 	private boolean m_RenderNormals = false;
 	private boolean m_RenderTangents = false;
 	private boolean m_WireFrameMode = false;
+	
+//	private Matrix4f ortho = new Matrix4f().setOrthographicProjection(0, Window.getWidth(), Window.getHeight(), 0, -1.0f, 1.0f);
 
 	public RenderEngine(){
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
 		m_SkyboxRenderer = new SkyboxRenderer();
-		m_ParticleRenderer = new ParticleRenderer();
+		m_WaterRenderer = new WaterRenderer();
+		m_GUIRenderer = new GUIRenderer();
+		
+		Debug.log("All shaders compiled succesfully");
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
@@ -76,6 +87,11 @@ public class RenderEngine {
 			m_TerrainRenderer.addTerrain((Terrain)renderable);
 		else if(renderable instanceof StaticMesh) 
 			m_EntityRenderer.addStaticMesh((StaticMesh)renderable);
+		else if(renderable instanceof WaterTile)
+			m_WaterRenderer.addWaterTile((WaterTile)renderable);
+		else if(renderable instanceof GUIComponent){
+			m_GUIRenderer.addGUIComponent((GUIComponent)renderable);
+		}
 	}
 	
 	public void render(){
@@ -166,10 +182,19 @@ public class RenderEngine {
 		m_SkyboxRenderer.render();
 		skyboxShader.disable();
 		
-		ParticleShader particleShader = m_ParticleRenderer.getShader();
-		particleShader.enable();
-		m_ParticleRenderer.render(m_Camera);
-		particleShader.disable();
+		WaterShader waterShader = m_WaterRenderer.getShader();
+		waterShader.enable();
+		waterShader.loadViewMatrix(m_Camera);
+		m_WaterRenderer.render();
+		waterShader.disable();
+		m_WaterRenderer.clear();
+		
+		
+		GUIShader guiShader = m_GUIRenderer.getShader();
+		guiShader.enable();
+		m_GUIRenderer.render();
+		guiShader.disable();
+		m_GUIRenderer.clear();
 	}
 	
 	public void addCamera(Camera camera){
@@ -190,17 +215,23 @@ public class RenderEngine {
 		skyboxShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 		skyboxShader.disable();
 		
-		ParticleShader particleShader = m_ParticleRenderer.getShader();
-		particleShader.enable();
-		particleShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
-		particleShader.disable();
+		WaterShader waterShader = m_WaterRenderer.getShader();
+		waterShader.enable();
+		waterShader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+		waterShader.disable();
+		
+//		GUIShader guiShader = m_GUIRenderer.getShader();
+//		guiShader.enable();
+//		guiShader.loadProjectionMatrix(ortho);
+//		guiShader.disable();
 	}
 	
 	public void dispose(){
 		m_TerrainRenderer.dispose();
 		m_EntityRenderer.dispose();
 		m_SkyboxRenderer.dispose();
-		m_ParticleRenderer.dispose();
+		m_WaterRenderer.dispose();
+		m_GUIRenderer.dispose();
 	}
 	
 	private void clearFrameBuffer(){
@@ -220,8 +251,12 @@ public class RenderEngine {
 		return m_SkyboxRenderer;
 	}
 	
-	public static ParticleRenderer getParticleRenderer(){
-		return m_ParticleRenderer;
+	public static WaterRenderer getWaterRenderer() {
+		return m_WaterRenderer;
+	}
+	
+	public static GUIRenderer getGUIRenderer(){
+		return m_GUIRenderer;
 	}
 	
 	public static Camera getCamera(){

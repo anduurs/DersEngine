@@ -7,7 +7,7 @@ import com.dersgames.engine.core.Vector3f;
 public class SkyboxShader extends Shader{
 
 	public SkyboxShader() {
-		super("skyboxVertexShader", "skyboxFragmentShader");
+		super("skybox/skyboxVertexShader", "skybox/skyboxFragmentShader");
 		
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");

@@ -45,7 +45,7 @@ public class Window {
 	private GLFWMouseButtonCallback mouseCallback;
 	private GLFWCursorPosCallback mouseCursorCallback;
 	
-	public Window(int width, int height, String title, boolean vsync){
+	public Window(int width, int height, String title, boolean vsync, boolean fullscreen){
 		m_Width  = width;
 		m_Height = height;
 		
@@ -55,17 +55,23 @@ public class Window {
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		glfwWindowHint(GLFW.GLFW_STENCIL_BITS, 4);
 		glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
-				
-		window = glfwCreateWindow(width, height, title, NULL, NULL);
-		
-		if(window == NULL)
-			System.err.println("Could not create our Window!");
-		 
+	
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		
-		glfwSetWindowPos(window, (vidmode.width() - width) / 2,
-		          (vidmode.height() - height) / 2);
-		
+		if(fullscreen){	
+			window = glfwCreateWindow(vidmode.width(), vidmode.height(), title, glfwGetPrimaryMonitor(), NULL);
+			if(window == NULL)
+				System.err.println("Could not create the Window");
+			m_Width = vidmode.width();
+			m_Height = vidmode.height();
+		}else{
+			window = glfwCreateWindow(width, height, title, NULL, NULL);
+			if(window == NULL)
+				System.err.println("Could not create the Window");
+			glfwSetWindowPos(window, (vidmode.width() - width) / 2,
+			          (vidmode.height() - height) / 2);
+		}
+
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
 		glfwSetCursorPosCallback(window, mouseCursorCallback = new MouseCursor());

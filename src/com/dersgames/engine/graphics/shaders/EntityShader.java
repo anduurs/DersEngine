@@ -5,7 +5,7 @@ import com.dersgames.engine.core.Vector2f;
 public class EntityShader extends PhongShader{
 	
 	public EntityShader() {
-		super("entityVertexShader", "entityFragmentShader");
+		super("entity/entityVertexShader", "entity/entityFragmentShader");
 		addUniform("offset");
 	}
 

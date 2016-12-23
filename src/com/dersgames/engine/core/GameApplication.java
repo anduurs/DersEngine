@@ -18,12 +18,14 @@ public class GameApplication implements Runnable{
 	private int m_Height;
 	private String m_Title;
 	private boolean m_Vsync;
+	private boolean m_FullScreen;
 	
-	public GameApplication(int width, int height, String title, boolean vsync){
+	public GameApplication(int width, int height, String title, boolean vsync, boolean fullscreen){
 		m_Width = width;
 		m_Height = height;
 		m_Title = title;
 		m_Vsync = vsync;
+		m_FullScreen = fullscreen;
 		
 		m_StateManager = new GameStateManager();
 	}
@@ -34,7 +36,7 @@ public class GameApplication implements Runnable{
 	}
 	
 	private void init(){
-		m_Window = new Window(m_Width, m_Height, m_Title, m_Vsync);
+		m_Window = new Window(m_Width, m_Height, m_Title, m_Vsync, m_FullScreen);
 		m_StartState.init();
 	}
 	
@@ -94,7 +96,7 @@ public class GameApplication implements Runnable{
 				
 			if(frameCounter >= 1){
 				m_Window.setTitle(m_Title + " || " + fps + " fps");
-				//Debug.log(fps + " fps");
+				Debug.log(fps + " fps");
 				fps = 0;
 				frameCounter = 0;
 			}

@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class Loader{
 		return new Model(vaoID, positions.length / dimensions);
 	}
 	
-	public static Model loadModelFromObjFile(String fileName, boolean calculateTangents){
+	public static Model loadModelFromObjFile(String fileName, boolean usingNormalMap){
 		List<Vector3f> vertexPositions = new ArrayList<>(); 
 		List<Vector2f> texCoords = new ArrayList<>(); 
 		List<Vector3f> normals = new ArrayList<>();
@@ -102,7 +104,8 @@ public class Loader{
 		int totalIndex = 0;
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("res/models/" + fileName + ".obj"));
+			InputStream in = Class.class.getResourceAsStream("/models/" + fileName + ".obj");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while((line = reader.readLine()) != null){
 				String[] lineArray = line.split("\\s+");
@@ -132,7 +135,7 @@ public class Loader{
 					
 					Vector3f tangent = null;
 					
-					if(calculateTangents)
+					if(usingNormalMap)
 						tangent = calculateTangent(v0, v1, v2);
 					
 					for(int i = 1; i < lineArray.length; i++){
@@ -155,7 +158,7 @@ public class Loader{
 							texCoordsUnique.add(texCoord);
 							normalsUnique.add(normal);
 							
-							if(calculateTangents)
+							if(usingNormalMap)
 								tangents.add(tangent);
 							
 							indices.add(totalIndex);
@@ -205,7 +208,7 @@ public class Loader{
 			normalsArray[offset++] = v.z;
 		}
 		
-		if(calculateTangents){
+		if(usingNormalMap){
 			offset = 0;
 			
 			for(Vector3f v : tangents){
@@ -223,7 +226,7 @@ public class Loader{
 		
 		Model model = null;
 		
-		if(calculateTangents)
+		if(usingNormalMap)
 			model = loadModel(verticesArray, texCoordsArray, normalsArray, tangentsArray, indicesArray);
 		else model = loadModel(verticesArray, texCoordsArray, normalsArray, indicesArray);
 		
