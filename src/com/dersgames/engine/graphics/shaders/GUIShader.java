@@ -1,7 +1,7 @@
 package com.dersgames.engine.graphics.shaders;
 
-import com.dersgames.engine.core.Matrix4f;
-import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.maths.Matrix4f;
+import com.dersgames.engine.maths.Vector3f;
 
 public class GUIShader extends Shader{
 

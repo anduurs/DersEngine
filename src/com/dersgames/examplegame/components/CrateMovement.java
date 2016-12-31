@@ -1,6 +1,7 @@
 package com.dersgames.examplegame.components;
 
 import com.dersgames.engine.components.Component;
+import com.dersgames.engine.maths.Vector3f;
 
 public class CrateMovement extends Component{
 	
@@ -16,8 +17,7 @@ public class CrateMovement extends Component{
 
 	@Override
 	public void update(float dt) {
-		getTransform().rotate(getRotation().getUp(), m_Speed * dt);
-		getTransform().rotate(getRotation().getForward(), m_Speed * dt);
+		getTransform().rotate(new Vector3f(0,1,-1), m_Speed * dt);
 	}
 
 }

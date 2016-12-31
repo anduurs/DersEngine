@@ -1,5 +1,8 @@
 package com.dersgames.engine.core;
 
+import com.dersgames.engine.datastructures.LinkedStack;
+import com.dersgames.engine.datastructures.Node;
+
 public class GameStateManager {
 	
 	private LinkedStack<GameState> states;
@@ -12,15 +15,16 @@ public class GameStateManager {
 	 * Adds a state at the top of the state stack
 	 * @param state the game state that will be added to the top of the state stack
 	 */
-	public void push(GameState state){
+	public void pushState(GameState state){
 		states.push(state);
 	}
 	
 	/**
-	 * Deletes the state at the top of the state stack
+	 * Deletes the state at the top of the state stack and returns it
 	 */
-	public void pop(){
-		states.pop();
+	public Node<GameState> popState(){
+		states.top.data.dispose();
+		return states.pop();
 	}
 	
 	public GameState next(){

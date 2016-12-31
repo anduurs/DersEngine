@@ -28,12 +28,11 @@ import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.engine.core.Vector2f;
-import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.core.Vertex;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.TextureData;
 import com.dersgames.engine.graphics.textures.TextureData.TextureType;
+import com.dersgames.engine.maths.Vector2f;
+import com.dersgames.engine.maths.Vector3f;
 
 public class Loader{
 	

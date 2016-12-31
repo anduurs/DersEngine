@@ -9,6 +9,7 @@ import com.dersgames.engine.entities.lights.DirectionalLight;
 import com.dersgames.engine.entities.lights.PointLight;
 import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.maths.Vector3f;
 
 public class Scene {
 	

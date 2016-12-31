@@ -2,6 +2,7 @@ package com.dersgames.engine.core;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.dersgames.engine.datastructures.Node;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
 
@@ -32,7 +33,7 @@ public class GameApplication implements Runnable{
 	
 	public void pushStartingState(GameState startingState){
 		m_StartState = startingState;
-		m_StateManager.push(startingState);
+		m_StateManager.pushState(startingState);
 	}
 	
 	private void init(){
@@ -96,7 +97,7 @@ public class GameApplication implements Runnable{
 				
 			if(frameCounter >= 1){
 				m_Window.setTitle(m_Title + " || " + fps + " fps");
-				Debug.log(fps + " fps");
+//				Debug.log(fps + " fps");
 				fps = 0;
 				frameCounter = 0;
 			}
@@ -107,8 +108,9 @@ public class GameApplication implements Runnable{
 			if(m_Window.isWindowClosed())
 				m_Running = false;
 		}
+
+		while(m_StateManager.popState() != null){}
 		
-		m_StateManager.getCurrentState().dispose();
 		m_Window.destroy();
 	}
 	

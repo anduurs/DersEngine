@@ -1,13 +1,13 @@
 package com.dersgames.examplegame.entities;
 
 import com.dersgames.engine.components.StaticMesh;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.maths.Vector3f;
 
 public class LampPost extends Entity{
 	

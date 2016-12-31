@@ -2,11 +2,11 @@ package com.dersgames.engine.components;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.engine.core.Matrix4f;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.MouseCursor;
+import com.dersgames.engine.maths.Matrix4f;
+import com.dersgames.engine.maths.Vector3f;
 
 public class Camera extends Component{
 
@@ -31,7 +31,7 @@ public class Camera extends Component{
 	public void init() {}
 	
 	public void update(float dt){
-		freeLookCamera(dt, 100.0f);
+//		freeLookCamera(dt, 100.0f);
 //		Debug.log("" + getPosition());
 	}
 	

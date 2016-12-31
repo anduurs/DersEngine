@@ -17,13 +17,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.dersgames.engine.components.Camera;
+import com.dersgames.engine.components.GUIComponent;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Debug;
-import com.dersgames.engine.core.Matrix4f;
 import com.dersgames.engine.core.Scene;
-import com.dersgames.engine.core.Vector3f;
-import com.dersgames.engine.graphics.gui.GUIComponent;
 import com.dersgames.engine.graphics.renderers.EntityRenderer;
 import com.dersgames.engine.graphics.renderers.GUIRenderer;
 import com.dersgames.engine.graphics.renderers.SkyboxRenderer;
@@ -36,6 +34,7 @@ import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.shaders.WaterShader;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.input.KeyInput;
+import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.engine.terrains.Terrain;
 
 public class RenderEngine {
@@ -186,7 +185,6 @@ public class RenderEngine {
 		m_WaterRenderer.render();
 		waterShader.disable();
 		m_WaterRenderer.clear();
-		
 		
 		GUIShader guiShader = m_GUIRenderer.getShader();
 		guiShader.enable();

@@ -1,6 +1,6 @@
 package com.dersgames.engine.graphics.shaders;
 
-import com.dersgames.engine.core.Vector2f;
+import com.dersgames.engine.maths.Vector2f;
 
 public class EntityShader extends PhongShader{
 	

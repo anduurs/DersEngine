@@ -1,9 +1,9 @@
 package com.dersgames.engine.components;
 
-import com.dersgames.engine.core.Quaternion;
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.maths.Quaternion;
+import com.dersgames.engine.maths.Vector3f;
 
 public abstract class Component {
 	

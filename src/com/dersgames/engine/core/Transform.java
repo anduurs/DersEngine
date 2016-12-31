@@ -1,5 +1,9 @@
 package com.dersgames.engine.core;
 
+import com.dersgames.engine.maths.Matrix4f;
+import com.dersgames.engine.maths.Quaternion;
+import com.dersgames.engine.maths.Vector3f;
+
 public class Transform{
 	
 	private Vector3f m_Position;

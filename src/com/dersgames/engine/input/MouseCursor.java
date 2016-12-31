@@ -3,7 +3,7 @@ package com.dersgames.engine.input;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
-import com.dersgames.engine.core.Vector2f;
+import com.dersgames.engine.maths.Vector2f;
 
 public class MouseCursor extends GLFWCursorPosCallback{
 
@@ -22,7 +22,7 @@ public class MouseCursor extends GLFWCursorPosCallback{
 		
 		MouseCursor.window = window;
 	
-		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+//		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 	}
 	
 	public static void setVisibility(boolean visible){

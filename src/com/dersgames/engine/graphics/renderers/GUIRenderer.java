@@ -20,9 +20,9 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dersgames.engine.components.GUIComponent;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.graphics.gui.GUIComponent;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.GUIShader;
 
@@ -64,7 +64,7 @@ public class GUIRenderer {
 				glBindTexture(GL_TEXTURE_2D, gui.getTexture().getTextureID());
 			}
 			
-			m_Shader.loadModelMatrix(gui.getEntity());
+			m_Shader.loadModelMatrix(gui.getModelMatrix());
 			m_Shader.loadColor(gui.getColor());
 			
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, m_Quad.getVertexCount());

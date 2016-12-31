@@ -1,7 +1,7 @@
 package com.dersgames.engine.entities.lights;
 
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.core.Vector3f;
+import com.dersgames.engine.maths.Vector3f;
 
 public class PointLight extends Light{
 	

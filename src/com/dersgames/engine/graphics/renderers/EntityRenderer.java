@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.dersgames.engine.components.StaticMesh;
-import com.dersgames.engine.core.Vector2f;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.shaders.EntityShader;
+import com.dersgames.engine.maths.Vector2f;
 
 public class EntityRenderer {
 	

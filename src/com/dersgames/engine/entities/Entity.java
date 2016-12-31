@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.dersgames.engine.components.Component;
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Quaternion;
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.maths.Quaternion;
+import com.dersgames.engine.maths.Vector3f;
 
 public class Entity {
 	
@@ -31,8 +31,8 @@ public class Entity {
 		this(tag, x, y, 0);
 	}
 	
-	public Entity(String tag, float x, float y, float z, float scale){
-		this(tag, new Transform(new Vector3f(x,y,z), new Quaternion(), new Vector3f(scale,scale,scale)));
+	public Entity(String tag, float x, float y, float sizeX, float sizeY){
+		this(tag, new Transform(new Vector3f(x,y,1), new Quaternion(), new Vector3f(sizeX,sizeY,1)));
 	}
 	
 	public Entity(String tag, float x, float y, float z){

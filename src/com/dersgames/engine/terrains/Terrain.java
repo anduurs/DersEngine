@@ -3,15 +3,15 @@ package com.dersgames.engine.terrains;
 import java.awt.image.BufferedImage;
 
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Vector2f;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.maths.MathUtil;
+import com.dersgames.engine.maths.Vector2f;
+import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.engine.utils.ImageManager;
-import com.dersgames.engine.utils.MathUtil;
 
 public class Terrain extends Renderable{
 	

@@ -35,10 +35,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.core.Matrix4f;
-import com.dersgames.engine.core.Vector2f;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.maths.Matrix4f;
+import com.dersgames.engine.maths.Vector2f;
+import com.dersgames.engine.maths.Vector3f;
 
 public abstract class Shader {
 	

@@ -2,7 +2,6 @@ package com.dersgames.examplegame.entities;
 
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.core.Vector3f;
 import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
@@ -11,6 +10,7 @@ import com.dersgames.engine.graphics.models.TexturedModel;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
 import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
+import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.examplegame.components.BarrelMovement;
 
 public class Barrel extends Entity{

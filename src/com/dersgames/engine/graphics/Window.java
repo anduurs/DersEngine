@@ -25,6 +25,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWErrorCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -48,6 +50,15 @@ public class Window {
 	public Window(int width, int height, String title, boolean vsync, boolean fullscreen){
 		m_Width  = width;
 		m_Height = height;
+
+		GLFW.glfwSetErrorCallback(new GLFWErrorCallbackI() {
+			
+			@Override
+			public void invoke(int arg0, long arg1) {
+				System.out.println(GLFWErrorCallback.getDescription(arg1));
+				
+			}
+		});
 		
 		if(!glfwInit())
 			System.err.println("GLFW initialization failed!");
@@ -71,6 +82,8 @@ public class Window {
 			glfwSetWindowPos(window, (vidmode.width() - width) / 2,
 			          (vidmode.height() - height) / 2);
 		}
+		
+
 
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
