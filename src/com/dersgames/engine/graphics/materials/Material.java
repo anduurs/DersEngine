@@ -228,4 +228,8 @@ public class Material {
 		return m_UseNormalMap;
 	}
 
+	public PhongShader getShader(){
+		return m_Shader;
+	}
+
 }

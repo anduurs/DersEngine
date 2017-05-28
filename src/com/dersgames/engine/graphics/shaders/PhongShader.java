@@ -6,6 +6,7 @@ import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.entities.lights.DirectionalLight;
 import com.dersgames.engine.entities.lights.PointLight;
 import com.dersgames.engine.entities.lights.SpotLight;
+import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
 
 public abstract class PhongShader extends Shader{
@@ -15,22 +16,26 @@ public abstract class PhongShader extends Shader{
 
 	public PhongShader(String vertShader, String fragShader) {
 		super(vertShader, fragShader);
-		
+		addUniforms();
+	}
+
+	protected void addUniforms(){
+		addUniform("offset");
 		addUniform("modelMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");
-		
+
 		addUniform("skyColor");
 		addUniform("ambientLight");
-		
+
 		addUniform("directionalLight.direction");
 		addUniform("directionalLight.light.color");
 		addUniform("directionalLight.light.intensity");
-		
+
 		addUniform("renderNormals");
 		addUniform("renderTangents");
 		addUniform("wireframeMode");
-		
+
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			addUniform("pointLights["+i+"].position");
 			addUniform("pointLights["+i+"].attenuation");
@@ -38,33 +43,31 @@ public abstract class PhongShader extends Shader{
 			addUniform("pointLights["+i+"].light.color");
 			addUniform("pointLights["+i+"].light.intensity");
 		}
-		
-		for(int i = 0; i < MAX_SPOT_LIGHTS; i++){
-			addUniform("spotLights["+i+"].pointLight.position");
-			addUniform("spotLights["+i+"].pointLight.attenuation");
-			addUniform("spotLights["+i+"].pointLight.range");
-			addUniform("spotLights["+i+"].pointLight.light.color");
-			addUniform("spotLights["+i+"].pointLight.light.intensity");
-			addUniform("spotLights["+i+"].direction");
-			addUniform("spotLights["+i+"].cutOffAngle");
+
+		for(int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+			addUniform("spotLights[" + i + "].pointLight.position");
+			addUniform("spotLights[" + i + "].pointLight.attenuation");
+			addUniform("spotLights[" + i + "].pointLight.range");
+			addUniform("spotLights[" + i + "].pointLight.light.color");
+			addUniform("spotLights[" + i + "].pointLight.light.intensity");
+			addUniform("spotLights[" + i + "].direction");
+			addUniform("spotLights[" + i + "].cutOffAngle");
 		}
 	}
-
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
-		super.bindAttribute(3, "tangent");
 	}
 	
 	public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
 		super.loadVector3f("ambientLight", Scene.getSceneAmbientLight());
-		
+
 		super.loadVector3f("directionalLight.direction", directionalLight.getDirection());
 		super.loadVector3f("directionalLight.light.color", directionalLight.getLightColor());
 		super.loadFloat("directionalLight.light.intensity", directionalLight.getIntensity());
-		
+
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			if(i < pointLights.size() && pointLights.size() != 0){
 				super.loadVector3f("pointLights["+i+"].position", pointLights.get(i).getPosition());
@@ -74,7 +77,7 @@ public abstract class PhongShader extends Shader{
 				super.loadFloat("pointLights["+i+"].range", pointLights.get(i).getRange());
 			}
 		}
-		
+
 		for(int i = 0; i < MAX_SPOT_LIGHTS; i++){
 			if(i < spotLights.size() && spotLights.size() != 0){
 				super.loadVector3f("spotLights["+i+"].pointLight.position", spotLights.get(i).getPosition());
@@ -90,6 +93,9 @@ public abstract class PhongShader extends Shader{
 	
 	public void loadSkyColor(Vector3f skyColor){
 		loadVector3f("skyColor", skyColor);
+	}
+	public void loadTexCoordOffset(Vector2f offset){
+		loadVector2f("offset", offset);
 	}
 	
 }

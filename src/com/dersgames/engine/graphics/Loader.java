@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
@@ -177,11 +178,6 @@ public class Loader{
 		float[] normalsArray = new float[normalsUnique.size() * 3];
 		float[] tangentsArray = new float[tangents.size() * 3];
 		
-//		Debug.log("VertexPositions: " + vertexPositionsUnique.size());
-//		Debug.log("TextureCoordinates: " + texCoordsUnique.size());
-//		Debug.log("Normals: " + normalsUnique.size());
-//		Debug.log("Tangents: " + tangents.size());
-		
 		int offset = 0;
 		
 		for(Vector3f v : vertexPositionsUnique){
@@ -310,7 +306,7 @@ public class Loader{
 		FloatBuffer buffer = storeDataInFloatBuffer(data);
 		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(attributeNumber, numOfFloats, GL_FLOAT, false, 0, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glEnableVertexAttribArray(attributeNumber);
 	}
 	
 	private static void createIndexBuffer(int[] indices){

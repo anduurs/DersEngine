@@ -14,7 +14,9 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
@@ -22,7 +24,7 @@ import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.terrains.Terrain;
 
-public class TerrainRenderer {
+public class TerrainRenderer implements Renderer3D{
 	
 	private TerrainShader m_TerrainShader;
 	private List<Terrain> m_Terrains;
@@ -43,7 +45,15 @@ public class TerrainRenderer {
 	public void clear(){
 		m_Terrains.clear();
 	}
-	
+
+	@Override
+	public void begin(Camera camera) {
+		m_TerrainShader.enable();
+		m_TerrainShader.loadSkyColor(RenderEngine.getSkyColor());
+		m_TerrainShader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
+		m_TerrainShader.loadViewMatrix(camera);
+	}
+
 	public void render(){
 		for(Terrain terrain : m_Terrains){
 			loadTexturedMeshData(terrain);
@@ -52,17 +62,15 @@ public class TerrainRenderer {
 			unbindTexturedModel();
 		}
 	}
-	
+
+	@Override
+	public void end() {
+		m_TerrainShader.disable();
+	}
+
 	private void loadTexturedMeshData(Terrain terrain){
 		Model mesh = terrain.getModel();
-		
 		glBindVertexArray(mesh.getVaoID());
-		
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		glEnableVertexAttribArray(3);
-		
 		bindTextures(terrain);
 	}
 	
@@ -88,10 +96,6 @@ public class TerrainRenderer {
 	
 	private void unbindTexturedModel(){
 		RenderEngine.enableFaceCulling();
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
-		glDisableVertexAttribArray(3);
 		glBindVertexArray(0);
 	}
 	

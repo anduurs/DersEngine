@@ -22,7 +22,7 @@ public class MouseCursor extends GLFWCursorPosCallback{
 		
 		MouseCursor.window = window;
 	
-//		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+		GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 	}
 	
 	public static void setVisibility(boolean visible){

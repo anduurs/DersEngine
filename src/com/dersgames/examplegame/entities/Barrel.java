@@ -22,13 +22,13 @@ public class Barrel extends Entity{
 		SpecularMap barrelSpecularMap  = new SpecularMap(Loader.loadModelTexture("barrelSpecularMap"));
 		NormalMap barrelNormalMap = new NormalMap(Loader.loadModelTexture("barrelNormalMap"));
 		
-		TexturedModel barrelMesh   = new TexturedModel(Loader.loadModelFromObjFile("barrel", true), 
+		TexturedModel barrelMesh = new TexturedModel(Loader.loadModelFromObjFile("barrel", true),
 						                               new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
 																   new Vector3f(0.6f, 0.6f, 0.6f),
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.02f, 0.02f, 0.02f),
-																   8.0f, false, false,
-																   RenderEngine.getEntityRenderer().getShader())); 
+																   16.0f, false, false,
+																   RenderEngine.getNormalMapRenderer().getShader()));
 		
 		addComponent(new StaticMesh("BarrelStaticMesh", barrelMesh));
 		addComponent(new BarrelMovement("BarrelMovement", 15.0f));

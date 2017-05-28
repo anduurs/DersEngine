@@ -101,7 +101,7 @@ public class PlayState extends GameState{
 		Entity guiEntity = new Entity("gui", 0, 0, 200f, 100f);
 //		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("dragontexture"))));
 		guiEntity.addComponent(new GUIComponent("Gui", new Vector3f(1,0,0)));
-		m_Scene.addEntity(guiEntity);
+		//m_Scene.addEntity(guiEntity);
 	}
 	
 	private void createCamera(){

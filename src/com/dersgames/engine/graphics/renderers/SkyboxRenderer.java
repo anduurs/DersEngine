@@ -11,11 +11,13 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.graphics.Loader;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
 
-public class SkyboxRenderer {
+public class SkyboxRenderer implements Renderer3D{
 	
 	private static final float SIZE = 1000f;
 	
@@ -78,19 +80,27 @@ public class SkyboxRenderer {
 		m_NightTexture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES_NIGHT);
 		m_Shader = new SkyboxShader();
 	}
-	
+
+	@Override
+	public void begin(Camera camera) {
+		m_Shader.enable();
+		m_Shader.loadViewMatrix(camera);
+		m_Shader.loadFogColor(RenderEngine.getSkyColor());
+	}
+
+	@Override
 	public void render(){
 		glBindVertexArray(m_Cube.getVaoID());
-		glEnableVertexAttribArray(0);
-		
 		bindTextures();
-		
 		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
-		
-		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 	}
-	
+
+	@Override
+	public void end() {
+		m_Shader.disable();
+	}
+
 	private void bindTextures(){
 		m_Shader.loadBlendFactor(0.8f);
 		
@@ -100,11 +110,13 @@ public class SkyboxRenderer {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_NightTexture);
 	}
-	
+
+	@Override
 	public void dispose(){
 		m_Shader.deleteShaderProgram();
 	}
 
+	@Override
 	public SkyboxShader getShader() {
 		return m_Shader;
 	}

@@ -9,12 +9,13 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.WaterShader;
 import com.dersgames.engine.graphics.water.WaterTile;
 
-public class WaterRenderer {
+public class WaterRenderer implements Renderer3D{
 	
 	private float[] m_Vertices = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
 	
@@ -32,13 +33,19 @@ public class WaterRenderer {
 		m_WaterTiles.add(tile);
 	}
 	
-	private void begin(){
+	private void bind(){
 		glBindVertexArray(m_Quad.getVaoID());
-		glEnableVertexAttribArray(0);
 	}
-	
+
+	@Override
+	public void begin(Camera camera) {
+		m_Shader.enable();
+		m_Shader.loadViewMatrix(camera);
+	}
+
+	@Override
 	public void render(){
-		begin();
+		bind();
 		
 		for(WaterTile tile : m_WaterTiles){
 			m_Shader.loadModelMatrix(tile.getEntity());
@@ -48,9 +55,14 @@ public class WaterRenderer {
 		end();
 	}
 	
-	private void end(){
-		glDisableVertexAttribArray(0);
+	private void unbind(){
 		glBindVertexArray(0);
+	}
+
+	@Override
+	public void end(){
+		m_Shader.disable();
+		clear();
 	}
 	
 	public void clear(){

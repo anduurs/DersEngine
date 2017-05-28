@@ -26,7 +26,7 @@ public class Crate extends Entity{
 																   new Vector3f(0.8f, 0.8f, 0.8f),
 																   new Vector3f(0.02f, 0.02f, 0.02f),
 																   8.0f, false, false,
-																   RenderEngine.getEntityRenderer().getShader())); 
+																   RenderEngine.getNormalMapRenderer().getShader()));
 		
 		addComponent(new StaticMesh("CrateStaticMesh", crateMesh));
 		addComponent(new CrateMovement("CrateMovement", 15.0f));

@@ -51,15 +51,6 @@ public class Window {
 		m_Width  = width;
 		m_Height = height;
 
-		GLFW.glfwSetErrorCallback(new GLFWErrorCallbackI() {
-			
-			@Override
-			public void invoke(int arg0, long arg1) {
-				System.out.println(GLFWErrorCallback.getDescription(arg1));
-				
-			}
-		});
-		
 		if(!glfwInit())
 			System.err.println("GLFW initialization failed!");
 		
