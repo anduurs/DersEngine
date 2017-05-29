@@ -109,16 +109,15 @@ public class RenderEngine {
 	
 	public void render(){
 		m_FrameBuffer.bind();
+
 		clearFrameBuffer();
 		renderScene();
+
 		m_FrameBuffer.unbind();
+
 		m_PostProcessRenderer.render(m_FrameBuffer.getColorTexture());
 
-		GUIShader guiShader = m_GUIRenderer.getShader();
-		guiShader.enable();
-		m_GUIRenderer.render();
-		guiShader.disable();
-		m_GUIRenderer.clear();
+		renderGUI();
 	}
 
 	private void renderScene(){
@@ -127,6 +126,12 @@ public class RenderEngine {
 			renderer.render();
 			renderer.end();
 		}
+	}
+
+	private void renderGUI(){
+		m_GUIRenderer.begin();
+		m_GUIRenderer.render();
+		m_GUIRenderer.end();
 	}
 	
 	public void addCamera(Camera camera){

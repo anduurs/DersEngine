@@ -32,7 +32,6 @@ public class Camera extends Component{
 	
 	public void update(float dt){
 		freeLookCamera(dt, 100.0f);
-//		Debug.log("" + getPosition());
 	}
 	
 	private void freeLookCamera(float dt, float speed){

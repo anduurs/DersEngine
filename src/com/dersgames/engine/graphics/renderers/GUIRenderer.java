@@ -45,7 +45,8 @@ public class GUIRenderer {
 		m_GUIComponents.add(guiComponent);
 	}
 	
-	private void begin(){
+	public void begin(){
+		m_Shader.enable();
 		RenderEngine.disableFaceCulling();
 		glBindVertexArray(m_Quad.getVaoID());
 		glEnableVertexAttribArray(0);
@@ -55,32 +56,30 @@ public class GUIRenderer {
 	}
 	
 	public void render(){
-		begin();
-		
-		for(GUIComponent gui : m_GUIComponents){
+		for(GUIComponent gui : m_GUIComponents) {
 			m_Shader.loadUsingColor(gui.isUsingColor());
-			if(!gui.isUsingColor()){
+			if (!gui.isUsingColor()) {
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, gui.getTexture().getTextureID());
 			}
-			
+
 			m_Shader.loadModelMatrix(gui.getModelMatrix());
 			m_Shader.loadColor(gui.getColor());
-			
+
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, m_Quad.getVertexCount());
 		}
-		
-		end();
 	}
 
-	private void end(){
+	public void end(){
 		RenderEngine.enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
+		m_Shader.disable();
+		clear();
 	}
 	
-	public void clear(){
+	private void clear(){
 		m_GUIComponents.clear();
 	}
 	
