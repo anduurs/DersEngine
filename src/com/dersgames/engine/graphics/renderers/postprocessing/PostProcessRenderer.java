@@ -33,8 +33,8 @@ public class PostProcessRenderer {
         float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
         m_Quad = Loader.loadModel(positions, 2);
 
-        m_HorizontalBlur = new HorizontalBlur(Window.getWidth() / 5, Window.getHeight() / 5);
-        m_VerticalBlur = new VerticalBlur(Window.getWidth() / 5, Window.getHeight() / 5);
+        m_HorizontalBlur = new HorizontalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
+        m_VerticalBlur = new VerticalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
 
         m_BrightFilter = new BrightFilter(Window.getWidth() / 2, Window.getHeight() / 2);
         m_CombineFilter = new CombineFilter();
@@ -43,17 +43,10 @@ public class PostProcessRenderer {
     public void renderPostProcessingEffects(int colorTexture){
         begin();
 
-       /* m_HorizontalBlur2.render(colorTexture);
-        m_VerticalBlur2.render(m_HorizontalBlur2.getOutputTexture());
-        m_HorizontalBlur.render(m_VerticalBlur2.getOutputTexture());
-        m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
-
-        finalPostProcessPass(m_VerticalBlur2.getOutputTexture());*/
         m_BrightFilter.render(colorTexture);
         m_HorizontalBlur.render(m_BrightFilter.getOutputTexture());
         m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
         m_CombineFilter.render(colorTexture, m_VerticalBlur.getOutputTexture());
-        //finalPostProcessPass(m_VerticalBlur.getOutputTexture());
 
         end();
     }
