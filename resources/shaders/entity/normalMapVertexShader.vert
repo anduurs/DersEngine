@@ -47,7 +47,7 @@ void main(){
     vec3 finalTangent =  normalize(vertexTangent - finalNormal * dot(vertexTangent, finalNormal));
 
     vec3 vertexBiTangent = normalize(cross(finalNormal, finalTangent));
-    mat3 toTangentSpaceMatrix = mat3(finalTangent, vertexBiTangent, finalNormal);
+    mat3 toTangentSpaceMatrix = transpose(mat3(finalTangent, vertexBiTangent, finalNormal));
 
     vs_out.position = toTangentSpaceMatrix * worldPosition.xyz;
     vs_out.cameraViewPosition = toTangentSpaceMatrix * ((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz);
