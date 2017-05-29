@@ -50,8 +50,9 @@ public class RenderEngine {
 	private boolean m_RenderTangents = false;
 	private boolean m_WireFrameMode = false;
 
-	private FrameBuffer m_FrameBuffer;
-	
+	private FrameBuffer m_MultiSampledFrameBuffer;
+	private FrameBuffer m_OutputFrameBuffer;
+
 	public RenderEngine(){
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
@@ -70,7 +71,8 @@ public class RenderEngine {
 		//m_Renderers.add(m_WaterRenderer);
 
 
-		m_FrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, false);
+		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight());
+		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_TEXTURE);
 		
 		Debug.log("All shaders compiled succesfully");
 		
@@ -108,14 +110,15 @@ public class RenderEngine {
 	}
 	
 	public void render(){
-		m_FrameBuffer.bind();
+		m_MultiSampledFrameBuffer.bind();
 
 		clearFrameBuffer();
 		renderScene();
 
-		m_FrameBuffer.unbind();
+		m_MultiSampledFrameBuffer.unbind();
+		m_MultiSampledFrameBuffer.resolveToFrameBuffer(m_OutputFrameBuffer);
 
-		m_PostProcessRenderer.renderPostProcessingEffects(m_FrameBuffer.getColorTexture());
+		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
 
 		renderGUI();
 	}
@@ -153,7 +156,8 @@ public class RenderEngine {
 		m_WaterRenderer.dispose();
 		m_GUIRenderer.dispose();
 		m_PostProcessRenderer.dispose();
-		m_FrameBuffer.dispose();
+		m_MultiSampledFrameBuffer.dispose();
+		m_OutputFrameBuffer.dispose();
 	}
 	
 	private void clearFrameBuffer(){

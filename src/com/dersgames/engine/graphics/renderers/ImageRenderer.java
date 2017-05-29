@@ -11,7 +11,7 @@ public class ImageRenderer {
     private FrameBuffer m_FrameBuffer;
 
     public ImageRenderer(int width, int height) {
-        m_FrameBuffer = new FrameBuffer(width, height, FrameBuffer.DepthBufferType.NONE, false);
+        m_FrameBuffer = new FrameBuffer(width, height, FrameBuffer.DepthBufferType.NONE);
     }
 
     public ImageRenderer() {}

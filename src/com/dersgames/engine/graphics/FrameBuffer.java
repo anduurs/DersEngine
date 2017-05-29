@@ -32,17 +32,33 @@ public class FrameBuffer {
     private int m_DepthBuffer;
     private int m_ColorBuffer;
 
+    private boolean m_MultiSampledFBO;
+
     public FrameBuffer(int width, int height, DepthBufferType depthBufferType){
-        this(width, height, depthBufferType, false);
+        this(width, height, depthBufferType, false, false);
     }
 
-    public FrameBuffer(int width, int height, DepthBufferType depthBufferType, boolean hdr){
+    public FrameBuffer(int width, int height){
+        this(width, height, DepthBufferType.DEPTH_RENDER_BUFFER, false, true);
+    }
+
+    public FrameBuffer(int width, int height, boolean hdr){
+        this(width, height, DepthBufferType.DEPTH_RENDER_BUFFER, hdr, true);
+    }
+
+    public FrameBuffer(int width, int height, DepthBufferType depthBufferType, boolean hdr, boolean multiSample){
         m_Width = width;
         m_Height = height;
         m_DepthBufferType = depthBufferType;
+        m_MultiSampledFBO = multiSample;
 
         createFrameBuffer();
-        createTextureAttachment(hdr);
+
+        if(m_MultiSampledFBO){
+            createMultiSampledColorAttachment();
+        }else{
+            createTextureAttachment(hdr);
+        }
 
         switch(depthBufferType){
             case NONE:
@@ -89,6 +105,25 @@ public class FrameBuffer {
         return m_DepthTexture;
     }
 
+    public void resolveToFrameBuffer(FrameBuffer outputFrameBuffer){
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFrameBuffer.m_FrameBuffer);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FrameBuffer);
+        glBlitFramebuffer(0,0, m_Width, m_Height, 0, 0,
+                outputFrameBuffer.m_Width, outputFrameBuffer.m_Height ,
+                GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+        unbind();
+    }
+
+    public void resolveToScreen(){
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FrameBuffer);
+        glDrawBuffer(GL_BACK);
+        glBlitFramebuffer(0,0, m_Width, m_Height, 0, 0,
+                Window.getHeight(), Window.getHeight(),
+                GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        unbind();
+    }
+
     private void createFrameBuffer() {
         m_FrameBuffer = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
@@ -125,10 +160,24 @@ public class FrameBuffer {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture, 0);
     }
 
+    private void createMultiSampledColorAttachment(){
+        m_ColorBuffer = glGenRenderbuffers();
+        glBindRenderbuffer(GL_RENDERBUFFER, m_ColorBuffer);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA8, m_Width, m_Height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
+                m_ColorBuffer);
+    }
+
     private void createDepthBufferAttachment() {
         m_DepthBuffer = glGenRenderbuffers();
         glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+
+        if(m_MultiSampledFBO){
+            glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+        }else{
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+        }
+
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER,
                 m_DepthBuffer);
     }

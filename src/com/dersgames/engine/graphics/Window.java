@@ -56,7 +56,7 @@ public class Window {
 		
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		glfwWindowHint(GLFW.GLFW_STENCIL_BITS, 4);
-		glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+		//glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 	
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		

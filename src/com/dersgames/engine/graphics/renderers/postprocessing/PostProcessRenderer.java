@@ -41,12 +41,14 @@ public class PostProcessRenderer {
     public void renderPostProcessingEffects(int colorTexture){
         begin();
 
-        m_HorizontalBlur2.render(colorTexture);
+       /* m_HorizontalBlur2.render(colorTexture);
         m_VerticalBlur2.render(m_HorizontalBlur2.getOutputTexture());
         m_HorizontalBlur.render(m_VerticalBlur2.getOutputTexture());
         m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
 
-        finalPostProcessPass(m_VerticalBlur2.getOutputTexture());
+        finalPostProcessPass(m_VerticalBlur2.getOutputTexture());*/
+
+        finalPostProcessPass(colorTexture);
 
         end();
     }
