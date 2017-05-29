@@ -16,7 +16,7 @@ import com.dersgames.engine.utils.ImageManager;
 
 public class Terrain extends Renderable{
 	
-	private static final float SIZE = 400.0f;
+	private static final float SIZE = 200.0f;
 	private static final int MAX_HEIGHT = 40;
 	private static final int MAX_PIXEL_COLOR = 256 * 256 * 256;
 	

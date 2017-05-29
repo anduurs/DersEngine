@@ -144,10 +144,12 @@ public class PlayState extends GameState{
 //		texturePack.addTerrainMaterial(gMaterial);
 		texturePack.addTerrainMaterial(bMaterial);
 		
-		Entity terrainEntity = new Entity("Terrain");
+		Entity terrainEntity = new Entity("Terrain", 0, 0, 0);
+		terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
 //		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
 		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
+
 		
 		m_Scene.addEntity(terrainEntity);
 		
@@ -185,12 +187,12 @@ public class PlayState extends GameState{
 		
 		
 		
-		
+		float range = 300.0f;
 		LampPost lamp = new LampPost("Lamp1", new Vector3f(200.0f, 0.0f, 150.0f));
 		PointLight pointLight1 = new PointLight("PointLight", lamp.getPosition(),new Vector3f(1.0f, 1.0f, 0.0f), 
 			     new Vector3f(1.0f, 0.045f, 0.00075f),
 			     3.0f,
-			     200.0f);
+				range);
 
 		pointLight1.getPosition().y = lamp.getPosition().y + 20;
 		m_Scene.addPointLight(pointLight1);
@@ -200,7 +202,7 @@ public class PlayState extends GameState{
 		PointLight pointLight2 = new PointLight("PointLight", lamp2.getPosition(), new Vector3f(1.0f, 0.0f, 0.0f), 
 			     new Vector3f(1.0f, 0.045f, 0.00075f),
 			     3.0f,
-			     200.0f);
+				range);
 
 		pointLight2.getPosition().y = lamp2.getPosition().y + 20;
 		
@@ -211,7 +213,7 @@ public class PlayState extends GameState{
 		PointLight pointLight3 = new PointLight("PointLight", lamp3.getPosition(), new Vector3f(0.0f, 1.0f, 0.0f), 
 			     new Vector3f(1.0f, 0.045f, 0.00075f),
 			     3.0f,
-			     200.0f);
+				range);
 
 		pointLight3.getPosition().y = lamp3.getPosition().y + 20;
 		
@@ -222,7 +224,7 @@ public class PlayState extends GameState{
 		PointLight pointLight4 = new PointLight("PointLight", lamp4.getPosition(), new Vector3f(0.0f, 0.0f, 1.0f), 
 			     new Vector3f(1.0f, 0.045f, 0.00075f),
 			     3.0f,
-			     200.0f);
+				range);
 		
 		pointLight4.getPosition().y = lamp4.getPosition().y + 20;
 		

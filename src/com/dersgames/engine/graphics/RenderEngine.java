@@ -67,7 +67,7 @@ public class RenderEngine {
 		m_Renderers.add(m_NormalMapRenderer);
 		m_Renderers.add(m_SkyboxRenderer);
 		m_Renderers.add(m_TerrainRenderer);
-		m_Renderers.add(m_WaterRenderer);
+		//m_Renderers.add(m_WaterRenderer);
 
 
 		m_FrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, false);

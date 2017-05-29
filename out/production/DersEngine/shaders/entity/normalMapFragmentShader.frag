@@ -7,6 +7,7 @@ out vec4 fragColor;
 
 in VS_Data{
     vec3 position;
+    vec3 tangent;
 	vec2 textureCoords;
 	vec3 cameraViewPosition;
 	float fogFactor;
@@ -117,4 +118,5 @@ void main(){
 			totalShade += calculatePointLight(pointLights[i], normal, textureColor, specularMapColor, i);
 
 	fragColor = mix(vec4(skyColor, 1.0), totalShade, fs_in.fogFactor);
+	//fragColor = vec4(fs_in.tangent, 1.0);
 }

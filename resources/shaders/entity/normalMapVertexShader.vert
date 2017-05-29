@@ -13,6 +13,7 @@ in vec3 tangent;
 
 out VS_Data{
     vec3 position;
+    vec3 tangent;
 	vec2 textureCoords;
 	vec3 cameraViewPosition;
 	float fogFactor;
@@ -49,6 +50,7 @@ void main(){
     vec3 vertexBiTangent = normalize(cross(finalNormal, finalTangent));
     mat3 toTangentSpaceMatrix = transpose(mat3(finalTangent, vertexBiTangent, finalNormal));
 
+    vs_out.tangent = vertexTangent;
     vs_out.position = toTangentSpaceMatrix * worldPosition.xyz;
     vs_out.cameraViewPosition = toTangentSpaceMatrix * ((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz);
     vs_out.directionalLightPosition = toTangentSpaceMatrix * directionalLightPosition;
