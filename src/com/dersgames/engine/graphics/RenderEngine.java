@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 import com.dersgames.engine.graphics.renderers.*;
+import com.dersgames.engine.graphics.renderers.postprocessing.PostProcessRenderer;
 import com.dersgames.engine.graphics.shaders.*;
 
 import com.dersgames.engine.components.Camera;
@@ -21,7 +22,6 @@ import com.dersgames.engine.components.GUIComponent;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Debug;
-import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.engine.terrains.Terrain;
@@ -115,7 +115,7 @@ public class RenderEngine {
 
 		m_FrameBuffer.unbind();
 
-		m_PostProcessRenderer.render(m_FrameBuffer.getColorTexture());
+		m_PostProcessRenderer.renderPostProcessingEffects(m_FrameBuffer.getColorTexture());
 
 		renderGUI();
 	}
