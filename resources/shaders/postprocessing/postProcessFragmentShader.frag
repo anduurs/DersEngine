@@ -6,12 +6,9 @@ out vec4 fragColor;
 
 uniform sampler2D textureSampler;
 
+const float contrast = 0.3;
+
 void main(){
-    vec3 hdrColor = texture(textureSampler, textureCoords).rgb;
-    vec3 toneMapping = hdrColor / (hdrColor + vec3(1.0));
-    fragColor = vec4(hdrColor, 1.0);
-
-
-    //apply gamma correction
-    //fragColor.rgb = pow(fragColor.rgb, vec3(1.0/2.0));
+    fragColor = texture(textureSampler, textureCoords);
+    fragColor.rgb = (fragColor.rgb - 0.5) * (1.0 + contrast) + 0.5;
 }
