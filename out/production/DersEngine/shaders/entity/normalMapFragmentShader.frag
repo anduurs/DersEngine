@@ -73,12 +73,12 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = normalize(fs_in.directionalLightPosition - fs_in.position);
+	vec3 lightDirection = normalize(fs_in.position - fs_in.directionalLightPosition);
 	return calculateLight(directionalLight.light.color, -lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor, int index){
-	vec3 lightDirection = fs_in.pointLightPositions[index] - fs_in.position;
+	vec3 lightDirection = fs_in.position - fs_in.pointLightPositions[index];
 	float distance = length(lightDirection);
 
 	if(distance > pointLight.range)
