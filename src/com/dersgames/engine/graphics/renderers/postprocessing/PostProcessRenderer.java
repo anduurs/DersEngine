@@ -22,8 +22,9 @@ public class PostProcessRenderer {
     private PostProcessShader m_Shader;
     private HorizontalBlur m_HorizontalBlur;
     private VerticalBlur m_VerticalBlur;
-    private HorizontalBlur m_HorizontalBlur2;
-    private VerticalBlur m_VerticalBlur2;
+
+    private BrightFilter m_BrightFilter;
+    private CombineFilter m_CombineFilter;
     private final Model m_Quad;
 
     public PostProcessRenderer(){
@@ -32,10 +33,11 @@ public class PostProcessRenderer {
         float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
         m_Quad = Loader.loadModel(positions, 2);
 
-        m_HorizontalBlur = new HorizontalBlur(Window.getWidth() / 8, Window.getHeight() / 8);
-        m_VerticalBlur = new VerticalBlur(Window.getWidth() / 8, Window.getHeight() / 8);
-        m_HorizontalBlur2 = new HorizontalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
-        m_VerticalBlur2 = new VerticalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
+        m_HorizontalBlur = new HorizontalBlur(Window.getWidth() / 5, Window.getHeight() / 5);
+        m_VerticalBlur = new VerticalBlur(Window.getWidth() / 5, Window.getHeight() / 5);
+
+        m_BrightFilter = new BrightFilter(Window.getWidth() / 2, Window.getHeight() / 2);
+        m_CombineFilter = new CombineFilter();
     }
 
     public void renderPostProcessingEffects(int colorTexture){
@@ -47,8 +49,11 @@ public class PostProcessRenderer {
         m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
 
         finalPostProcessPass(m_VerticalBlur2.getOutputTexture());*/
-
-        finalPostProcessPass(colorTexture);
+        m_BrightFilter.render(colorTexture);
+        m_HorizontalBlur.render(m_BrightFilter.getOutputTexture());
+        m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
+        m_CombineFilter.render(colorTexture, m_VerticalBlur.getOutputTexture());
+        //finalPostProcessPass(m_VerticalBlur.getOutputTexture());
 
         end();
     }
@@ -79,8 +84,8 @@ public class PostProcessRenderer {
         m_ImageRenderer.dispose();
         m_HorizontalBlur.dispose();
         m_VerticalBlur.dispose();
-        m_HorizontalBlur2.dispose();
-        m_VerticalBlur2.dispose();
+        m_BrightFilter.dispose();
+        m_CombineFilter.dispose();
     }
 
     public PostProcessShader getShader(){

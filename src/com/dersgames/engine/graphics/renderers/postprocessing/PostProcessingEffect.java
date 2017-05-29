@@ -16,7 +16,10 @@ public abstract class PostProcessingEffect {
     public PostProcessingEffect(){}
 
     public abstract void render(int texture);
-    public abstract void dispose();
+
+    public void dispose(){
+        m_ImageRenderer.dispose();
+    }
 
     public int getOutputTexture(){ return m_ImageRenderer.getOutputTexture(); }
 }

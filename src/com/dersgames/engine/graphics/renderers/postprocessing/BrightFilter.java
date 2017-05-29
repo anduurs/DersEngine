@@ -1,23 +1,19 @@
 package com.dersgames.engine.graphics.renderers.postprocessing;
 
-import com.dersgames.engine.graphics.shaders.postprocessing.HorizontalBlurShader;
+import com.dersgames.engine.graphics.shaders.postprocessing.BrightFilterShader;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 
 /**
  * Created by Anders on 5/29/2017.
  */
-public class HorizontalBlur extends PostProcessingEffect{
+public class BrightFilter extends PostProcessingEffect{
 
-    private HorizontalBlurShader m_Shader;
+    private BrightFilterShader m_Shader;
 
-    public HorizontalBlur(int frameBufferWidth, int frameBufferHeight){
-        super(frameBufferWidth, frameBufferHeight);
-
-        m_Shader = new HorizontalBlurShader();
-        m_Shader.enable();
-        m_Shader.loadTargetWidth(frameBufferWidth);
-        m_Shader.disable();
+    public BrightFilter(int targetWidth, int targetHeight){
+        super(targetWidth, targetHeight);
+        m_Shader = new BrightFilterShader();
     }
 
     @Override

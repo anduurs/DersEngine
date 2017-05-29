@@ -34,7 +34,7 @@ public class VerticalBlur extends PostProcessingEffect{
 
     @Override
     public void dispose() {
-        m_ImageRenderer.dispose();
+        super.dispose();
         m_Shader.deleteShaderProgram();
     }
 }

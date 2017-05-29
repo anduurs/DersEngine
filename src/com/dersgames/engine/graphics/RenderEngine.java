@@ -161,7 +161,7 @@ public class RenderEngine {
 	}
 	
 	private void clearFrameBuffer(){
-		glClearColor(m_SkyColor.x, m_SkyColor.y, m_SkyColor.z, 1.0f);
+		glClearColor(0,0,0, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
