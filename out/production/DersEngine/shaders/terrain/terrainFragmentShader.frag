@@ -65,27 +65,30 @@ uniform int renderTangents;
 uniform int wireframeMode;
 
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-	
-	vec3 viewDirection = fs_in.cameraViewDirection;
-	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
-	vec3 halfwayVector = normalize(lightDirection + viewDirection);
+    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+	vec4 diffuseLight = vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor;
 
-	float normalizationFactor = ((material.shininess + 2.0) / 8.0);
-	float specularFactor = pow(max(dot(normal, halfwayVector), 0.0), material.shininess) * normalizationFactor;
-	
-	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor; 
-	vec4 specularLight = vec4(0.0);
-	
-	if(material.useSpecularMap == 1.0)
-		specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0) * specularMapColor.r;
-	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 
-		
+	vec4 specularLight = vec4(0.0, 0.0, 0.0, 1.0);
+
+    if(material.shininess > 0.0){
+        vec3 viewDirection = fs_in.cameraViewDirection;
+        vec3 halfwayDirection = normalize(lightDirection + viewDirection);
+
+        float normalizationFactor = ((material.shininess + 2.0) / 8.0);
+        float specularFactor = pow(max(dot(normal, halfwayDirection), 0.0), material.shininess) * normalizationFactor;
+
+        specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0);
+
+        if(material.useSpecularMap == 1.0){
+            specularLight *= specularMapColor.r;
+        }
+    }
+
 	return diffuseLight + specularLight;
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = -directionalLight.direction;
+	vec3 lightDirection = directionalLight.direction;
 	return calculateLight(directionalLight.light.color, -lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 

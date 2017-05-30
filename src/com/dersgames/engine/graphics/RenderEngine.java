@@ -116,7 +116,7 @@ public class RenderEngine {
 		renderScene();
 
 		m_MultiSampledFrameBuffer.unbind();
-		m_MultiSampledFrameBuffer.resolveToFrameBuffer(m_OutputFrameBuffer);
+		m_MultiSampledFrameBuffer.blitToFrameBuffer(m_OutputFrameBuffer);
 
 		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
 

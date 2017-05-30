@@ -105,7 +105,7 @@ public class FrameBuffer {
         return m_DepthTexture;
     }
 
-    public void resolveToFrameBuffer(FrameBuffer outputFrameBuffer){
+    public void blitToFrameBuffer(FrameBuffer outputFrameBuffer){
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFrameBuffer.m_FrameBuffer);
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FrameBuffer);
         glBlitFramebuffer(0,0, m_Width, m_Height, 0, 0,
@@ -114,7 +114,7 @@ public class FrameBuffer {
         unbind();
     }
 
-    public void resolveToScreen(){
+    public void blitToScreen(){
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FrameBuffer);
         glDrawBuffer(GL_BACK);

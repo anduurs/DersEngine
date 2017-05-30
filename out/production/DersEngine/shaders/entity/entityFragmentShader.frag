@@ -58,39 +58,44 @@ uniform int renderTangents;
 uniform int wireframeMode;
 
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	float diffuseFactor = max(dot(normal, lightDirection), 0.0);
-	
-	vec3 viewDirection = fs_in.cameraViewDirection;
-	vec3 reflectedLightDirection = reflect(-lightDirection, normal);
+    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+    vec4 diffuseLight = vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor;
 
-	vec3 halfwayDirection = normalize(lightDirection + viewDirection);
+    vec4 specularLight = vec4(0.0, 0.0, 0.0, 1.0);
 
-	float normalizationFactor = ((material.shininess + 2.0) / 8.0);
-	float specularFactor = pow(max(dot(normal, halfwayDirection), 0.0), material.shininess) * normalizationFactor;
-	
-	vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor; 
-	vec4 specularLight = vec4(0.0);
-	
-	if(material.useSpecularMap == 1.0)
-		specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0) * specularMapColor.r;
-	else specularLight =  vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0); 
-		
+    if(material.shininess > 0.0){
+        vec3 viewDirection = fs_in.cameraViewDirection;
+        vec3 halfwayDirection = normalize(lightDirection + viewDirection);
+
+        float normalizationFactor = ((material.shininess + 2.0) / 8.0);
+        float specularFactor = pow(max(dot(normal, halfwayDirection), 0.0), material.shininess) * normalizationFactor;
+
+        specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0);
+
+        if(material.useSpecularMap == 1.0){
+            specularLight *= specularMapColor.r;
+            if(textureColor.g > 0.5){
+                diffuseLight.rgb = vec3(1.0);
+            }
+        }
+    }
+
 	return diffuseLight + specularLight;
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = -directionalLight.direction;
+	vec3 lightDirection = directionalLight.direction;
 	return calculateLight(directionalLight.light.color, -lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = fs_in.position - pointLight.position;
+	vec3 lightDirection = pointLight.position - fs_in.position;
 	float distance = length(lightDirection);
 
 	if(distance > pointLight.range)
 		return vec4(0.0);
 	
-	vec4 lightColor = calculateLight(pointLight.light.color, normalize(-lightDirection), pointLight.light.intensity, normal, textureColor, specularMapColor);
+	vec4 lightColor = calculateLight(pointLight.light.color, normalize(lightDirection), pointLight.light.intensity, normal, textureColor, specularMapColor);
 	
 	float constant = pointLight.attenuation.x;
 	float linear = pointLight.attenuation.y * distance;
