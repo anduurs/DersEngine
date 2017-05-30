@@ -114,7 +114,7 @@ public class Terrain extends Renderable{
 				indices[pointer++] = bottomRight;
 			}
 		}
-		
+		Debug.log("TERRAIN VERTICES: " + vertices.length / 3);
 		return Loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	
@@ -170,7 +170,7 @@ public class Terrain extends Renderable{
 				indices[pointer++] = bottomRight;
 			}
 		}
-		
+		Debug.log("TERRAIN VERTICES: " + vertices.length / 3);
 		return Loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	

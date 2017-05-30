@@ -2,27 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27489c2a-ec33-40c1-8220-d87d23f076ab" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/FrameBuffer.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/FrameBuffer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/RenderEngine.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/RenderEngine.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/materials/Material.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/materials/Material.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/SkyboxRenderer.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/SkyboxRenderer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/examplegame/states/PlayState.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/examplegame/states/PlayState.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/terrains/Terrain.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/terrains/Terrain.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/entityFragmentShader.frag" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/entityFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/normalMapFragmentShader.frag" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/normalMapFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/normalMapVertexShader.vert" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/entity/normalMapVertexShader.vert" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/terrain/terrainFragmentShader.frag" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/terrain/terrainFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/entity/entityFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/entity/entityFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/entity/normalMapVertexShader.vert" afterPath="$PROJECT_DIR$/resources/shaders/entity/normalMapVertexShader.vert" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/terrain/terrainFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/terrain/terrainFragmentShader.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/materials/Material.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/materials/Material.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/SkyboxRenderer.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/SkyboxRenderer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/combineFilterFragmentShader.frag" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/combineFilterFragmentShader.frag" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java" afterPath="$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java" />
     </list>
@@ -40,22 +23,15 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="RenderEngine.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="115" column="22" lean-forward="true" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="terrainFragmentShader.frag" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/shaders/terrain/terrainFragmentShader.frag">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="313">
               <caret line="142" column="0" lean-forward="true" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
-              <folding />
+              <folding>
+                <marker date="1496176886814" expanded="true" signature="1247:2108" ph="{...}" />
+                <marker date="1496176886814" expanded="true" signature="3734:4921" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -65,26 +41,28 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-905">
               <caret line="57" column="4" lean-forward="false" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
-              <folding />
+              <folding>
+                <marker date="1496174648974" expanded="true" signature="1018:1914" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FrameBuffer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FrameBuffer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1651">
-              <caret line="116" column="20" lean-forward="false" selection-start-line="116" selection-start-column="20" selection-end-line="116" selection-end-column="20" />
+            <state relative-caret-position="391">
+              <caret line="52" column="40" lean-forward="true" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayState.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PlayState.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="171" column="48" lean-forward="false" selection-start-line="171" selection-start-column="48" selection-end-line="171" selection-end-column="48" />
+            <state relative-caret-position="351">
+              <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -103,9 +81,11 @@
       <file leaf-file-name="combineFilterFragmentShader.frag" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="168">
+              <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+              <folding>
+                <marker date="1496180209529" expanded="true" signature="176:461" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,8 +113,18 @@
       <file leaf-file-name="Terrain.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+            <state relative-caret-position="-63">
+              <caret line="134" column="67" lean-forward="false" selection-start-line="134" selection-start-column="63" selection-end-line="134" selection-end-column="67" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Loader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2835">
+              <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -173,7 +163,6 @@
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/TerrainRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/WaterRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/examplegame/entities/Barrel.java" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/GUIRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/components/Camera.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/PostProcessing/PostProcessingEffect.java" />
@@ -208,10 +197,11 @@
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/SkyboxRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java" />
         <option value="$PROJECT_DIR$/resources/shaders/terrain/terrainFragmentShader.frag" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java" />
         <option value="$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java" />
       </list>
     </option>
   </component>
@@ -1124,18 +1114,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="339" column="0" lean-forward="true" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#9809#9810#0" expanded="false" />
-            <element signature="e#9836#9837#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/components/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -1321,7 +1299,7 @@
         <state relative-caret-position="378">
           <caret line="29" column="33" lean-forward="true" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1398,19 +1376,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-905">
           <caret line="57" column="4" lean-forward="false" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
-          <folding />
+          <folding>
+            <marker date="1496174648974" expanded="true" signature="1018:1914" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1418,15 +1390,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
           <caret line="142" column="0" lean-forward="true" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="171" column="48" lean-forward="false" selection-start-line="171" selection-start-column="48" selection-end-line="171" selection-end-column="48" />
-          <folding />
+          <folding>
+            <marker date="1496176886814" expanded="true" signature="1247:2108" ph="{...}" />
+            <marker date="1496176886814" expanded="true" signature="3734:4921" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1454,18 +1421,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag">
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="391">
+          <caret line="52" column="40" lean-forward="true" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java">
+    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1651">
-          <caret line="116" column="20" lean-forward="false" selection-start-line="116" selection-start-column="20" selection-end-line="116" selection-end-column="20" />
+        <state relative-caret-position="168">
+          <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+          <folding>
+            <marker date="1496180209529" expanded="true" signature="176:461" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-63">
+          <caret line="134" column="67" lean-forward="false" selection-start-line="134" selection-start-column="63" selection-end-line="134" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2835">
+          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="155" column="8" lean-forward="false" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
           <folding />
         </state>
       </provider>

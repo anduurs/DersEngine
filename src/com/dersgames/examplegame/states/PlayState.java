@@ -102,6 +102,8 @@ public class PlayState extends GameState{
 //		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("dragontexture"))));
 		guiEntity.addComponent(new GUIComponent("Gui", new Vector3f(1,0,0)));
 		//m_Scene.addEntity(guiEntity);
+
+		Debug.log("TOTAL AMOUNT OF VERTICES IN SCENE: " + Loader.vertexCounter);
 	}
 	
 	private void createCamera(){

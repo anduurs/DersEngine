@@ -41,6 +41,8 @@ public class Loader{
 	private static List<Integer> m_vboIDs;
 	private static List<Integer> m_TextureIDs;
 
+	public static int vertexCounter = 0;
+
 	public Loader(){
 		m_vaoIDs = new ArrayList<Integer>();
 		m_vboIDs = new ArrayList<Integer>();
@@ -48,6 +50,7 @@ public class Loader{
 	}
 
 	public static Model loadModel(float[] positions, float[] textureCoords, float[] normals, float[] tangents, int[] indices){
+		vertexCounter += positions.length / 3;
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
@@ -59,6 +62,7 @@ public class Loader{
 	}
 
 	public static Model loadModel(float[] positions, float[] textureCoords, float[] normals, int[] indices){
+		vertexCounter += positions.length / 3;
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
@@ -69,6 +73,7 @@ public class Loader{
 	}
 
 	public static Model loadModel(float[] positions, float[] textureCoords, int[] indices){
+		vertexCounter += positions.length / 3;
 		int vaoID = createVAO();
 		createIndexBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
@@ -78,6 +83,7 @@ public class Loader{
 	}
 
 	public static Model loadModel(float[] positions, int dimensions){
+		vertexCounter += positions.length / 3;
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, dimensions, positions);
 		unbindVAO();
@@ -85,6 +91,7 @@ public class Loader{
 	}
 
 	public static Model loadModelFromObjFile(String fileName, boolean usingNormalMap){
+
 		List<Vector3f> vertexPositions = new ArrayList<>();
 		List<Vector2f> texCoords = new ArrayList<>();
 		List<Vector3f> normals = new ArrayList<>();
