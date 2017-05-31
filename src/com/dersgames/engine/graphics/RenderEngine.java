@@ -70,7 +70,6 @@ public class RenderEngine {
 		m_Renderers.add(m_TerrainRenderer);
 		//m_Renderers.add(m_WaterRenderer);
 
-
 		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight());
 		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_TEXTURE);
 		
@@ -114,6 +113,7 @@ public class RenderEngine {
 
 		clearFrameBuffer();
 		renderScene();
+		renderWater();
 
 		m_MultiSampledFrameBuffer.unbind();
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(m_OutputFrameBuffer);
@@ -131,6 +131,12 @@ public class RenderEngine {
 		}
 	}
 
+	private void renderWater(){
+		m_WaterRenderer.begin(m_Camera);
+		m_WaterRenderer.render();
+		m_WaterRenderer.end();
+	}
+
 	private void renderGUI(){
 		m_GUIRenderer.begin();
 		m_GUIRenderer.render();
@@ -146,6 +152,11 @@ public class RenderEngine {
 			shader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
 			shader.disable();
 		}
+
+		Shader shader = m_WaterRenderer.getShader();
+		shader.enable();
+		shader.loadProjectionMatrix(m_Camera.getProjectionMatrix());
+		shader.disable();
 	}
 	
 	public void dispose(){

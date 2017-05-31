@@ -19,22 +19,24 @@ import static org.lwjgl.opengl.GL13.*;
 public class PostProcessRenderer {
 
     private ImageRenderer m_ImageRenderer;
-    private PostProcessShader m_Shader;
-    private HorizontalBlur m_HorizontalBlur;
-    private VerticalBlur m_VerticalBlur;
 
+    private GaussianBlur m_HorizontalBlur;
+    private GaussianBlur m_VerticalBlur;
     private BrightFilter m_BrightFilter;
+
     private CombineFilter m_CombineFilter;
+
     private final Model m_Quad;
 
     public PostProcessRenderer(){
         m_ImageRenderer = new ImageRenderer();
-        m_Shader = new PostProcessShader();
         float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
         m_Quad = Loader.loadModel(positions, 2);
 
-        m_HorizontalBlur = new HorizontalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
-        m_VerticalBlur = new VerticalBlur(Window.getWidth() / 2, Window.getHeight() / 2);
+        m_HorizontalBlur = new GaussianBlur(Window.getWidth() / 2,
+                Window.getHeight() / 2, GaussianBlur.BlurType.HORIZONTAL);
+        m_VerticalBlur = new GaussianBlur(Window.getWidth() / 2,
+                Window.getHeight() / 2, GaussianBlur.BlurType.VERTICAL);
 
         m_BrightFilter = new BrightFilter(Window.getWidth() / 2, Window.getHeight() / 2);
         m_CombineFilter = new CombineFilter();
@@ -51,14 +53,6 @@ public class PostProcessRenderer {
         end();
     }
 
-    private void finalPostProcessPass(int colorTexture){
-        m_Shader.enable();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, colorTexture);
-        m_ImageRenderer.renderQuad();
-        m_Shader.disable();
-    }
-
     private void begin(){
         glBindVertexArray(m_Quad.getVaoID());
         glDisable(GL_DEPTH_TEST);
@@ -73,15 +67,10 @@ public class PostProcessRenderer {
     }
 
     public void dispose(){
-        m_Shader.deleteShaderProgram();
         m_ImageRenderer.dispose();
         m_HorizontalBlur.dispose();
         m_VerticalBlur.dispose();
         m_BrightFilter.dispose();
         m_CombineFilter.dispose();
-    }
-
-    public PostProcessShader getShader(){
-        return m_Shader;
     }
 }
