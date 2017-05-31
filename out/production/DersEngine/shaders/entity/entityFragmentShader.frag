@@ -74,9 +74,6 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 
         if(material.useSpecularMap == 1.0){
             specularLight *= specularMapColor.r;
-            if(textureColor.g > 0.5){
-                diffuseLight.rgb = vec3(1.0);
-            }
         }
     }
 
