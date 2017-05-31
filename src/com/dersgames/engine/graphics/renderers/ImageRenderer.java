@@ -29,7 +29,7 @@ public class ImageRenderer {
         }
     }
 
-    public int getOutputTexture() {
+    public int getOutputColorTexture() {
         return m_FrameBuffer.getColorTexture();
     }
 

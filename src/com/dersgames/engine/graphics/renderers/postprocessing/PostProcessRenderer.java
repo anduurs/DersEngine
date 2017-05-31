@@ -3,15 +3,9 @@ package com.dersgames.engine.graphics.renderers.postprocessing;
 import com.dersgames.engine.graphics.*;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.renderers.ImageRenderer;
-import com.dersgames.engine.graphics.shaders.PostProcessShader;
-import com.dersgames.engine.graphics.renderers.postprocessing.PostProcessingEffect;
-
-import java.util.List;
-import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
 
 /**
  * Created by Anders on 5/28/2017.
@@ -22,8 +16,8 @@ public class PostProcessRenderer {
 
     private GaussianBlur m_HorizontalBlur;
     private GaussianBlur m_VerticalBlur;
-    private BrightFilter m_BrightFilter;
 
+    private BrightFilter m_BrightFilter;
     private CombineFilter m_CombineFilter;
 
     private final Model m_Quad;
@@ -42,21 +36,21 @@ public class PostProcessRenderer {
         m_CombineFilter = new CombineFilter();
     }
 
-    public void renderPostProcessingEffects(int colorTexture){
-        begin();
-
-        m_BrightFilter.render(colorTexture);
-        m_HorizontalBlur.render(m_BrightFilter.getOutputTexture());
-        m_VerticalBlur.render(m_HorizontalBlur.getOutputTexture());
-        m_CombineFilter.render(colorTexture, m_VerticalBlur.getOutputTexture());
-
-        end();
-    }
-
     private void begin(){
         glBindVertexArray(m_Quad.getVaoID());
         glDisable(GL_DEPTH_TEST);
         RenderEngine.disableFaceCulling();
+    }
+
+    public void renderPostProcessingEffects(int colorTexture){
+        begin();
+
+        m_BrightFilter.render(colorTexture);
+        m_HorizontalBlur.render(m_BrightFilter.getOutputColorTexture());
+        m_VerticalBlur.render(m_HorizontalBlur.getOutputColorTexture());
+        m_CombineFilter.render(colorTexture, m_VerticalBlur.getOutputColorTexture());
+
+        end();
     }
 
     private void end(){

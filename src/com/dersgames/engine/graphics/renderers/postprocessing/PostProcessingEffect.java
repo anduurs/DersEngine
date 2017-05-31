@@ -21,5 +21,5 @@ public abstract class PostProcessingEffect {
         m_ImageRenderer.dispose();
     }
 
-    public int getOutputTexture(){ return m_ImageRenderer.getOutputTexture(); }
+    public int getOutputColorTexture(){ return m_ImageRenderer.getOutputColorTexture(); }
 }

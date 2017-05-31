@@ -2,26 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27489c2a-ec33-40c1-8220-d87d23f076ab" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurVertexShader.vert" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/GaussianBlur.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/GaussianBlurShader.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/blurFragmentShader.frag" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/horizontalBlurVertexShader.vert" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/postProcessFragmentShader.frag" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/verticalBlurVertexShader.vert" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/horizontalBlurVertexShader.vert" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/postProcessFragmentShader.frag" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/verticalBlurVertexShader.vert" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/HorizontalBlur.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/VerticalBlur.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/blurFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurFragmentShader.frag" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/HorizontalBlur.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/VerticalBlur.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/shaders/PostProcessShader.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/PostProcessShader.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/RenderEngine.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/RenderEngine.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/ImageRenderer.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/ImageRenderer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/examplegame/states/PlayState.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/examplegame/states/PlayState.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.class" afterPath="$PROJECT_DIR$/out/production/DersEngine/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/brightFilterFragmentShader.frag" afterPath="$PROJECT_DIR$/out/production/DersEngine/shaders/postprocessing/brightFilterFragmentShader.frag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag" afterPath="$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java" afterPath="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,103 +32,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GaussianBlur.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/GaussianBlur.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostProcessRenderer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="41" column="46" lean-forward="true" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gaussianBlurVertexShader.vert" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurVertexShader.vert">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="brightFilterFragmentShader.frag" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" column="35" lean-forward="true" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CombineFilter.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/CombineFilter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="30" column="27" lean-forward="true" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BrightFilter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/BrightFilter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="RenderEngine.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="844">
-              <caret line="156" column="24" lean-forward="true" selection-start-line="156" selection-start-column="24" selection-end-line="156" selection-end-column="24" />
+            <state relative-caret-position="346">
+              <caret line="125" column="97" lean-forward="true" selection-start-line="125" selection-start-column="97" selection-end-line="125" selection-end-column="97" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CombineFilterShader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/CombineFilterShader.java">
+      <file leaf-file-name="normalMapFragmentShader.frag" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gaussianBlurFragmentShader.frag" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurFragmentShader.frag">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="32" lean-forward="true" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GaussianBlurShader.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/GaussianBlurShader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="21" column="36" lean-forward="false" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="36" />
+            <state relative-caret-position="-632">
+              <caret line="70" column="43" lean-forward="true" selection-start-line="70" selection-start-column="43" selection-end-line="70" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -160,7 +73,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/PhongShader.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/Renderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/PostProcessRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/Renderer3D.java" />
@@ -183,9 +95,7 @@
         <option value="$PROJECT_DIR$/resources/shaders/postprocessing/blurFragmentShader.frag" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/VerticalBlurShader.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Window.java" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java" />
         <option value="$PROJECT_DIR$/resources/shaders/postprocessing/postProcessFragmentShader.frag" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/HorizontalBlur.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/VerticalBlur.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/BrightFilter.java" />
@@ -196,7 +106,6 @@
         <option value="$PROJECT_DIR$/resources/shaders/entity/normalMapVertexShader.vert" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/materials/Material.java" />
         <option value="$PROJECT_DIR$/resources/shaders/entity/entityFragmentShader.frag" />
-        <option value="$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag" />
         <option value="$PROJECT_DIR$/src/com/dersgames/examplegame/entities/Crate.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/SkyboxRenderer.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/FrameBuffer.java" />
@@ -205,12 +114,16 @@
         <option value="$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/Loader.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/examplegame/states/PlayState.java" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/GaussianBlurShader.java" />
         <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/GaussianBlur.java" />
-        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" />
-        <option value="$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag" />
         <option value="$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurVertexShader.vert" />
+        <option value="$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/ShaderFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java" />
+        <option value="$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java" />
+        <option value="$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag" />
       </list>
     </option>
   </component>
@@ -395,6 +308,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="graphics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DersEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DersEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dersgames" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="graphics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="water" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1024,39 +967,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/components/BarrelMovement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/components/DragonMovement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/TerrainRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="37" column="34" lean-forward="true" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
-          <folding>
-            <element signature="e#2155#2156#0" expanded="false" />
-            <element signature="e#2187#2188#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/entities/LampPost.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dersgames/examplegame/entities/Dragon.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -1091,14 +1001,6 @@
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/NormalMapRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1137,28 +1039,6 @@
         <state relative-caret-position="483">
           <caret line="57" column="50" lean-forward="true" selection-start-line="57" selection-start-column="50" selection-end-line="57" selection-end-column="50" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="23" column="63" lean-forward="false" selection-start-line="23" selection-start-column="58" selection-end-line="23" selection-end-column="74" />
-          <folding>
-            <element signature="e#539#540#0" expanded="false" />
-            <element signature="e#580#581#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="32" column="37" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="44" />
-          <folding>
-            <element signature="e#754#755#0" expanded="false" />
-            <element signature="e#808#809#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1223,16 +1103,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1197">
-          <caret line="57" column="4" lean-forward="false" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
-          <folding>
-            <marker date="1496174648974" expanded="true" signature="1018:1914" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/shaders/terrain/terrainFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2982">
@@ -1259,14 +1129,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/terrains/Terrain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2520">
@@ -1287,14 +1149,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/water/WaterTile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1379,6 +1233,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/GaussianBlurShader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="36" lean-forward="false" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/GaussianBlur.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurVertexShader.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/CombineFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="29" column="37" lean-forward="true" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/BrightFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/CombineFilterShader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -1395,68 +1291,109 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/postprocessing/GaussianBlurShader.java">
+    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="21" column="36" lean-forward="false" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="36" />
+        <state relative-caret-position="231">
+          <caret line="11" column="35" lean-forward="true" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/GaussianBlur.java">
+    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/combineFilterFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+        <state relative-caret-position="273">
+          <caret line="13" column="27" lean-forward="true" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/PostProcessShader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/ShaderFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/water/WaterTile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/NormalMapShader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="903">
+          <caret line="61" column="93" lean-forward="true" selection-start-line="61" selection-start-column="93" selection-end-line="61" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/NormalMapRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/shaders/PhongShader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-221">
+          <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessingEffect.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="23" column="29" lean-forward="false" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/ImageRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="8" column="28" lean-forward="true" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#759#760#0" expanded="true" />
+            <element signature="e#813#814#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="844">
-          <caret line="156" column="24" lean-forward="true" selection-start-line="156" selection-start-column="24" selection-end-line="156" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/PostProcessRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="41" column="46" lean-forward="true" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/brightFilterFragmentShader.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" column="35" lean-forward="true" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/shaders/postprocessing/gaussianBlurVertexShader.vert">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
-          <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+          <caret line="12" column="34" lean-forward="true" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/BrightFilter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/RenderEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="9" column="55" lean-forward="true" selection-start-line="9" selection-start-column="55" selection-end-line="9" selection-end-column="55" />
+        <state relative-caret-position="346">
+          <caret line="125" column="97" lean-forward="true" selection-start-line="125" selection-start-column="97" selection-end-line="125" selection-end-column="97" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dersgames/engine/graphics/renderers/postprocessing/CombineFilter.java">
+    <entry file="file://$PROJECT_DIR$/resources/shaders/entity/normalMapFragmentShader.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="30" column="27" lean-forward="true" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+        <state relative-caret-position="-632">
+          <caret line="70" column="43" lean-forward="true" selection-start-line="70" selection-start-column="43" selection-end-line="70" selection-end-column="43" />
           <folding />
         </state>
       </provider>

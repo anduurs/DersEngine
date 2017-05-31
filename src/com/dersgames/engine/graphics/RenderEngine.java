@@ -30,8 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderEngine {
-
 	private static Camera m_Camera;
+
+	private List<Renderer3D> m_Renderers;
 	
 	private static TerrainRenderer m_TerrainRenderer;
 	private static EntityRenderer m_EntityRenderer;
@@ -41,19 +42,22 @@ public class RenderEngine {
 	private static GUIRenderer m_GUIRenderer;
 	private static PostProcessRenderer m_PostProcessRenderer;
 
-	private List<Renderer3D> m_Renderers;
-	
-    private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
-	//private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
-	
-	private boolean m_RenderNormals = false;
-	private boolean m_RenderTangents = false;
-	private boolean m_WireFrameMode = false;
-
 	private FrameBuffer m_MultiSampledFrameBuffer;
 	private FrameBuffer m_OutputFrameBuffer;
 
+    private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
+	//private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
+
 	public RenderEngine(){
+		initRenderers();
+		initFramebuffers();
+
+		Debug.log("All shaders compiled succesfully");
+
+		glSetup();
+	}
+
+	private void initRenderers(){
 		m_TerrainRenderer = new TerrainRenderer();
 		m_EntityRenderer  = new EntityRenderer();
 		m_NormalMapRenderer = new NormalMapRenderer();
@@ -68,20 +72,21 @@ public class RenderEngine {
 		m_Renderers.add(m_NormalMapRenderer);
 		m_Renderers.add(m_SkyboxRenderer);
 		m_Renderers.add(m_TerrainRenderer);
-		//m_Renderers.add(m_WaterRenderer);
+	}
 
+	private void initFramebuffers(){
 		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight());
 		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_TEXTURE);
-		
-		Debug.log("All shaders compiled succesfully");
-		
+	}
+
+	private void glSetup(){
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_MULTISAMPLE);
-		
+
 		enableFaceCulling();
 	}
-	
+
 	public static void enableFaceCulling(){
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT);
@@ -160,15 +165,18 @@ public class RenderEngine {
 	}
 	
 	public void dispose(){
-		m_TerrainRenderer.dispose();
-		m_EntityRenderer.dispose();
-		m_NormalMapRenderer.dispose();
-		m_SkyboxRenderer.dispose();
+		for(Renderer3D renderer : m_Renderers)
+		    renderer.dispose();
+
 		m_WaterRenderer.dispose();
 		m_GUIRenderer.dispose();
+
 		m_PostProcessRenderer.dispose();
+
 		m_MultiSampledFrameBuffer.dispose();
 		m_OutputFrameBuffer.dispose();
+
+        m_Renderers.clear();
 	}
 	
 	private void clearFrameBuffer(){
@@ -182,7 +190,7 @@ public class RenderEngine {
 	public static EntityRenderer getEntityRenderer() {
 		return m_EntityRenderer;
 	}
-	public static  NormalMapRenderer getNormalMapRenderer(){ return m_NormalMapRenderer; }
+	public static NormalMapRenderer getNormalMapRenderer(){ return m_NormalMapRenderer; }
 	public static SkyboxRenderer getSkyboxRenderer() {
 		return m_SkyboxRenderer;
 	}
@@ -192,6 +200,7 @@ public class RenderEngine {
 	public static GUIRenderer getGUIRenderer(){
 		return m_GUIRenderer;
 	}
+	public static PostProcessRenderer getPostProcessRenderer(){ return m_PostProcessRenderer; }
 	
 	public static Camera getCamera(){
 		return m_Camera;
