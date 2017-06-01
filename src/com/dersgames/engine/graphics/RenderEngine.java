@@ -70,8 +70,8 @@ public class RenderEngine {
 
 		m_Renderers.add(m_EntityRenderer);
 		m_Renderers.add(m_NormalMapRenderer);
-		m_Renderers.add(m_SkyboxRenderer);
 		m_Renderers.add(m_TerrainRenderer);
+		m_Renderers.add(m_SkyboxRenderer);		
 	}
 
 	private void initFramebuffers(){

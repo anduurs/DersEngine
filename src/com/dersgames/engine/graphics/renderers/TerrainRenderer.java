@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
@@ -66,6 +67,7 @@ public class TerrainRenderer implements Renderer3D{
 	@Override
 	public void end() {
 		m_TerrainShader.disable();
+		clear();
 	}
 
 	private void loadTexturedMeshData(Terrain terrain){

@@ -3,7 +3,6 @@ package com.dersgames.engine.terrains;
 import java.awt.image.BufferedImage;
 
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
@@ -16,7 +15,7 @@ import com.dersgames.engine.utils.ImageManager;
 
 public class Terrain extends Renderable{
 	
-	private static final float SIZE = 200.0f;
+	private static final float SIZE = 400.0f;
 	private static final int MAX_HEIGHT = 40;
 	private static final int MAX_PIXEL_COLOR = 256 * 256 * 256;
 	
@@ -114,12 +113,12 @@ public class Terrain extends Renderable{
 				indices[pointer++] = bottomRight;
 			}
 		}
-		Debug.log("TERRAIN VERTICES: " + vertices.length / 3);
+		
 		return Loader.loadModel(vertices, textureCoords, normals, indices);
 	}
 	
 	private Model generateTerrain(Loader loader){
-		int VERTEX_COUNT = 8;
+		int VERTEX_COUNT = 64;
 		
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		
@@ -170,8 +169,8 @@ public class Terrain extends Renderable{
 				indices[pointer++] = bottomRight;
 			}
 		}
-		Debug.log("TERRAIN VERTICES: " + vertices.length / 3);
-		return Loader.loadModel(vertices, textureCoords, normals, indices);
+		
+		return Loader.loadModel(vertices, textureCoords, normals, tangents, indices);
 	}
 	
 	public float getHeightOfTerrain(float worldX, float worldZ){
@@ -192,7 +191,7 @@ public class Terrain extends Renderable{
 		float xPos = (terrainX % gridSquareSize);
 		float zPos = (terrainZ % gridSquareSize);
 		
-		//get the height at the x-z coordinate that the pï¿½layer is on inside the gridsquare
+		//get the height at the x-z coordinate that the pålayer is on inside the gridsquare
 		//need to check two cases one for each triangle of the gridsquare that the player might be on
 		float height = 0;
 		if(xPos <= (1 - zPos)){
