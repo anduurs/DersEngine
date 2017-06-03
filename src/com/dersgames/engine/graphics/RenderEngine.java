@@ -120,14 +120,14 @@ public class RenderEngine {
 
 		clearFrameBuffer();
 		renderScene();
-		renderWater();
+		//renderWater();
 
 		m_MultiSampledFrameBuffer.unbind();
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(m_OutputFrameBuffer);
 
 		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
 
-		renderGUI();
+		//renderGUI();
 	}
 
 	private void renderScene(){

@@ -51,8 +51,8 @@ public class WaterRenderer implements Renderer3D{
 			m_Shader.loadModelMatrix(tile.getEntity());
 			glDrawArrays(GL_TRIANGLES, 0, m_Quad.getVertexCount());
 		}
-		
-		end();
+
+		unbind();
 	}
 	
 	private void unbind(){
