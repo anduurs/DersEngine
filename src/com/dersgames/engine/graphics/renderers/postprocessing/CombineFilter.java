@@ -16,18 +16,27 @@ public class CombineFilter {
     public CombineFilter(){
         m_ImageRenderer = new ImageRenderer();
         m_Shader = new CombineFilterShader();
+
         m_Shader.enable();
+
         m_Shader.connectTextureUnits();
+        m_Shader.loadContrast(0.3f);
+        m_Shader.loadGlowFactor(2.0f);
+        m_Shader.loadExposure(1.0f);
+
         m_Shader.disable();
     }
 
     public void render(int colorTexture, int highlightTexture) {
         m_Shader.enable();
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, colorTexture);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, highlightTexture);
+
         m_ImageRenderer.renderQuad();
+
         m_Shader.disable();
     }
 

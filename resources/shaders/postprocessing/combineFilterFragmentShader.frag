@@ -7,9 +7,9 @@ out vec4 fragColor;
 uniform sampler2D colorTexture;
 uniform sampler2D highlightTexture;
 
-const float contrast = 0.4;
-const float glowFactor = 2.0;
-const float exposure = 1.0;
+uniform float exposure;
+uniform float glowFactor;
+uniform float contrast;
 
 void main(void){
      vec4 sceneColor = texture(colorTexture, textureCoords);

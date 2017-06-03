@@ -9,8 +9,17 @@ public class CombineFilterShader extends Shader {
 
     public CombineFilterShader() {
         super("postprocessing/postProcessVertexShader", "postprocessing/combineFilterFragmentShader");
+
         addUniform("colorTexture");
         addUniform("highlightTexture");
+        addUniform("exposure");
+        addUniform("glowFactor");
+        addUniform("contrast");
+    }
+
+    @Override
+    protected void bindAttributes() {
+        super.bindAttribute(0, "position");
     }
 
     public void connectTextureUnits(){
@@ -18,8 +27,15 @@ public class CombineFilterShader extends Shader {
         super.loadInteger("highlightTexture", 1);
     }
 
-    @Override
-    protected void bindAttributes() {
-        super.bindAttribute(0, "position");
+    public void loadExposure(float exposure){
+        super.loadFloat("exposure", exposure);
+    }
+
+    public void loadContrast(float contrast){
+        super.loadFloat("contrast", contrast);
+    }
+
+    public void loadGlowFactor(float glowFactor){
+        super.loadFloat("glowFactor", glowFactor);
     }
 }
