@@ -104,6 +104,7 @@ public class PlayState extends GameState{
 		//m_Scene.addEntity(guiEntity);
 
 		Debug.log("TOTAL AMOUNT OF VERTICES IN SCENE: " + Loader.vertexCounter);
+		Debug.log("TOTAL AMOUNT OF POLYGONS IN SCENE: " + Loader.vertexCounter / 3);
 	}
 	
 	private void createCamera(){

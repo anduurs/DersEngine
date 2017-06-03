@@ -75,8 +75,10 @@ public class RenderEngine {
 	}
 
 	private void initFramebuffers(){
-		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight());
-		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(), FrameBuffer.DepthBufferType.DEPTH_TEXTURE);
+		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(),
+				FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, true, true);
+		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(),
+				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
 	}
 
 	private void glSetup(){

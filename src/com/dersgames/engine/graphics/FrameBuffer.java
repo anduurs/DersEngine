@@ -32,10 +32,13 @@ public class FrameBuffer {
     private int m_DepthBuffer;
     private int m_ColorBuffer;
 
-    public FrameBuffer(int width, int height, DepthBufferType depthBufferType, boolean multiSample){
+    private boolean m_FloatingPoint;
+
+    public FrameBuffer(int width, int height, DepthBufferType depthBufferType, boolean multiSample, boolean floatingPoint){
         m_Width = width;
         m_Height = height;
         m_DepthBufferType = depthBufferType;
+        m_FloatingPoint = floatingPoint;
 
         createFrameBuffer();
 
@@ -70,11 +73,11 @@ public class FrameBuffer {
     }
 
     public FrameBuffer(int width, int height, DepthBufferType depthBufferType){
-        this(width, height, depthBufferType, false);
+        this(width, height, depthBufferType, false, false);
     }
 
     public FrameBuffer(int width, int height){
-        this(width, height, DepthBufferType.DEPTH_RENDER_BUFFER, true);
+        this(width, height, DepthBufferType.DEPTH_RENDER_BUFFER, true, false);
     }
 
     private void createFrameBuffer() {
@@ -89,8 +92,8 @@ public class FrameBuffer {
 
         glBindTexture(GL_TEXTURE_2D, m_ColorTexture);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                    (ByteBuffer) null);
+        glTexImage2D(GL_TEXTURE_2D, 0, m_FloatingPoint ? GL_RGBA16F : GL_RGBA8, m_Width, m_Height, 0, GL_RGBA,
+                m_FloatingPoint ? GL_FLOAT : GL_UNSIGNED_BYTE, (ByteBuffer) null);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -113,7 +116,7 @@ public class FrameBuffer {
         m_ColorBuffer = glGenRenderbuffers();
 
         glBindRenderbuffer(GL_RENDERBUFFER, m_ColorBuffer);
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA8, m_Width, m_Height);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, m_FloatingPoint ? GL_RGBA16F : GL_RGBA8, m_Width, m_Height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_ColorBuffer);
     }
 

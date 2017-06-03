@@ -73,6 +73,7 @@ public class GUIRenderer {
 	public void end(){
 		RenderEngine.enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 		m_Shader.disable();
