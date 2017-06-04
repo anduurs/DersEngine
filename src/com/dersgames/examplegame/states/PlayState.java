@@ -29,6 +29,8 @@ import com.dersgames.examplegame.entities.Barrel;
 import com.dersgames.examplegame.entities.Crate;
 import com.dersgames.examplegame.entities.LampPost;
 
+import java.awt.*;
+
 public class PlayState extends GameState{
 	
 	private RenderEngine m_Renderer;
@@ -60,6 +62,9 @@ public class PlayState extends GameState{
 		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
 		ImageManager.addImage("crateNormalMap", "crateNormal.png");
 		ImageManager.addImage("bricksNormal", "bricksNormal.png");
+
+		//DUDV MAPS
+		ImageManager.addImage("waterDUDV", "waterDUDV.png");
 		
 		//CUBE MAPS
 		ImageManager.addImage("top", "cubemaps/top.png");
@@ -176,7 +181,7 @@ public class PlayState extends GameState{
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", sunTransform,
 											   new Vector3f(0.8f, 0.8f, 0.8f),
-											   0.3f);
+											   1.8f);
 		
 		m_Scene.addDirectionalLight(sun);	
 	

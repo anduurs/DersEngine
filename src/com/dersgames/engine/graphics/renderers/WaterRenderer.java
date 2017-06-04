@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.Camera;
+import com.dersgames.engine.core.GameApplication;
 import com.dersgames.engine.graphics.FrameBuffer;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.WaterShader;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.maths.Vector4f;
 
@@ -30,6 +32,8 @@ public class WaterRenderer implements Renderer3D{
 
 	private FrameBuffer m_ReflectionFBO;
 	private FrameBuffer m_RefractionFBO;
+
+	private Texture m_DuDvMap;
 	
 	public WaterRenderer(FrameBuffer reflectionFBO, FrameBuffer refractionFBO){
 		m_ReflectionFBO = reflectionFBO;
@@ -38,6 +42,8 @@ public class WaterRenderer implements Renderer3D{
 		m_Quad = Loader.loadModel(m_Vertices, 2);
 		m_Shader = new WaterShader();
 		m_WaterTiles = new ArrayList<>();
+
+		m_DuDvMap = new Texture(Loader.loadModelTexture("waterDUDV"));
 
 		m_Shader.enable();
 		m_Shader.connectTextureUnits();
@@ -50,16 +56,20 @@ public class WaterRenderer implements Renderer3D{
 	
 	private void bind(){
 		glBindVertexArray(m_Quad.getVaoID());
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_ReflectionFBO.getColorTexture());
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, m_RefractionFBO.getColorTexture());
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_DuDvMap.getTextureID());
 	}
 
 	@Override
 	public void begin(Camera camera, Vector4f clippingPlane) {
 		m_Shader.enable();
 		m_Shader.loadViewMatrix(camera);
+		m_Shader.loadCameraPosition(camera.getPosition());
 	}
 
 	@Override
@@ -67,6 +77,7 @@ public class WaterRenderer implements Renderer3D{
 		bind();
 
 		for(WaterTile tile : m_WaterTiles){
+			m_Shader.loadMoveFactor(tile.getMoveFactor());
 			m_Shader.loadModelMatrix(tile.getEntity());
 			glDrawArrays(GL_TRIANGLES, 0, m_Quad.getVertexCount());
 		}

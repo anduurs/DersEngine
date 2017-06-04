@@ -20,6 +20,8 @@ public class GameApplication implements Runnable{
 	private String m_Title;
 	private boolean m_Vsync;
 	private boolean m_FullScreen;
+
+	public static float deltaTime;
 	
 	public GameApplication(int width, int height, String title, boolean vsync, boolean fullscreen){
 		m_Width = width;
@@ -75,7 +77,7 @@ public class GameApplication implements Runnable{
 		final double TARGET_UPS = 60.0;
 		final double SECONDS_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SECONDS_PER_UPDATE;
-	
+		deltaTime = dt;
 		while(m_Running){
 			currentTime = System.nanoTime();
 			passedTime = (currentTime - previousTime) / 1000000000.0;
