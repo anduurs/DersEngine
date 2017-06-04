@@ -1,7 +1,9 @@
 #version 330 core
 
 in vec3 textureCoords;
-out vec4 outColor;
+
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 brightColor;
 
 uniform samplerCube cubeMap;
 uniform samplerCube cubeMap2;
@@ -23,5 +25,6 @@ void main(){
 	factor = clamp(factor, 0.0, 1.0);
 
 	//outColor = mix(vec4(fogColor, 1.0), finalTextureColor, factor);
-	outColor = finalTextureColor;
+	fragColor = finalTextureColor;
+	brightColor = vec4(0.0);
 }

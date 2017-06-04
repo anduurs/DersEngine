@@ -3,7 +3,8 @@
 const int MAX_POINT_LIGHTS = 4;
 const int MAX_SPOT_LIGHTS = 4;
 
-out vec4 fragColor;
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 brightColor;
 
 in VS_Data{
     vec3 position;
@@ -151,4 +152,5 @@ void main(){
 			totalShade += calculatePointLight(pointLights[i], normal, totalTextureColor, specularMapColor);
 
 	fragColor = mix(vec4(skyColor, 1.0), totalShade * totalTextureColor, fs_in.fogFactor);
+	brightColor = vec4(0.0);
 }

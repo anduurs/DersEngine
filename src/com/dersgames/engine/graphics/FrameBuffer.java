@@ -1,12 +1,15 @@
 package com.dersgames.engine.graphics;
 
 import com.dersgames.engine.core.Debug;
+import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 
@@ -31,19 +34,23 @@ public class FrameBuffer {
 
     private int m_DepthBuffer;
     private int m_ColorBuffer;
+    private int m_ColorBuffer2;
 
     private boolean m_FloatingPoint;
+    private boolean m_MultiSample;
 
     public FrameBuffer(int width, int height, DepthBufferType depthBufferType, boolean multiSample, boolean floatingPoint){
         m_Width = width;
         m_Height = height;
         m_DepthBufferType = depthBufferType;
+        m_MultiSample = multiSample;
         m_FloatingPoint = floatingPoint;
 
         createFrameBuffer();
 
         if(multiSample){
-            attachMultiSampledColorBuffer();
+            m_ColorBuffer  = attachMultiSampledColorBuffer(GL_COLOR_ATTACHMENT0);
+            m_ColorBuffer2 = attachMultiSampledColorBuffer(GL_COLOR_ATTACHMENT1);
         }else{
             attachColorTexture();
         }
@@ -84,7 +91,19 @@ public class FrameBuffer {
         m_FrameBuffer = glGenFramebuffers();
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
-        glDrawBuffer(GL_COLOR_ATTACHMENT0);
+        determineDrawBuffers();
+    }
+
+    private void determineDrawBuffers(){
+        IntBuffer drawBuffers = BufferUtils.createIntBuffer(2);
+        drawBuffers.put(GL_COLOR_ATTACHMENT0);
+
+        if(m_MultiSample){
+            drawBuffers.put(GL_COLOR_ATTACHMENT1);
+        }
+
+        drawBuffers.flip();
+        glDrawBuffers(drawBuffers);
     }
 
     private void attachColorTexture() {
@@ -118,6 +137,16 @@ public class FrameBuffer {
         glBindRenderbuffer(GL_RENDERBUFFER, m_ColorBuffer);
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, m_FloatingPoint ? GL_RGBA16F : GL_RGBA8, m_Width, m_Height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_ColorBuffer);
+    }
+
+    private int attachMultiSampledColorBuffer(int attachment){
+        int colorBuffer = glGenRenderbuffers();
+
+        glBindRenderbuffer(GL_RENDERBUFFER, colorBuffer);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, m_FloatingPoint ? GL_RGBA16F : GL_RGBA8, m_Width, m_Height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, colorBuffer);
+
+        return colorBuffer;
     }
 
     private void attachDepthTexture() {
@@ -159,9 +188,10 @@ public class FrameBuffer {
         glViewport(0, 0, Window.getWidth(), Window.getHeight());
     }
 
-    public void blitToFrameBuffer(FrameBuffer outputFrameBuffer){
+    public void blitToFrameBuffer(int readBuffer, FrameBuffer outputFrameBuffer){
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFrameBuffer.m_FrameBuffer);
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FrameBuffer);
+        glReadBuffer(readBuffer);
         glBlitFramebuffer(0,0, m_Width, m_Height, 0, 0,
                 outputFrameBuffer.m_Width, outputFrameBuffer.m_Height ,
                 GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
@@ -184,6 +214,7 @@ public class FrameBuffer {
         glDeleteTextures(m_DepthTexture);
         glDeleteRenderbuffers(m_DepthBuffer);
         glDeleteRenderbuffers(m_ColorBuffer);
+        glDeleteRenderbuffers(m_ColorBuffer2);
     }
 
     public int getColorTexture(){
@@ -193,5 +224,6 @@ public class FrameBuffer {
         return m_DepthTexture;
     }
     public int getColorBuffer(){ return m_ColorBuffer; }
+    public int getColorBuffer2(){ return m_ColorBuffer2; }
     public int getDepthBuffer(){ return m_DepthBuffer; }
 }

@@ -49,6 +49,19 @@ public class Material {
 				shader
 			);
 	}
+
+	public Material(Texture textureAtlas, SpecularMap specularMap,
+					float baseColor, float specular, float emissive, float shininess, PhongShader shader){
+		this(   textureAtlas, specularMap,
+				new Vector3f(baseColor, baseColor, baseColor),
+				new Vector3f(specular, specular, specular),
+				new Vector3f(emissive, emissive, emissive),
+				shininess,
+				false,
+				false,
+				shader
+		);
+	}
 	
 	public Material(Texture textureAtlas, Vector3f baseColor, 
 			 Vector3f specular, Vector3f emissive, 

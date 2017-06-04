@@ -3,7 +3,8 @@
 const int MAX_POINT_LIGHTS = 4;
 const int MAX_SPOT_LIGHTS = 4;
 
-out vec4 fragColor;
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 brightColor;
 
 in VS_Data{
     vec3 position;
@@ -58,6 +59,7 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
     vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor;
 
     vec4 specularLight = vec4(0.0, 0.0, 0.0, 1.0);
+    brightColor = vec4(0.0);
 
     if(material.shininess > 0.0){
         vec3 viewDirection = normalize(fs_in.cameraViewPosition - fs_in.position);
@@ -70,6 +72,10 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 
         if(material.useSpecularMap == 1.0){
             specularLight *= specularMapColor.r;
+            if(specularMapColor.g > 0.5){
+                brightColor = textureColor + specularLight;
+                diffuseLight = textureColor;
+            }
         }
     }
 

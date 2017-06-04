@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glCullFace;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 import com.dersgames.engine.graphics.renderers.*;
@@ -25,6 +26,7 @@ import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.engine.terrains.Terrain;
+import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class RenderEngine {
 
 	private FrameBuffer m_MultiSampledFrameBuffer;
 	private FrameBuffer m_OutputFrameBuffer;
+	private FrameBuffer m_OutputFrameBuffer2;
 
     private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	//private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
@@ -78,6 +81,8 @@ public class RenderEngine {
 		m_MultiSampledFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(),
 				FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, true, true);
 		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(),
+				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
+		m_OutputFrameBuffer2 = new FrameBuffer(Window.getWidth(), Window.getHeight(),
 				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
 	}
 
@@ -123,9 +128,11 @@ public class RenderEngine {
 		//renderWater();
 
 		m_MultiSampledFrameBuffer.unbind();
-		m_MultiSampledFrameBuffer.blitToFrameBuffer(m_OutputFrameBuffer);
+		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT0, m_OutputFrameBuffer);
+		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT1, m_OutputFrameBuffer2);
 
-		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
+		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture(),
+				m_OutputFrameBuffer2.getColorTexture());
 
 		//renderGUI();
 	}
@@ -177,6 +184,7 @@ public class RenderEngine {
 
 		m_MultiSampledFrameBuffer.dispose();
 		m_OutputFrameBuffer.dispose();
+		m_OutputFrameBuffer2.dispose();
 
         m_Renderers.clear();
 	}

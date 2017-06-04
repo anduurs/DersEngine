@@ -47,12 +47,14 @@ public class PlayState extends GameState{
 		ImageManager.addImage("lamp", "lamp.png");
 		ImageManager.addImage("barrel", "barrel.png");
 		ImageManager.addImage("crate", "crate.png");
+		ImageManager.addImage("lantern", "lantern.png");
 		
 		//GUI TEXTURES
 		ImageManager.addImage("socuwan", "socuwan.png");
 		
 		//SPECULAR MAPS
 		ImageManager.addImage("barrelSpecularMap", "barrelS.png");
+		ImageManager.addImage("lanternSpecular", "lanternS.png");
 		
 		//NORMAL MAPS
 		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
@@ -135,10 +137,10 @@ public class PlayState extends GameState{
 		Material bMaterial =  new Material(bTexture, new Vector3f(1.0f, 1.0f, 1.0f),
 				new Vector3f(0.2f, 0.2f, 0.2f), 
 				new Vector3f(0, 0, 0), 
-				1.0f, 
+				0.0f,
 				false, 
 				false,
-										   RenderEngine.getTerrainRenderer().getShader());
+				 RenderEngine.getTerrainRenderer().getShader());
 		
 		TerrainTexturePack texturePack   = new TerrainTexturePack();
 		
@@ -148,7 +150,7 @@ public class PlayState extends GameState{
 		texturePack.addTerrainMaterial(bMaterial);
 		
 		Entity terrainEntity = new Entity("Terrain", 0, 0, 0);
-		terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
+		//terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
 //		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
 		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
