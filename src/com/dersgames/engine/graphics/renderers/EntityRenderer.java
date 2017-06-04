@@ -27,6 +27,7 @@ import com.dersgames.engine.graphics.shaders.EntityShader;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.maths.Vector4f;
 
 public class EntityRenderer implements Renderer3D {
 
@@ -55,11 +56,12 @@ public class EntityRenderer implements Renderer3D {
 	}
 
 	@Override
-	public void begin(Camera camera){
+	public void begin(Camera camera, Vector4f clippingPlane){
 		m_Shader.enable();
 		m_Shader.loadSkyColor(RenderEngine.getSkyColor());
 		m_Shader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
 		m_Shader.loadViewMatrix(camera);
+		m_Shader.loadClippingPlane(clippingPlane);
 	}
 
 	@Override

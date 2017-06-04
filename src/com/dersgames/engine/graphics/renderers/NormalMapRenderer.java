@@ -11,6 +11,7 @@ import com.dersgames.engine.graphics.shaders.NormalMapShader;
 import com.dersgames.engine.graphics.shaders.Shader;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
 import com.dersgames.engine.maths.Vector2f;
+import com.dersgames.engine.maths.Vector4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,9 @@ public class NormalMapRenderer extends EntityRenderer {
     public NormalMapRenderer(){
         m_Shader = new NormalMapShader();
         m_Renderables = new HashMap<>();
+        m_Shader.enable();
+        m_Shader.loadClippingPlane(new Vector4f(0.0f,-1.0f,0.0f,15.0f));
+        m_Shader.disable();
     }
 
     @Override

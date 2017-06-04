@@ -24,8 +24,11 @@ uniform float numOfRows;
 
 uniform vec2 offset;
 
+uniform vec4 plane;
+
 void main(){
 	vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+	gl_ClipDistance[0] = dot(worldPosition, plane);
 	vec4 viewSpacePosition = viewMatrix * worldPosition;
 
 	vec3 actualNormal = normal;

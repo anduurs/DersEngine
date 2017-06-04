@@ -16,6 +16,7 @@ import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
+import com.dersgames.engine.maths.Vector4f;
 
 public class SkyboxRenderer implements Renderer3D{
 	
@@ -82,7 +83,7 @@ public class SkyboxRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void begin(Camera camera) {
+	public void begin(Camera camera, Vector4f clippingPlane) {
 		m_Shader.enable();
 		m_Shader.loadViewMatrix(camera);
 		m_Shader.loadFogColor(RenderEngine.getSkyColor());

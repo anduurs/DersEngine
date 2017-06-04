@@ -8,6 +8,14 @@ public class WaterShader extends Shader{
 		addUniform("modelMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");
+
+		addUniform("reflectionTexture");
+		addUniform("refractionTexture");
+	}
+
+	public void connectTextureUnits(){
+		super.loadInteger("reflectionTexture", 0);
+		super.loadInteger("refractionTexture", 1);
 	}
 
 	@Override

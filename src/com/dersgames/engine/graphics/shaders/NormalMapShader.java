@@ -23,6 +23,7 @@ public class NormalMapShader extends PhongShader{
     @Override
     protected void addUniforms() {
         addUniform("offset");
+        addUniform("plane");
         addUniform("modelMatrix");
         addUniform("viewMatrix");
         addUniform("projectionMatrix");

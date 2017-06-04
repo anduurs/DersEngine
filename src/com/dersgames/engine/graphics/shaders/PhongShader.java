@@ -8,6 +8,7 @@ import com.dersgames.engine.entities.lights.PointLight;
 import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.maths.Vector4f;
 
 public abstract class PhongShader extends Shader{
 	
@@ -21,20 +22,19 @@ public abstract class PhongShader extends Shader{
 
 	protected void addUniforms(){
 		addUniform("offset");
+		addUniform("plane");
 		addUniform("modelMatrix");
 		addUniform("viewMatrix");
 		addUniform("projectionMatrix");
-
 		addUniform("skyColor");
 		addUniform("ambientLight");
-
 		addUniform("directionalLight.direction");
 		addUniform("directionalLight.light.color");
 		addUniform("directionalLight.light.intensity");
 
-		addUniform("renderNormals");
-		addUniform("renderTangents");
-		addUniform("wireframeMode");
+		//addUniform("renderNormals");
+		//addUniform("renderTangents");
+		//addUniform("wireframeMode");
 
 		for(int i = 0; i < MAX_POINT_LIGHTS; i++){
 			addUniform("pointLights["+i+"].position");
@@ -59,6 +59,10 @@ public abstract class PhongShader extends Shader{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
+	}
+
+	public void loadClippingPlane(Vector4f plane){
+		super.loadVector4f("plane", plane);
 	}
 	
 	public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){

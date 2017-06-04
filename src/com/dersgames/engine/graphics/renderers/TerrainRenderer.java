@@ -23,6 +23,7 @@ import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
+import com.dersgames.engine.maths.Vector4f;
 import com.dersgames.engine.terrains.Terrain;
 
 public class TerrainRenderer implements Renderer3D{
@@ -36,6 +37,7 @@ public class TerrainRenderer implements Renderer3D{
 		
 		m_TerrainShader.enable();
 		m_TerrainShader.connectTextureUnits();
+		m_TerrainShader.loadClippingPlane(new Vector4f(0.0f,-1.0f,0.0f,15.0f));
 		m_TerrainShader.disable();
 	}
 	
@@ -48,11 +50,12 @@ public class TerrainRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void begin(Camera camera) {
+	public void begin(Camera camera, Vector4f clippingPlane) {
 		m_TerrainShader.enable();
 		m_TerrainShader.loadSkyColor(RenderEngine.getSkyColor());
 		m_TerrainShader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
 		m_TerrainShader.loadViewMatrix(camera);
+		m_TerrainShader.loadClippingPlane(clippingPlane);
 	}
 
 	public void render(){

@@ -83,5 +83,8 @@ public class Camera extends Component{
 	public void setSensitivity(float sensitivity){
 		m_Sensitivity = sensitivity;
 	}
-	
+
+	public void invertPitch(){
+		m_Entity.getTransform().getRotation().x = -m_Entity.getTransform().getRotation().x;
+	}
 }

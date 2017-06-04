@@ -1,16 +1,6 @@
 package com.dersgames.engine.graphics;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_FRONT;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glCullFace;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
@@ -28,8 +18,8 @@ import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.maths.Vector4f;
 import com.dersgames.engine.terrains.Terrain;
-import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,17 +46,24 @@ public class RenderEngine {
     private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	//private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
 
+    public WaterTile water;
+
 	public RenderEngine(){
-		initRenderers();
 		initFramebuffers();
+        initRenderers();
 
 		Debug.log("All shaders compiled succesfully");
 
 		glSetup();
 
-		Entity guiEntity = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
+/*		Entity guiEntity = new Entity("gui", 0.5f, 0.5f, 200f, 200f);
 		guiEntity.addComponent(new GUIComponent("Gui", new Texture(m_WaterReflectionFrameBuffer.getColorTexture())));
+
+		Entity guiEntity2 = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
+		guiEntity2.addComponent(new GUIComponent("Gui", new Texture(m_WaterRefractionFrameBuffer.getColorTexture())));
+
 		Scene.addEntity(guiEntity);
+		Scene.addEntity(guiEntity2);*/
 	}
 
 	private void initRenderers(){
@@ -74,7 +71,7 @@ public class RenderEngine {
 		m_EntityRenderer  = new EntityRenderer();
 		m_NormalMapRenderer = new NormalMapRenderer();
 		m_SkyboxRenderer = new SkyboxRenderer();
-		m_WaterRenderer = new WaterRenderer();
+		m_WaterRenderer = new WaterRenderer(m_WaterReflectionFrameBuffer, m_WaterRefractionFrameBuffer);
 		m_GUIRenderer = new GUIRenderer();
 		m_PostProcessRenderer = new PostProcessRenderer();
 
@@ -135,17 +132,34 @@ public class RenderEngine {
 	}
 	
 	public void render(){
+		glEnable(GL_CLIP_DISTANCE0);
+
 		m_WaterReflectionFrameBuffer.bind();
 
+		//move the camera down under the watertile and adjust the orientation
+		float distance = 2 * (m_Camera.getPosition().y - water.getHeight());
+		m_Camera.getPosition().y -= distance;
+		m_Camera.invertPitch();
+
 		clearFrameBuffer();
-		renderScene(false);
+		renderScene(false, new Vector4f(0.0f,1.0f,0.0f, -water.getHeight()));
+
+        //reset the camera position and orientation
+        m_Camera.getPosition().y += distance;
+        m_Camera.invertPitch();
 
 		m_WaterReflectionFrameBuffer.unbind();
+
+		m_WaterRefractionFrameBuffer.bind();
+		clearFrameBuffer();
+		renderScene(false, new Vector4f(0.0f,-1.0f,0.0f, water.getHeight()));
+		glDisable(GL_CLIP_DISTANCE0);
+		m_WaterRefractionFrameBuffer.unbind();
 
 		m_MultiSampledFrameBuffer.bind();
 
 		clearFrameBuffer();
-		renderScene(true);
+		renderScene(true, new Vector4f(0.0f,0.0f,0.0f,0.0f));
 		renderWater(true);
 
 		m_MultiSampledFrameBuffer.unbind();
@@ -159,16 +173,16 @@ public class RenderEngine {
 		renderGUI();
 	}
 
-	private void renderScene(boolean lastRenderPass){
+	private void renderScene(boolean lastRenderPass, Vector4f clippingPlane){
 		for(Renderer3D renderer : m_Renderers){
-			renderer.begin(m_Camera);
+			renderer.begin(m_Camera, clippingPlane);
 			renderer.render();
 			renderer.end(lastRenderPass);
 		}
 	}
 
 	private void renderWater(boolean lastRenderPass){
-		m_WaterRenderer.begin(m_Camera);
+		m_WaterRenderer.begin(m_Camera, null);
 		m_WaterRenderer.render();
 		m_WaterRenderer.end(lastRenderPass);
 	}

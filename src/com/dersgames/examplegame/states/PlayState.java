@@ -164,6 +164,7 @@ public class PlayState extends GameState{
 		water.getTransform().scale(WaterTile.TILE_SIZE, WaterTile.TILE_SIZE, WaterTile.TILE_SIZE);
 		water.addComponent(tile);
 		m_Scene.addEntity(water);
+		m_Renderer.water = tile;
 		
 		return terrain;
 	}
