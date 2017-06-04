@@ -31,7 +31,7 @@ public class NormalMapShader extends PhongShader{
         addUniform("skyColor");
         addUniform("ambientLight");
 
-        addUniform("directionalLightPosition");
+        addUniform("directionalLightDirection");
         addUniform("directionalLight.light.color");
         addUniform("directionalLight.light.intensity");
 
@@ -58,7 +58,7 @@ public class NormalMapShader extends PhongShader{
     public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
         super.loadVector3f("ambientLight", Scene.getSceneAmbientLight());
 
-        super.loadVector3f("directionalLightPosition", directionalLight.getPosition());
+        super.loadVector3f("directionalLightDirection", directionalLight.getDirection());
         super.loadVector3f("directionalLight.light.color", directionalLight.getLightColor());
         super.loadFloat("directionalLight.light.intensity", directionalLight.getIntensity());
 

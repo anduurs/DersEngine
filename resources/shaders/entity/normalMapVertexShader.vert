@@ -16,11 +16,11 @@ out VS_Data{
 	vec2 textureCoords;
 	vec3 cameraViewPosition;
 	float fogFactor;
-	vec3 directionalLightPosition;
+	vec3 directionalLightDirection;
 	vec3 pointLightPositions[MAX_POINT_LIGHTS];
 } vs_out;
 
-uniform vec3 directionalLightPosition;
+uniform vec3 directionalLightDirection;
 uniform vec3 pointLightPositions[MAX_POINT_LIGHTS];
 
 uniform mat4 modelMatrix;
@@ -54,7 +54,7 @@ void main(){
 
     vs_out.position = toTangentSpaceMatrix * worldPosition.xyz;
     vs_out.cameraViewPosition = toTangentSpaceMatrix * ((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz);
-    vs_out.directionalLightPosition = toTangentSpaceMatrix * directionalLightPosition;
+    vs_out.directionalLightDirection = toTangentSpaceMatrix * directionalLightDirection;
 
     for(int i = 0; i < MAX_POINT_LIGHTS; i++)
         vs_out.pointLightPositions[i] = toTangentSpaceMatrix * pointLightPositions[i];

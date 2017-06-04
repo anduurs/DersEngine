@@ -34,6 +34,7 @@ public class WaterRenderer implements Renderer3D{
 	private FrameBuffer m_RefractionFBO;
 
 	private Texture m_DuDvMap;
+	private Texture m_NormalMap;
 	
 	public WaterRenderer(FrameBuffer reflectionFBO, FrameBuffer refractionFBO){
 		m_ReflectionFBO = reflectionFBO;
@@ -44,6 +45,7 @@ public class WaterRenderer implements Renderer3D{
 		m_WaterTiles = new ArrayList<>();
 
 		m_DuDvMap = new Texture(Loader.loadModelTexture("waterDUDV"));
+		m_NormalMap = new Texture(Loader.loadModelTexture("waterNormalMap"));
 
 		m_Shader.enable();
 		m_Shader.connectTextureUnits();
@@ -63,6 +65,8 @@ public class WaterRenderer implements Renderer3D{
 		glBindTexture(GL_TEXTURE_2D, m_RefractionFBO.getColorTexture());
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, m_DuDvMap.getTextureID());
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, m_NormalMap.getTextureID());
 	}
 
 	@Override

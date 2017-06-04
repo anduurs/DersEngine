@@ -11,7 +11,7 @@ in VS_Data{
 	vec2 textureCoords;
 	vec3 cameraViewPosition;
 	float fogFactor;
-	vec3 directionalLightPosition;
+	vec3 directionalLightDirection;
 	vec3 pointLightPositions[MAX_POINT_LIGHTS];
 } fs_in;
 
@@ -83,8 +83,8 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
 }
 
 vec4 calculateDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-	vec3 lightDirection = normalize(fs_in.directionalLightPosition - fs_in.position);
-	return calculateLight(directionalLight.light.color, lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
+	vec3 lightDirection = normalize(fs_in.directionalLightDirection);
+	return calculateLight(directionalLight.light.color, -lightDirection, directionalLight.light.intensity, normal, textureColor, specularMapColor);
 }
 
 vec4 calculatePointLight(PointLight pointLight, vec3 normal, vec4 textureColor, vec4 specularMapColor, int index){

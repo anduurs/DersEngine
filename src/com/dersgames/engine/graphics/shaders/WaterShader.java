@@ -15,6 +15,7 @@ public class WaterShader extends Shader{
 		addUniform("reflectionTexture");
 		addUniform("refractionTexture");
 		addUniform("dudvMap");
+		addUniform("normalMap");
 		addUniform("moveFactor");
 		addUniform("cameraPosition");
 	}
@@ -31,6 +32,7 @@ public class WaterShader extends Shader{
 		super.loadInteger("reflectionTexture", 0);
 		super.loadInteger("refractionTexture", 1);
 		super.loadInteger("dudvMap", 2);
+		super.loadInteger("normalMap", 3);
 	}
 
 	@Override

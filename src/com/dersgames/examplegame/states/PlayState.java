@@ -62,6 +62,7 @@ public class PlayState extends GameState{
 		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
 		ImageManager.addImage("crateNormalMap", "crateNormal.png");
 		ImageManager.addImage("bricksNormal", "bricksNormal.png");
+		ImageManager.addImage("waterNormalMap", "waterNormalMap.png");
 
 		//DUDV MAPS
 		ImageManager.addImage("waterDUDV", "waterDUDV.png");
@@ -150,23 +151,23 @@ public class PlayState extends GameState{
 		
 		TerrainTexturePack texturePack   = new TerrainTexturePack();
 		
-//		texturePack.addTerrainMaterial(backgroundMaterial);
-//		texturePack.addTerrainMaterial(rMaterial);
-//		texturePack.addTerrainMaterial(gMaterial);
+		texturePack.addTerrainMaterial(backgroundMaterial);
+		texturePack.addTerrainMaterial(rMaterial);
+		texturePack.addTerrainMaterial(gMaterial);
 		texturePack.addTerrainMaterial(bMaterial);
 		
 		Entity terrainEntity = new Entity("Terrain", 0, 0, 0);
 		//terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
-//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+		//Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
 		terrainEntity.addComponent(terrain);
 
 		
 		m_Scene.addEntity(terrainEntity);
 		
-		Entity water = new Entity("Water", 300, 5, 70);
+		Entity water = new Entity("Water", 220.0f, 20.0f, 200.0f);
 		WaterTile tile  = new WaterTile("WaterTile");
-		water.getTransform().scale(WaterTile.TILE_SIZE, WaterTile.TILE_SIZE, WaterTile.TILE_SIZE);
+		water.getTransform().scale(WaterTile.TILE_SIZE * 2, WaterTile.TILE_SIZE * 2, WaterTile.TILE_SIZE * 2);
 		water.addComponent(tile);
 		m_Scene.addEntity(water);
 		m_Renderer.water = tile;
@@ -176,12 +177,12 @@ public class PlayState extends GameState{
 	
 	private void createLightSources(Terrain terrain){
 		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
-											   new Quaternion(new Vector3f(1,0,0), 35.0f), 
+											   new Quaternion(new Vector3f(1,0,0), 40.0f),
 											   new Vector3f(1,1,1));
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", sunTransform,
-											   new Vector3f(0.8f, 0.8f, 0.8f),
-											   1.8f);
+											   new Vector3f(1.0f, 1.0f, 1.0f),
+											   3.0f);
 		
 		m_Scene.addDirectionalLight(sun);	
 	
@@ -200,7 +201,7 @@ public class PlayState extends GameState{
 		
 		
 		float range = 300.0f;
-		LampPost lamp = new LampPost("Lamp1", new Vector3f(200.0f, 0.0f, 150.0f));
+		/*LampPost lamp = new LampPost("Lamp1", new Vector3f(200.0f, 0.0f, 150.0f));
 		PointLight pointLight1 = new PointLight("PointLight", lamp.getPosition(),new Vector3f(1.0f, 1.0f, 0.0f), 
 			     new Vector3f(1.0f, 0.045f, 0.00075f),
 			     3.0f,
@@ -241,7 +242,7 @@ public class PlayState extends GameState{
 		pointLight4.getPosition().y = lamp4.getPosition().y + 20;
 		
 		m_Scene.addPointLight(pointLight4);
-		m_Scene.addEntity(lamp4);
+		m_Scene.addEntity(lamp4);*/
 	}
 	
 	private void createEntities(Terrain terrain){
@@ -252,14 +253,14 @@ public class PlayState extends GameState{
 //		Dragon dragon = new Dragon("Dragon", dragonTransform);
 //		dragon.getPosition().y = terrain.getHeightOfTerrain(dragon.getPosition().x, dragon.getPosition().z) + 9;
 		
-		Transform crateTransform = new Transform(new Vector3f(140.0f, 40.0f, 200.0f), 
+		Transform crateTransform = new Transform(new Vector3f(160.0f, 80.0f, 200.0f),
 											     new Quaternion(new Vector3f(0,0,0), 0.0f), 
 											     new Vector3f(0.2f,0.2f,0.2f));
 		
 		Crate crate = new Crate("Crate", crateTransform);
 //		crate.getPosition().y = terrain.getHeightOfTerrain(crate.getPosition().x, crate.getPosition().z) + 32;
 		
-		Transform barrelTransform = new Transform(new Vector3f(240.0f, 40.0f, 200.0f), 
+		Transform barrelTransform = new Transform(new Vector3f(240.0f, 80.0f, 200.0f),
 								    new Quaternion(new Vector3f(0,0,0), 90.0f), 
 								    new Vector3f(3f,3f,3f));
 		

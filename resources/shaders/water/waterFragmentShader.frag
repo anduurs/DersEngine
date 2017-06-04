@@ -10,6 +10,7 @@ layout (location = 1) out vec4 brightColor;
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
+uniform sampler2D normalMap;
 
 uniform float moveFactor;
 
@@ -25,10 +26,9 @@ void main() {
     vec2 reflectionTextureCoords = vec2(screenSpaceCoords.x, -screenSpaceCoords.y);
     vec2 refractionTextureCoords = vec2(screenSpaceCoords.x, screenSpaceCoords.y);
 
-    vec2 waveDistortion1 = (2.0 * texture(dudvMap, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg - 1.0) * waveDistortionFactor;
-    vec2 waveDistortion2 = (2.0 * texture(dudvMap, vec2(-textureCoords.x + moveFactor, textureCoords.y + moveFactor)).rg - 1.0) * waveDistortionFactor;
-
-    vec2 totalWaveDistortion = waveDistortion1 + waveDistortion2;
+    vec2 waveDistortionTexCoords = texture(dudvMap, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg * 0.1;
+    waveDistortionTexCoords = textureCoords + vec2(waveDistortionTexCoords.x, waveDistortionTexCoords.y + moveFactor);
+    vec2 totalWaveDistortion = (texture(dudvMap, waveDistortionTexCoords).rg * 2.0 - 1.0) * waveDistortionFactor;
 
     reflectionTextureCoords += totalWaveDistortion;
     refractionTextureCoords += totalWaveDistortion;
@@ -44,6 +44,10 @@ void main() {
     vec3 viewVector = normalize(toCameraVector);
     float refractiveFactor = dot(viewVector, vec3(0.0, 1.0, 0.0));
     refractiveFactor = pow(refractiveFactor, 5.0);
+
+    vec4 normalMapColor = texture(normalMap, waveDistortionTexCoords);
+    vec3 normal = vec3(normalMapColor.r * 2.0 - 1, normalMapColor.b, normalMapColor.g * 2.0 - 1.0);
+    normal = normalize(normal);
 
     brightColor = vec4(0.0);
 	fragColor = mix(reflectionColor, refractionColor, refractiveFactor);
