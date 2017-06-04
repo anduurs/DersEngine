@@ -65,9 +65,11 @@ public class TerrainRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void end() {
+	public void end(boolean lastRenderPass) {
 		m_TerrainShader.disable();
-		clear();
+		if(lastRenderPass){
+			clear();
+		}
 	}
 
 	private void loadTexturedMeshData(Terrain terrain){

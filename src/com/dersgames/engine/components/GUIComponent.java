@@ -56,12 +56,12 @@ public class GUIComponent extends Renderable{
 
 	//Only works for 800x600 resolution (0.75 = magic number)
 	private float convertXPosToNDC(float xPos){
-		return (xPos / ((float)Window.getWidth() * 0.5f)) - 0.75f;
+		return xPos;
 	}
 	
 	//Only works for 800x600 resolution (0.95 = magic number)
 	private float convertYPosToNDC(float yPos){
-		return (yPos / ((float)Window.getHeight() * 0.5f)) - 0.95f;
+		return yPos;
 	}
 
 	private float convertXScaleToNDC(float xScale){

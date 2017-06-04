@@ -40,7 +40,7 @@ public class Scene {
 		m_SpotLights.add(spotLight);
 	}
 	
-	public void addEntity(Entity entity){
+	public static void addEntity(Entity entity){
 		m_EntityList.add(entity);
 	}
 	

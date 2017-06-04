@@ -97,7 +97,7 @@ public class SkyboxRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void end() {
+	public void end(boolean lastRenderPass) {
 		m_Shader.disable();
 	}
 

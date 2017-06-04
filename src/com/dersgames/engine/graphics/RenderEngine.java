@@ -14,6 +14,8 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
+import com.dersgames.engine.core.Scene;
+import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.graphics.renderers.*;
 import com.dersgames.engine.graphics.renderers.postprocessing.PostProcessRenderer;
 import com.dersgames.engine.graphics.shaders.*;
@@ -23,6 +25,7 @@ import com.dersgames.engine.components.GUIComponent;
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Debug;
+import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.maths.Vector3f;
 import com.dersgames.engine.terrains.Terrain;
@@ -47,6 +50,8 @@ public class RenderEngine {
 	private FrameBuffer m_MultiSampledFrameBuffer;
 	private FrameBuffer m_OutputFrameBuffer;
 	private FrameBuffer m_OutputFrameBuffer2;
+	private FrameBuffer m_WaterReflectionFrameBuffer;
+	private FrameBuffer m_WaterRefractionFrameBuffer;
 
     private static Vector3f m_SkyColor = new Vector3f(135.0f / 255.0f, 210.0f / 255.0f, 235.0f / 255.0f);
 	//private static Vector3f m_SkyColor = new Vector3f(0.5444f, 0.62f, 0.69f);
@@ -58,6 +63,10 @@ public class RenderEngine {
 		Debug.log("All shaders compiled succesfully");
 
 		glSetup();
+
+		Entity guiEntity = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
+		guiEntity.addComponent(new GUIComponent("Gui", new Texture(m_WaterReflectionFrameBuffer.getColorTexture())));
+		Scene.addEntity(guiEntity);
 	}
 
 	private void initRenderers(){
@@ -83,6 +92,11 @@ public class RenderEngine {
 		m_OutputFrameBuffer = new FrameBuffer(Window.getWidth(), Window.getHeight(),
 				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
 		m_OutputFrameBuffer2 = new FrameBuffer(Window.getWidth(), Window.getHeight(),
+				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
+
+		m_WaterReflectionFrameBuffer = new FrameBuffer(320, 180,
+				FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, false, false);
+		m_WaterRefractionFrameBuffer = new FrameBuffer(1280, 720,
 				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
 	}
 
@@ -121,34 +135,42 @@ public class RenderEngine {
 	}
 	
 	public void render(){
+		m_WaterReflectionFrameBuffer.bind();
+
+		clearFrameBuffer();
+		renderScene(false);
+
+		m_WaterReflectionFrameBuffer.unbind();
+
 		m_MultiSampledFrameBuffer.bind();
 
 		clearFrameBuffer();
-		renderScene();
-		//renderWater();
+		renderScene(true);
+		renderWater(true);
 
 		m_MultiSampledFrameBuffer.unbind();
+
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT0, m_OutputFrameBuffer);
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT1, m_OutputFrameBuffer2);
 
 		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture(),
 				m_OutputFrameBuffer2.getColorTexture());
 
-		//renderGUI();
+		renderGUI();
 	}
 
-	private void renderScene(){
+	private void renderScene(boolean lastRenderPass){
 		for(Renderer3D renderer : m_Renderers){
 			renderer.begin(m_Camera);
 			renderer.render();
-			renderer.end();
+			renderer.end(lastRenderPass);
 		}
 	}
 
-	private void renderWater(){
+	private void renderWater(boolean lastRenderPass){
 		m_WaterRenderer.begin(m_Camera);
 		m_WaterRenderer.render();
-		m_WaterRenderer.end();
+		m_WaterRenderer.end(lastRenderPass);
 	}
 
 	private void renderGUI(){
@@ -179,13 +201,12 @@ public class RenderEngine {
 
 		m_WaterRenderer.dispose();
 		m_GUIRenderer.dispose();
-
 		m_PostProcessRenderer.dispose();
-
 		m_MultiSampledFrameBuffer.dispose();
 		m_OutputFrameBuffer.dispose();
 		m_OutputFrameBuffer2.dispose();
-
+		m_WaterReflectionFrameBuffer.dispose();
+		m_WaterRefractionFrameBuffer.dispose();
         m_Renderers.clear();
 	}
 	

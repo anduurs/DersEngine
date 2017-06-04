@@ -10,7 +10,7 @@ import com.dersgames.engine.maths.Vector3f;
 public interface Renderer3D {
     public void begin(Camera camera);
     public void render();
-    public void end();
+    public void end(boolean lastRenderPass);
     public void dispose();
     public Shader getShader();
 }

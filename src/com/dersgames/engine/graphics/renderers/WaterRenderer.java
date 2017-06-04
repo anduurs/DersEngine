@@ -60,9 +60,11 @@ public class WaterRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void end(){
+	public void end(boolean lastRenderPass){
 		m_Shader.disable();
-		clear();
+		if(lastRenderPass){
+			clear();
+		}
 	}
 	
 	public void clear(){

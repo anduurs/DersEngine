@@ -131,14 +131,6 @@ public class FrameBuffer {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_ColorBuffer);
     }
 
-    private void attachMultiSampledColorBuffer(){
-        m_ColorBuffer = glGenRenderbuffers();
-
-        glBindRenderbuffer(GL_RENDERBUFFER, m_ColorBuffer);
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, m_FloatingPoint ? GL_RGBA16F : GL_RGBA8, m_Width, m_Height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_ColorBuffer);
-    }
-
     private int attachMultiSampledColorBuffer(int attachment){
         int colorBuffer = glGenRenderbuffers();
 
@@ -153,7 +145,7 @@ public class FrameBuffer {
         m_DepthTexture = glGenTextures();
 
         glBindTexture(GL_TEXTURE_2D, m_DepthTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_Width, m_Height, 0, GL_DEPTH_COMPONENT,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT,
                 GL_FLOAT, (ByteBuffer) null);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -166,7 +158,7 @@ public class FrameBuffer {
         m_DepthBuffer = glGenRenderbuffers();
 
         glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_Width, m_Height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBuffer);
     }
 
@@ -174,7 +166,7 @@ public class FrameBuffer {
         m_DepthBuffer = glGenRenderbuffers();
 
         glBindRenderbuffer(GL_RENDERBUFFER, m_DepthBuffer);
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT, m_Width, m_Height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthBuffer);
     }
 

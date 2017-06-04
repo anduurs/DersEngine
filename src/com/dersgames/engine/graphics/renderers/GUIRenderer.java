@@ -49,7 +49,6 @@ public class GUIRenderer {
 		m_Shader.enable();
 		RenderEngine.disableFaceCulling();
 		glBindVertexArray(m_Quad.getVaoID());
-		glEnableVertexAttribArray(0);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDisable(GL_DEPTH_TEST);
@@ -74,7 +73,6 @@ public class GUIRenderer {
 		RenderEngine.enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
-		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 		m_Shader.disable();
 		clear();

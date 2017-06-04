@@ -89,8 +89,9 @@ public class PlayState extends GameState{
 		ImageManager.addImage("player", "playerTexture.png");
 		
 		m_Loader   = new Loader();
-		m_Renderer = new RenderEngine();
 		m_Scene    = new Scene();
+		m_Renderer = new RenderEngine();
+
 		
 		createCamera();
 		
@@ -100,10 +101,10 @@ public class PlayState extends GameState{
 		createEntities(terrain);
 		
 		
-		Entity guiEntity = new Entity("gui", 0, 0, 200f, 100f);
+		Entity guiEntity = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
 //		guiEntity.addComponent(new GUIComponent("Gui", new Texture(Loader.loadGUITexture("dragontexture"))));
-		guiEntity.addComponent(new GUIComponent("Gui", new Vector3f(1,0,0)));
-		//m_Scene.addEntity(guiEntity);
+//		guiEntity.addComponent(new GUIComponent("Gui", new Vector3f(1,0,0)));
+		Scene.addEntity(guiEntity);
 
 		Debug.log("TOTAL AMOUNT OF VERTICES IN SCENE: " + Loader.vertexCounter);
 		Debug.log("TOTAL AMOUNT OF POLYGONS IN SCENE: " + Loader.vertexCounter / 3);
