@@ -56,14 +56,20 @@ public class RenderEngine {
 
 		glSetup();
 
-/*		Entity guiEntity = new Entity("gui", 0.5f, 0.5f, 200f, 200f);
+		//debugWater();
+	}
+
+	private void debugWater(){
+		Entity guiEntity = new Entity("gui", 0.5f, 0.5f, 200f, 200f);
 		guiEntity.addComponent(new GUIComponent("Gui", new Texture(m_WaterReflectionFrameBuffer.getColorTexture())));
 
 		Entity guiEntity2 = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
 		guiEntity2.addComponent(new GUIComponent("Gui", new Texture(m_WaterRefractionFrameBuffer.getColorTexture())));
 
+		//REFLECTION TEXTURE
 		Scene.addEntity(guiEntity);
-		Scene.addEntity(guiEntity2);*/
+		//REFRACTION TEXTURE
+		Scene.addEntity(guiEntity2);
 	}
 
 	private void initRenderers(){
@@ -91,7 +97,7 @@ public class RenderEngine {
 		m_OutputFrameBuffer2 = new FrameBuffer(Window.getWidth(), Window.getHeight(),
 				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
 
-		m_WaterReflectionFrameBuffer = new FrameBuffer(320, 180,
+		m_WaterReflectionFrameBuffer = new FrameBuffer(800, 600,
 				FrameBuffer.DepthBufferType.DEPTH_RENDER_BUFFER, false, false);
 		m_WaterRefractionFrameBuffer = new FrameBuffer(1280, 720,
 				FrameBuffer.DepthBufferType.DEPTH_TEXTURE, false, false);
@@ -142,7 +148,7 @@ public class RenderEngine {
 		m_Camera.invertPitch();
 
 		clearFrameBuffer();
-		renderScene(false, new Vector4f(0.0f,1.0f,0.0f, -water.getHeight()));
+		renderScene(false, new Vector4f(0.0f,1.0f,0.0f, -water.getHeight() - 15f));
 
         //reset the camera position and orientation
         m_Camera.getPosition().y += distance;
@@ -152,7 +158,7 @@ public class RenderEngine {
 
 		m_WaterRefractionFrameBuffer.bind();
 		clearFrameBuffer();
-		renderScene(false, new Vector4f(0.0f,-1.0f,0.0f, water.getHeight()));
+		renderScene(false, new Vector4f(0.0f,-1.0f,0.0f, water.getHeight() + 1f));
 		glDisable(GL_CLIP_DISTANCE0);
 		m_WaterRefractionFrameBuffer.unbind();
 
@@ -165,10 +171,8 @@ public class RenderEngine {
 		m_MultiSampledFrameBuffer.unbind();
 
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT0, m_OutputFrameBuffer);
-		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT1, m_OutputFrameBuffer2);
 
-		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture(),
-				m_OutputFrameBuffer2.getColorTexture());
+		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
 
 		renderGUI();
 	}

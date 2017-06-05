@@ -18,7 +18,7 @@ public class Camera extends Component{
 	private float previousMouseX, previousMouseY = 0;
 	
 	public Camera(float sensitivity){
-		this(70.0f, 0.01f, 10000.0f, sensitivity);
+		this(70.0f, 0.1f, 10000.0f, sensitivity);
 	}
 	
 	public Camera(float fov, float zNear, float zFar, float cameraSensitivity){

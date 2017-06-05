@@ -62,7 +62,8 @@ public class PlayState extends GameState{
 		ImageManager.addImage("barrelNormalMap", "barrelNormal.png");
 		ImageManager.addImage("crateNormalMap", "crateNormal.png");
 		ImageManager.addImage("bricksNormal", "bricksNormal.png");
-		ImageManager.addImage("waterNormalMap", "waterNormalMap.png");
+		//ImageManager.addImage("waterNormalMap", "waterNormalMap.png");
+		ImageManager.addImage("waterNormalMap", "waterNormalMap2.png");
 
 		//DUDV MAPS
 		ImageManager.addImage("waterDUDV", "waterDUDV.png");
@@ -165,9 +166,10 @@ public class PlayState extends GameState{
 		
 		m_Scene.addEntity(terrainEntity);
 		
-		Entity water = new Entity("Water", 220.0f, 20.0f, 200.0f);
+		Entity water = new Entity("Water", 200.0f, -2.0f, 200.0f);
 		WaterTile tile  = new WaterTile("WaterTile");
-		water.getTransform().scale(WaterTile.TILE_SIZE * 2, WaterTile.TILE_SIZE * 2, WaterTile.TILE_SIZE * 2);
+		float scale = 3.25f;
+		water.getTransform().scale(WaterTile.TILE_SIZE * scale, WaterTile.TILE_SIZE * scale, WaterTile.TILE_SIZE * scale);
 		water.addComponent(tile);
 		m_Scene.addEntity(water);
 		m_Renderer.water = tile;
@@ -176,12 +178,12 @@ public class PlayState extends GameState{
 	}
 	
 	private void createLightSources(Terrain terrain){
-		Transform sunTransform = new Transform(new Vector3f(0,0,0), 
+		Transform sunTransform = new Transform(new Vector3f(5000,5000,5000),
 											   new Quaternion(new Vector3f(1,0,0), 40.0f),
 											   new Vector3f(1,1,1));
 		
 		DirectionalLight sun = new DirectionalLight("DirectionalLight", sunTransform,
-											   new Vector3f(1.0f, 1.0f, 1.0f),
+											   new Vector3f(1.0f, 0.7f, 0.7f),
 											   3.0f);
 		
 		m_Scene.addDirectionalLight(sun);	

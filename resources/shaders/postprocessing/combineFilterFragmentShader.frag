@@ -18,5 +18,5 @@ void main(void){
      sceneColor += bloomColor * glowFactor;
 
      fragColor = vec4(1.0) - exp(-sceneColor * exposure);
-     //fragColor.rgb = (fragColor.rgb - 0.5) * (1.0 + contrast) + 0.5;
+     fragColor.rgb = (fragColor.rgb - 0.5) * (1.0 + contrast) + 0.5;
 }

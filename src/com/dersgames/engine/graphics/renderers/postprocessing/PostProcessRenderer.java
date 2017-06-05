@@ -42,12 +42,11 @@ public class PostProcessRenderer {
         RenderEngine.disableFaceCulling();
     }
 
-    public void renderPostProcessingEffects(int colorTexture, int brightColorTexture){
+    public void renderPostProcessingEffects(int colorTexture){
         begin();
 
-        //m_BrightFilter.render(colorTexture);
-        //m_HorizontalBlur.render(m_BrightFilter.getOutputColorTexture());
-        m_HorizontalBlur.render(brightColorTexture);
+        m_BrightFilter.render(colorTexture);
+        m_HorizontalBlur.render(m_BrightFilter.getOutputColorTexture());
         m_VerticalBlur.render(m_HorizontalBlur.getOutputColorTexture());
         m_CombineFilter.render(colorTexture, m_VerticalBlur.getOutputColorTexture());
 

@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.core.GameApplication;
+import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.FrameBuffer;
 import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.models.Model;
@@ -67,6 +68,11 @@ public class WaterRenderer implements Renderer3D{
 		glBindTexture(GL_TEXTURE_2D, m_DuDvMap.getTextureID());
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, m_NormalMap.getTextureID());
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, m_RefractionFBO.getDepthTexture());
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
@@ -74,6 +80,7 @@ public class WaterRenderer implements Renderer3D{
 		m_Shader.enable();
 		m_Shader.loadViewMatrix(camera);
 		m_Shader.loadCameraPosition(camera.getPosition());
+		m_Shader.loadLightSources(Scene.getDirectionalLight().getPosition(), Scene.getDirectionalLight().getLightColor());
 	}
 
 	@Override
@@ -96,6 +103,7 @@ public class WaterRenderer implements Renderer3D{
 	@Override
 	public void end(boolean lastRenderPass){
 		m_Shader.disable();
+		glDisable(GL_BLEND);
 		if(lastRenderPass){
 			clear();
 		}

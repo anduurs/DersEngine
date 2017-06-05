@@ -46,4 +46,8 @@ public class Light extends Entity{
 		m_Intensity = intensity;
 	}
 
+	public Vector3f getPosition(){
+		return m_Transform.getPosition();
+	}
+
 }
