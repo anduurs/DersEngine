@@ -148,7 +148,7 @@ public class RenderEngine {
 		m_Camera.invertPitch();
 
 		clearFrameBuffer();
-		renderScene(false, new Vector4f(0.0f,1.0f,0.0f, -water.getHeight() - 15f));
+		renderScene(false, new Vector4f(0.0f,1.0f,0.0f, -water.getHeight() - 18f));
 
         //reset the camera position and orientation
         m_Camera.getPosition().y += distance;
@@ -169,9 +169,8 @@ public class RenderEngine {
 		renderWater(true);
 
 		m_MultiSampledFrameBuffer.unbind();
-
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT0, m_OutputFrameBuffer);
-
+		
 		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
 
 		renderGUI();
