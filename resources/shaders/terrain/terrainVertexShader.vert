@@ -33,8 +33,8 @@ void main(){
 
 	vec3 actualNormal = normal;
 	
-	if(useFakeLighting == 1.0)
-		actualNormal = vec3(0.0, 1.0, 0.0);
+
+	actualNormal = vec3(0.0, 1.0, 0.0);
 
     vs_out.position = worldPosition.xyz;
 	vs_out.textureCoords = (textureCoords / numOfRows) + offset;

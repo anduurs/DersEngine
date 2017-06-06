@@ -16,9 +16,9 @@ uniform sampler2D depthMap;
 
 uniform float moveFactor;
 
-const float waveDistortionFactor = 0.04;
+const float waveDistortionFactor = 0.01;
 const float shininess = 20.0;
-const float reflectivity = 0.5;
+const float reflectivity = 0.4;
 uniform vec3 lightColor;
 
 vec4 calculateSpecularLight(vec3 lightColor, vec3 lightDirection, vec3 viewDirection, vec3 normal, float waterDepth){
@@ -80,6 +80,6 @@ void main() {
     brightColor = vec4(0.0);
 
 	fragColor = mix(reflectionColor, refractionColor, refractiveFactor);
-	fragColor = mix(fragColor, vec4(0.0, 0.3, 0.7, 1.0), 0.2) + specularLight;
-	fragColor.a = clamp(waterDepth / 5.0, 0.0, 1.0);
+	fragColor = mix(fragColor, vec4(0.0, 0.0, 1.0, 1.0), 0.3) + specularLight;
+	fragColor.a = clamp(waterDepth / 10.0, 0.0, 1.0);
 }

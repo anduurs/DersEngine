@@ -21,7 +21,7 @@ public class CombineFilter {
 
         m_Shader.connectTextureUnits();
         m_Shader.loadContrast(0f);
-        m_Shader.loadGlowFactor(1.0f);
+        m_Shader.loadGlowFactor(2.0f);
         m_Shader.loadExposure(1.0f);
 
         m_Shader.disable();

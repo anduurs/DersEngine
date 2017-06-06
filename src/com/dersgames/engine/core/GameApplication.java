@@ -78,6 +78,7 @@ public class GameApplication implements Runnable{
 		final double SECONDS_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SECONDS_PER_UPDATE;
 		deltaTime = dt;
+
 		while(m_Running){
 			currentTime = System.nanoTime();
 			passedTime = (currentTime - previousTime) / 1000000000.0;

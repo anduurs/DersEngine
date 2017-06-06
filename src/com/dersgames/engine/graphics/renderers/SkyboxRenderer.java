@@ -103,7 +103,7 @@ public class SkyboxRenderer implements Renderer3D{
 	}
 
 	private void bindTextures(){
-		m_Shader.loadBlendFactor(0f);
+		m_Shader.loadBlendFactor(1.0f);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_DayTexture);

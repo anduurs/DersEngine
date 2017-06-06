@@ -23,7 +23,7 @@ public class MenuState extends GameState{
 	@Override
 	public void update(float dt) {
 		if(KeyInput.isKeyDown(GLFW.GLFW_KEY_V)){
-			gsm.pushState(new PlayState(gsm));
+			gsm.pushState(new DayScene(gsm));
 		}
 		
 	}

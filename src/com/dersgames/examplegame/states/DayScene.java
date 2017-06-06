@@ -31,13 +31,13 @@ import com.dersgames.examplegame.entities.LampPost;
 
 import java.awt.*;
 
-public class PlayState extends GameState{
+public class DayScene extends GameState{
 	
 	private RenderEngine m_Renderer;
 	private Loader m_Loader;
 	private Scene m_Scene;
 	
-	public PlayState(GameStateManager gsm) {
+	public DayScene(GameStateManager gsm) {
 		super(gsm);
 		//init();
 	}

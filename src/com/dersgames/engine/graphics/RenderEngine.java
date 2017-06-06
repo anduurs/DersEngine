@@ -170,8 +170,10 @@ public class RenderEngine {
 
 		m_MultiSampledFrameBuffer.unbind();
 		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT0, m_OutputFrameBuffer);
-		
-		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture());
+		m_MultiSampledFrameBuffer.blitToFrameBuffer(GL_COLOR_ATTACHMENT1, m_OutputFrameBuffer2);
+
+		m_PostProcessRenderer.renderPostProcessingEffects(m_OutputFrameBuffer.getColorTexture(),
+				m_OutputFrameBuffer2.getColorTexture());
 
 		renderGUI();
 	}
