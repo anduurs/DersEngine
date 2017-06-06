@@ -159,8 +159,8 @@ public class NightScene extends GameState{
 
         Entity terrainEntity = new Entity("Terrain", 0, 0, 0);
         //terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
-        Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
-        //Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+        //Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap, "heightmap");
+        Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
         terrainEntity.addComponent(terrain);
 
 
@@ -211,7 +211,7 @@ public class NightScene extends GameState{
                 intensity,
 				range);
         lamp.getTransform().rotate(lamp.getTransform().getRotation().getUp(), 180);
-        lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
+//        lamp.getPosition().y = terrain.getHeightOfTerrain(lamp.getPosition().x, lamp.getPosition().z);
 
 		pointLight1.getPosition().y = lamp.getPosition().y + 20;
 		m_Scene.addPointLight(pointLight1);
@@ -223,7 +223,7 @@ public class NightScene extends GameState{
                 intensity,
 				range);
 
-        lamp2.getPosition().y = terrain.getHeightOfTerrain(lamp2.getPosition().x, lamp2.getPosition().z);
+//        lamp2.getPosition().y = terrain.getHeightOfTerrain(lamp2.getPosition().x, lamp2.getPosition().z);
 		pointLight2.getPosition().y = lamp2.getPosition().y + 20;
 
 		m_Scene.addPointLight(pointLight2);
@@ -235,7 +235,7 @@ public class NightScene extends GameState{
                 intensity,
 				range);
         lamp3.getTransform().rotate(lamp3.getTransform().getRotation().getUp(), 90);
-        lamp3.getPosition().y = terrain.getHeightOfTerrain(lamp3.getPosition().x, lamp3.getPosition().z);
+//        lamp3.getPosition().y = terrain.getHeightOfTerrain(lamp3.getPosition().x, lamp3.getPosition().z);
 		pointLight3.getPosition().y = lamp3.getPosition().y + 20;
 
 		m_Scene.addPointLight(pointLight3);
@@ -248,7 +248,7 @@ public class NightScene extends GameState{
 				range);
 
         lamp4.getTransform().rotate(lamp4.getTransform().getRotation().getUp(), -90);
-        lamp4.getPosition().y = terrain.getHeightOfTerrain(lamp4.getPosition().x, lamp4.getPosition().z);
+//        lamp4.getPosition().y = terrain.getHeightOfTerrain(lamp4.getPosition().x, lamp4.getPosition().z);
 		pointLight4.getPosition().y = lamp4.getPosition().y + 20;
 
 		m_Scene.addPointLight(pointLight4);
