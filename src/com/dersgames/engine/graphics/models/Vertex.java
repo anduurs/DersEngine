@@ -1,4 +1,4 @@
-package com.dersgames.engine.graphics;
+package com.dersgames.engine.graphics.models;
 
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;

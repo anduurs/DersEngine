@@ -28,6 +28,7 @@ public class GUIComponent extends Renderable{
 		m_UsingColor = true;
 	}
 	
+	// TODO: Move this logic to a new component
 	public void update(float dt){
 		if(mouseHoovering(MouseCursor.getX(), MouseCursor.getY())){
 			m_Color = new Vector3f(0,0,1);
@@ -73,8 +74,8 @@ public class GUIComponent extends Renderable{
 	}
 	
 	@Override
-	public void render(RenderEngine renderer) {
-		renderer.submit(this);
+	public void render() {
+		RenderEngine.getInstance().submit(this);
 	}
 	
 	public boolean isUsingColor(){

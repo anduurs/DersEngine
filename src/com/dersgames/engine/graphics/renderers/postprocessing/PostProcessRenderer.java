@@ -1,11 +1,17 @@
 package com.dersgames.engine.graphics.renderers.postprocessing;
 
-import com.dersgames.engine.graphics.*;
-import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.renderers.ImageRenderer;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL11.*;
+import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.Window;
+import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.ModelManager;
+import com.dersgames.engine.graphics.renderers.ImageRenderer;
 
 /**
  * Created by Anders on 5/28/2017.
@@ -25,7 +31,7 @@ public class PostProcessRenderer {
     public PostProcessRenderer(){
         m_ImageRenderer = new ImageRenderer();
         float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
-        m_Quad = Loader.loadModel(positions, 2);
+        m_Quad = ModelManager.getInstance().loadModel(positions, 2);
 
         m_HorizontalBlur = new GaussianBlur(Window.getWidth() / 2,
                 Window.getHeight() / 2, GaussianBlur.BlurType.HORIZONTAL);
@@ -39,7 +45,7 @@ public class PostProcessRenderer {
     private void begin(){
         glBindVertexArray(m_Quad.getVaoID());
         glDisable(GL_DEPTH_TEST);
-        RenderEngine.disableFaceCulling();
+        RenderEngine.getInstance().disableFaceCulling();
     }
 
     public void renderPostProcessingEffects(int colorTexture, int brightColor){
@@ -58,7 +64,7 @@ public class PostProcessRenderer {
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
         glEnable(GL_DEPTH_TEST);
-        RenderEngine.enableFaceCulling();
+        RenderEngine.getInstance().enableFaceCulling();
     }
 
     public void dispose(){

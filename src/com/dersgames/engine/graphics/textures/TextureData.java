@@ -35,7 +35,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL11;
 
-import com.dersgames.engine.utils.ImageManager;
+import com.dersgames.engine.graphics.ImageManager;
 
 public class TextureData {
 	
@@ -88,18 +88,20 @@ public class TextureData {
 	private void loadModelTexture(String name){
 		glBindTexture(GL_TEXTURE_2D, m_ID);
 		
+		ByteBuffer buffer = getImageData(name);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		
-		ByteBuffer buffer = getImageData(name);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.0f);
 		float amount = Math.min(4.0f, GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
 		glTexParameterf(GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
 
@@ -127,7 +129,7 @@ public class TextureData {
 	}
 	
 	private ByteBuffer getImageData(String name){
-		BufferedImage img = ImageManager.getImage(name);
+		BufferedImage img = ImageManager.getInstance().getImage(name);
 
 		m_Width  = img.getWidth();
 		m_Height = img.getHeight();

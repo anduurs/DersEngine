@@ -2,7 +2,6 @@ package com.dersgames.engine.datastructures;
 
 /**
  * A basic stack structure implemented as a linkedlist
- * Primarily used for state handling in this Game Engine so far
  * 
  * @author Anders
  *

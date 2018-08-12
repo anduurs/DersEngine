@@ -55,7 +55,7 @@ uniform vec3 skyColor;
 uniform vec3 ambientLight;
 
 vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, vec3 normal, vec4 textureColor, vec4 specularMapColor){
-    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
+    float diffuseFactor = max(dot(normal, lightDirection), 0.1);
     vec4 diffuseLight  =  vec4(lightColor, 1.0) * lightIntensity * diffuseFactor * vec4(material.baseColor, 1.0) * textureColor;
 
     vec4 specularLight = vec4(0.0, 0.0, 0.0, 1.0);
@@ -66,7 +66,7 @@ vec4 calculateLight(vec3 lightColor, vec3 lightDirection, float lightIntensity, 
         vec3 halfwayDirection = normalize(lightDirection + viewDirection);
 
         float normalizationFactor = ((material.shininess + 2.0) / 8.0);
-        float specularFactor = pow(max(dot(normal, halfwayDirection), 0.0), material.shininess) * normalizationFactor;
+        float specularFactor = pow(max(dot(normal, halfwayDirection), 0.1), material.shininess) * normalizationFactor;
 
         specularLight = vec4(lightColor, 1.0) * lightIntensity * specularFactor * vec4(material.specular, 1.0);
 
@@ -115,9 +115,8 @@ void main(){
 	vec3 normal = normalize((2.0 * texture(material.normalMap, fs_in.textureCoords).rgb - 1.0));
 
 	vec4 emissive = vec4(material.emissive, 1.0) * textureColor;
-	vec4 ambient = vec4(ambientLight, 1.0);
-
-	vec4 totalShade = ambient + emissive;
+	
+	vec4 totalShade = emissive;
 
 	if(directionalLight.light.intensity > 0)
 		totalShade += calculateDirectionalLight(directionalLight, normal, textureColor, specularMapColor);

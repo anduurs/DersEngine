@@ -1,7 +1,7 @@
-package com.dersgames.engine.entities.lights;
+package com.dersgames.engine.graphics.lights;
 
+import com.dersgames.engine.core.Entity;
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.maths.Vector3f;
 
 public class Light extends Entity{

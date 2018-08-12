@@ -7,16 +7,15 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.ModelManager;
+import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
-import com.dersgames.engine.maths.Vector4f;
+import com.dersgames.engine.graphics.textures.TextureManager;
 
 public class SkyboxRenderer implements Renderer3D{
 	
@@ -76,17 +75,20 @@ public class SkyboxRenderer implements Renderer3D{
 	private SkyboxShader m_Shader;
 	
 	public SkyboxRenderer(){
-		m_Cube = Loader.loadModel(VERTICES, 3);
-		m_DayTexture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES_DAY);
-		m_NightTexture = Loader.loadCubeMapTexture(CUBEMAP_TEXTURES_NIGHT);
-		m_Shader = new SkyboxShader();
+		m_Cube 		   = ModelManager.getInstance().loadModel(VERTICES, 3);
+		m_DayTexture   = TextureManager.getInstance().loadCubeMapTexture(CUBEMAP_TEXTURES_DAY);
+		m_NightTexture = TextureManager.getInstance().loadCubeMapTexture(CUBEMAP_TEXTURES_NIGHT);
+		m_Shader 	   = (SkyboxShader) ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_SKYBOX_SHADER);
 	}
 
 	@Override
-	public void begin(Camera camera, Vector4f clippingPlane) {
+	public void begin() {
 		m_Shader.enable();
+		RenderEngine renderEngine = RenderEngine.getInstance();
+		Camera camera = renderEngine.getCamera();
 		m_Shader.loadViewMatrix(camera);
-		m_Shader.loadFogColor(RenderEngine.getSkyColor());
+		m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+		m_Shader.loadFogColor(renderEngine.getSkyColor());
 	}
 
 	@Override
@@ -103,7 +105,7 @@ public class SkyboxRenderer implements Renderer3D{
 	}
 
 	private void bindTextures(){
-		m_Shader.loadBlendFactor(1.0f);
+		m_Shader.loadBlendFactor(0.0f);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_DayTexture);

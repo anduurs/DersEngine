@@ -3,29 +3,33 @@ package com.dersgames.engine.components;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.models.TexturedModel;
 
-public class StaticMesh extends Renderable{
+public class StaticMesh extends Renderable {
 	
-	private TexturedModel m_TexturedModel;
+	private Model m_Model;
 	private Material m_Material;
 	
 	private int m_TextureIndex;
 	
-	public StaticMesh(String tag, TexturedModel model){
-		this(tag, model, 0);
+	public StaticMesh(String tag, Model model, Material material){
+		super(tag);
+		
+		m_Model = model;
+		m_Material = material;
+		m_TextureIndex = 0;
 	}
 	
-	public StaticMesh(String tag, TexturedModel model, int textureIndex){
+	public StaticMesh(String tag, Model model, Material material, int textureIndex){
 		super(tag);
-		m_TexturedModel = model;
-		m_Material = model.getMaterial();
+		
+		m_Model = model;
+		m_Material = material;
 		m_TextureIndex = textureIndex;
 	}
 	
 	@Override
-	public void render(RenderEngine renderer) {
-		renderer.submit(this);
+	public void render() {
+		RenderEngine.getInstance().submit(this);
 	}
 	
 	public float getTextureXOffset() {
@@ -38,14 +42,10 @@ public class StaticMesh extends Renderable{
 		return (float)row / (float)m_Material.getTextureAtlas().getNumberOfRows();
 	}
 
-	public TexturedModel getTexturedModel() {
-		return m_TexturedModel;
+	public Model getModel() {
+		return m_Model;
 	}
 	
-	public Model getModel(){
-		return m_TexturedModel.getModel();
-	}
-
 	public Material getMaterial() {
 		return m_Material;
 	}

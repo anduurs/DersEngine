@@ -1,4 +1,4 @@
-package com.dersgames.engine.entities.lights;
+package com.dersgames.engine.graphics.lights;
 
 import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.maths.Vector3f;

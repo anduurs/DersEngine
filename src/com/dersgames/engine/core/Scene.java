@@ -4,29 +4,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.dersgames.engine.entities.Entity;
-import com.dersgames.engine.entities.lights.DirectionalLight;
-import com.dersgames.engine.entities.lights.PointLight;
-import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.lights.DirectionalLight;
+import com.dersgames.engine.graphics.lights.PointLight;
+import com.dersgames.engine.graphics.lights.SpotLight;
 import com.dersgames.engine.maths.Vector3f;
 
-public class Scene {
+public abstract class Scene {
+	private String m_SceneName;
 	
-	private static List<Entity> m_EntityList;
+	private List<Entity> m_Entities;
 	
-	private static List<DirectionalLight> m_DirectionalLights;
-	private static List<PointLight> m_PointLights;
-	private static List<SpotLight> m_SpotLights;
+	private List<DirectionalLight> m_DirectionalLights;
+	private List<PointLight> m_PointLights;
+	private List<SpotLight> m_SpotLights;
 	
-	private static Vector3f m_SceneAmbientLight = new Vector3f(0.05f, 0.05f, 0.05f);
+	private Vector3f m_SceneAmbientLight = new Vector3f(0.05f, 0.05f, 0.05f);
 	
-	public Scene(){
-		m_EntityList = new ArrayList<>();
-		m_PointLights = new ArrayList<>();
-		m_SpotLights = new ArrayList<>();
+	public Scene(String name){
+		m_SceneName = name;
+		
+		m_Entities 			= new ArrayList<>();
+		m_PointLights 		= new ArrayList<>();
+		m_SpotLights 	    = new ArrayList<>();
 		m_DirectionalLights = new ArrayList<>();
 	}
+	
+	public void onSceneLoaded() {
+		initEntities();
+		initLightSetup();
+	}
+	
+	public void onSceneDestroyed() {
+		cleanUp();
+	}
+	
+	public abstract void initEntities();
+	public abstract void initLightSetup();
 	
 	public void addDirectionalLight(DirectionalLight directionalLight){
 		m_DirectionalLights.add(directionalLight);
@@ -40,49 +54,62 @@ public class Scene {
 		m_SpotLights.add(spotLight);
 	}
 	
-	public static void addEntity(Entity entity){
-		m_EntityList.add(entity);
+	public void addEntity(Entity entity){
+		m_Entities.add(entity);
 	}
-	
 	
 	public void update(float dt){
-		refreshEntityList();
-		refreshDirectionalLightLightList();
-		refreshPointLightList();
-		refreshSpotLightList();
-		
-		for(Entity entity : getEntities())
-			entity.updateComponents(dt);
-
-		getDirectionalLight().updateComponents(dt);
-		
-		for(PointLight light : getPointLights())
-			light.updateComponents(dt);
-		
-		for(SpotLight light : getSpotLights())
-			light.updateComponents(dt);
+		refresh();
+		updateEntities(dt);
+		updateLights(dt);
 	}
 
-	public void render(RenderEngine renderer){
-		for(Entity entity : getEntities())
-			entity.renderComponents(renderer);
-		
-		renderer.render();
+	public void render(){
+		for(Entity entity : m_Entities) {
+			entity.renderComponents();
+		}
+
+		RenderEngine.getInstance().render();
 	}
 	
 	public int getEntityCount(){
-		return getEntities().size();
+		return m_Entities.size();
 	}
 	
-	public static Entity findEntityByTag(String tag){
-		for(Entity entity : getEntities())
+	public Entity findEntityByTag(String tag){
+		for(Entity entity : m_Entities)
 			if(entity.getTag().equals(tag)) 
 				return entity;
 		return null;
 	}
 	
+	private void updateEntities(float dt) {
+		for(Entity entity : m_Entities) {
+			entity.updateComponents(dt);
+		}
+	}
+	
+	private void updateLights(float dt) {
+		getDirectionalLight().updateComponents(dt);
+		
+		for(PointLight light : getPointLights()) {
+			light.updateComponents(dt);
+		}
+
+		for(SpotLight light : getSpotLights()) {
+			light.updateComponents(dt);
+		}	
+	}
+	
+	private void refresh() {
+		refreshEntityList();
+		refreshDirectionalLightLightList();
+		refreshPointLightList();
+		refreshSpotLightList();
+	}
+	
 	private void refreshEntityList(){
-		for(Iterator<Entity> it = m_EntityList.iterator(); it.hasNext();){
+		for(Iterator<Entity> it = m_Entities.iterator(); it.hasNext();){
 			Entity entity = it.next();
 			if(!entity.isAlive()){ 
 				it.remove();
@@ -117,27 +144,35 @@ public class Scene {
 		}
 	}
 	
-	private static synchronized List<Entity> getEntities(){
-		return m_EntityList;
+	private void cleanUp() {
+		m_Entities.clear();
+		m_PointLights.clear();
+		m_SpotLights.clear();
+		m_DirectionalLights.clear();
+		m_SceneAmbientLight = null;
 	}
 	
-	public static synchronized List<PointLight> getPointLights(){
+	public String getSceneName() {
+		return m_SceneName;
+	}
+	
+	public List<PointLight> getPointLights(){
 		return m_PointLights;
 	}
 	
-	public static synchronized List<SpotLight> getSpotLights(){
+	public List<SpotLight> getSpotLights(){
 		return m_SpotLights;
 	}
 	
-	public static synchronized DirectionalLight getDirectionalLight(){
+	public DirectionalLight getDirectionalLight(){
 		return m_DirectionalLights.get(0);
 	}
 	
-	public static Vector3f getSceneAmbientLight(){
+	public Vector3f getSceneAmbientLight(){
 		return m_SceneAmbientLight;
 	}
 
-	public static void setSceneAmbientLight(Vector3f sceneAmbientLight) {
+	public void setSceneAmbientLight(Vector3f sceneAmbientLight) {
 		m_SceneAmbientLight = sceneAmbientLight;
 	}
 

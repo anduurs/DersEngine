@@ -21,10 +21,12 @@ import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.maths.Vector4f;
 import com.dersgames.engine.terrains.Terrain;
+import com.dersgames.examplegame.Game;
 
 public class TerrainRenderer implements Renderer3D{
 	
@@ -32,7 +34,7 @@ public class TerrainRenderer implements Renderer3D{
 	private List<Terrain> m_Terrains;
 	
 	public TerrainRenderer(){
-		m_TerrainShader = new TerrainShader();
+		m_TerrainShader = (TerrainShader) ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_TERRAIN_SHADER);
 		m_Terrains = new ArrayList<Terrain>();
 		
 		m_TerrainShader.enable();
@@ -50,12 +52,16 @@ public class TerrainRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void begin(Camera camera, Vector4f clippingPlane) {
+	public void begin() {
 		m_TerrainShader.enable();
-		m_TerrainShader.loadSkyColor(RenderEngine.getSkyColor());
-		m_TerrainShader.loadLightSources(Scene.getDirectionalLight(), Scene.getPointLights(), Scene.getSpotLights());
+		RenderEngine renderEngine = RenderEngine.getInstance();
+		m_TerrainShader.loadSkyColor(renderEngine.getSkyColor());
+		m_TerrainShader.loadLightSources(Game.currentScene.getDirectionalLight(), 
+				Game.currentScene.getPointLights(), Game.currentScene.getSpotLights());
+		Camera camera = renderEngine.getCamera();
 		m_TerrainShader.loadViewMatrix(camera);
-		m_TerrainShader.loadClippingPlane(clippingPlane);
+		m_TerrainShader.loadProjectionMatrix(camera.getProjectionMatrix());
+		m_TerrainShader.loadClippingPlane(renderEngine.getCurrentClippingPlane());
 	}
 
 	public void render(){
@@ -102,7 +108,7 @@ public class TerrainRenderer implements Renderer3D{
 	}
 	
 	private void unbindTexturedModel(){
-		RenderEngine.enableFaceCulling();
+		RenderEngine.getInstance().enableFaceCulling();
 		glBindVertexArray(0);
 	}
 	

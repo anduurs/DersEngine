@@ -1,6 +1,6 @@
 package com.dersgames.engine.components;
 
-import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.core.Component;
 
 public abstract class Renderable extends Component{
 	
@@ -14,6 +14,6 @@ public abstract class Renderable extends Component{
 	@Override
 	public void update(float dt) {}
 	
-	public abstract void render(RenderEngine renderer);
+	public abstract void render();
 	
 }

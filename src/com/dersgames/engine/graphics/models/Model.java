@@ -2,16 +2,16 @@ package com.dersgames.engine.graphics.models;
 
 public class Model {
 	
-	private int m_vaoID;
+	private int m_VaoID;
 	private int m_VertexCount;
 	
-	public Model(int vao, int vertexCount){
-		m_vaoID = vao;
+	public Model(int vaoID, int vertexCount){
+		m_VaoID = vaoID;
 		m_VertexCount = vertexCount;
 	}
 
 	public int getVaoID() {
-		return m_vaoID;
+		return m_VaoID;
 	}
 
 	public int getVertexCount() {

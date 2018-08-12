@@ -1,10 +1,10 @@
 package com.dersgames.engine.graphics.shaders;
 
 import com.dersgames.engine.core.Scene;
-import com.dersgames.engine.entities.lights.DirectionalLight;
-import com.dersgames.engine.entities.lights.PointLight;
-import com.dersgames.engine.entities.lights.SpotLight;
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.lights.DirectionalLight;
+import com.dersgames.engine.graphics.lights.PointLight;
+import com.dersgames.engine.graphics.lights.SpotLight;
 import com.dersgames.engine.maths.Vector3f;
 
 import java.util.List;

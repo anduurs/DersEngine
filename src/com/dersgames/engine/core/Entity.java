@@ -1,11 +1,9 @@
-package com.dersgames.engine.entities;
+package com.dersgames.engine.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dersgames.engine.components.Component;
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Transform;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.maths.Quaternion;
 import com.dersgames.engine.maths.Vector3f;
@@ -55,13 +53,13 @@ public class Entity {
 	
 	public Component addComponent(Component component){
 		component.setEntity(this);
-		
-		if(component instanceof Renderable){
-			Renderable r = (Renderable) component;
-			getRenderables().add(r);
-		}
-		
 		getComponents().add(component);
+		return component;
+	}
+	
+	public Component addRenderableComponent(Renderable component){
+		component.setEntity(this);
+		getRenderables().add(component);
 		return component;
 	}
 	
@@ -69,6 +67,23 @@ public class Entity {
 		for(Component c : getComponents())
 			if(c.getTag().equals(tag))
 				return c;
+		
+		for(Component c : getRenderables())
+			if(c.getTag().equals(tag))
+				return c;
+		
+		return null;
+	}
+	
+	public Component findComponentByRef(Component component){
+		for(Component c : getComponents())
+			if(c.equals(component))
+				return c;
+		
+		for(Component c : getRenderables())
+			if(c.equals(component))
+				return c;
+		
 		return null;
 	}
 	
@@ -78,10 +93,10 @@ public class Entity {
 				c.update(dt);
 	}
 	
-	public void renderComponents(RenderEngine renderer){
+	public void renderComponents(){
 		for(Renderable r : getRenderables())
 			if(r.isActive())
-				r.render(renderer);
+				r.render();
 	}
 	
 	public void destroy(){

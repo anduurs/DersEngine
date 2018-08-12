@@ -1,7 +1,5 @@
-package com.dersgames.engine.components;
+package com.dersgames.engine.core;
 
-import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.entities.Entity;
 import com.dersgames.engine.maths.Quaternion;
 import com.dersgames.engine.maths.Vector3f;
 

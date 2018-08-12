@@ -2,18 +2,20 @@ package com.dersgames.engine.core;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.dersgames.engine.datastructures.Node;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.Window;
+import com.dersgames.engine.graphics.models.ModelManager;
+import com.dersgames.engine.graphics.textures.TextureManager;
 import com.dersgames.engine.input.KeyInput;
 
-public class GameApplication implements Runnable{
+public abstract class GameApplication implements Runnable {
 	
 	private volatile boolean m_Running = false;
-	
 	private Thread m_Thread;
+
+	public static Scene currentScene;
+	
 	private Window m_Window;
-	private GameStateManager m_StateManager;
-	private GameState m_StartState;
 	
 	private int m_Width;
 	private int m_Height;
@@ -22,48 +24,80 @@ public class GameApplication implements Runnable{
 	private boolean m_FullScreen;
 
 	public static float deltaTime;
+
+	public GameApplication(){
+		m_Width = 800;
+		m_Height = 600;
+		m_Title = "Untitled Game v0.01";
+		m_Vsync = false;
+		m_FullScreen = false;
+		initResources();
+		initGame();
+	}
 	
-	public GameApplication(int width, int height, String title, boolean vsync, boolean fullscreen){
+	public void setWindowWidthAndHeight(int width, int height) {
 		m_Width = width;
 		m_Height = height;
+	}
+	
+	public void setGameTitle(String title) {
 		m_Title = title;
-		m_Vsync = vsync;
-		m_FullScreen = fullscreen;
+	}
+	
+	public void setVsync(boolean enabled) {
+		m_Vsync = enabled;
+	}
+	
+	public void setFullScreen(boolean fullScreen) {
+		m_FullScreen = fullScreen;
+	}
+	
+	public static void loadScene(Scene scene) {
+		if (currentScene != null) {
+			currentScene.onSceneDestroyed();
+		}
 		
-		m_StateManager = new GameStateManager();
+		currentScene = scene;
 	}
 	
-	public void pushStartingState(GameState startingState){
-		m_StartState = startingState;
-		m_StateManager.pushState(startingState);
-	}
-	
-	private void init(){
-		m_Window = new Window(m_Width, m_Height, m_Title, m_Vsync, m_FullScreen);
-		m_StartState.init();
-	}
+	public abstract void initResources();
+	public abstract void initGame();
 	
 	public synchronized void start(){
 		m_Running = true;
+		
 		if(m_Thread == null){
 			m_Thread = new Thread(this, "Game-Thread");
 			m_Thread.start();
 		}
 	}
 	
+	private void onGameApplicationStarted(){
+		m_Window = new Window(m_Width, m_Height, m_Title, m_Vsync, m_FullScreen);
+		RenderEngine.getInstance().init();
+		currentScene.onSceneLoaded();
+	}
+	
+	private void onGameApplicationExit(){
+		RenderEngine.getInstance().dispose();
+		TextureManager.getInstance().dispose();
+		ModelManager.getInstance().dispose();
+		currentScene.onSceneDestroyed();
+	}
+	
 	private void update(float dt){
 		m_Window.update();
-		m_StateManager.update(dt);
+		currentScene.update(dt);
 	}
 	
 	private void render(){
-		m_StateManager.render();
+		currentScene.render();
 		m_Window.swapBuffers();
 	}
 	
 	@Override
 	public void run() {
-		init();
+		onGameApplicationStarted();
 		
 		double previousTime = System.nanoTime();
 		double currentTime;
@@ -111,13 +145,9 @@ public class GameApplication implements Runnable{
 			if(m_Window.isWindowClosed())
 				m_Running = false;
 		}
-
-		while(m_StateManager.popState() != null){}
 		
+		onGameApplicationExit();
+
 		m_Window.destroy();
-	}
-	
-	public GameStateManager getGameStateManager(){
-		return m_StateManager;
 	}
 }

@@ -1,11 +1,12 @@
 package com.dersgames.engine.graphics.shaders;
 
 import com.dersgames.engine.core.Scene;
-import com.dersgames.engine.entities.lights.DirectionalLight;
-import com.dersgames.engine.entities.lights.PointLight;
-import com.dersgames.engine.entities.lights.SpotLight;
+import com.dersgames.engine.graphics.lights.DirectionalLight;
+import com.dersgames.engine.graphics.lights.PointLight;
+import com.dersgames.engine.graphics.lights.SpotLight;
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.examplegame.Game;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class NormalMapShader extends PhongShader{
 
     @Override
     public void loadLightSources(DirectionalLight directionalLight, List<PointLight> pointLights, List<SpotLight> spotLights){
-        super.loadVector3f("ambientLight", Scene.getSceneAmbientLight());
+        super.loadVector3f("ambientLight", Game.currentScene.getSceneAmbientLight());
 
         super.loadVector3f("directionalLightDirection", directionalLight.getDirection());
         super.loadVector3f("directionalLight.light.color", directionalLight.getLightColor());

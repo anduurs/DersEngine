@@ -1,27 +1,38 @@
 package com.dersgames.engine.graphics.renderers;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.core.GameApplication;
-import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.FrameBuffer;
-import com.dersgames.engine.graphics.Loader;
+import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.ModelManager;
+import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.shaders.WaterShader;
 import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.graphics.textures.TextureManager;
 import com.dersgames.engine.graphics.water.WaterTile;
-import com.dersgames.engine.maths.Vector4f;
+import com.dersgames.engine.graphics.water.WaterUpdate;
+import com.dersgames.examplegame.Game;
 
 public class WaterRenderer implements Renderer3D{
 	
@@ -41,12 +52,12 @@ public class WaterRenderer implements Renderer3D{
 		m_ReflectionFBO = reflectionFBO;
 		m_RefractionFBO = refractionFBO;
 
-		m_Quad = Loader.loadModel(m_Vertices, 2);
-		m_Shader = new WaterShader();
+		m_Quad = ModelManager.getInstance().loadModel(m_Vertices, 2);
+		m_Shader = (WaterShader) ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_WATER_SHADER);
 		m_WaterTiles = new ArrayList<>();
 
-		m_DuDvMap = new Texture(Loader.loadModelTexture("waterDUDV"));
-		m_NormalMap = new Texture(Loader.loadModelTexture("waterNormalMap"));
+		m_DuDvMap = new Texture(TextureManager.getInstance().loadModelTexture("waterDUDV"));
+		m_NormalMap = new Texture(TextureManager.getInstance().loadModelTexture("waterNormalMap"));
 
 		m_Shader.enable();
 		m_Shader.connectTextureUnits();
@@ -76,11 +87,14 @@ public class WaterRenderer implements Renderer3D{
 	}
 
 	@Override
-	public void begin(Camera camera, Vector4f clippingPlane) {
+	public void begin() {
 		m_Shader.enable();
+		Camera camera = RenderEngine.getInstance().getCamera();
 		m_Shader.loadViewMatrix(camera);
+		m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 		m_Shader.loadCameraPosition(camera.getPosition());
-		m_Shader.loadLightSources(Scene.getDirectionalLight().getPosition(), Scene.getDirectionalLight().getLightColor());
+		m_Shader.loadLightSources(Game.currentScene.getDirectionalLight().getPosition(), 
+				Game.currentScene.getDirectionalLight().getLightColor());
 	}
 
 	@Override
@@ -88,7 +102,8 @@ public class WaterRenderer implements Renderer3D{
 		bind();
 
 		for(WaterTile tile : m_WaterTiles){
-			m_Shader.loadMoveFactor(tile.getMoveFactor());
+			WaterUpdate waterUpdate = (WaterUpdate)tile.getEntity().findComponentByTag("WaterUpdate");
+			m_Shader.loadMoveFactor(waterUpdate.getMoveFactor());
 			m_Shader.loadModelMatrix(tile.getEntity());
 			glDrawArrays(GL_TRIANGLES, 0, m_Quad.getVertexCount());
 		}
@@ -125,6 +140,9 @@ public class WaterRenderer implements Renderer3D{
 		else return null;
 	}
 
+	public int getNumberOfWaterTiles(){
+		return m_WaterTiles.size();
+	}
 	public void clear(){
 		m_WaterTiles.clear();
 	}

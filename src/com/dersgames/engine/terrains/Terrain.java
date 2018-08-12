@@ -3,15 +3,15 @@ package com.dersgames.engine.terrains;
 import java.awt.image.BufferedImage;
 
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.graphics.Loader;
+import com.dersgames.engine.graphics.ImageManager;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.maths.MathUtil;
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
-import com.dersgames.engine.utils.ImageManager;
 
 public class Terrain extends Renderable{
 	
@@ -27,24 +27,22 @@ public class Terrain extends Renderable{
 	private TerrainTexturePack m_TexturePack;
 	private Texture m_BlendMap;
 	
-	public Terrain(String tag, int gridX, int gridZ, 
-			Loader loader, TerrainTexturePack texturePack, Texture blendMap, String heightmap){
+	public Terrain(String tag, int gridX, int gridZ, TerrainTexturePack texturePack, Texture blendMap, String heightmap){
 		super(tag);
 		m_TexturePack = texturePack;
 		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridZ * SIZE;
-		m_Mesh = generateTerrain(loader, heightmap);
+		m_Mesh = generateTerrain(heightmap);
 	}
 	
-	public Terrain(String tag, int gridX, int gridZ, 
-			Loader loader, TerrainTexturePack texturePack, Texture blendMap){
+	public Terrain(String tag, int gridX, int gridZ, TerrainTexturePack texturePack, Texture blendMap){
 		super(tag);
 		m_TexturePack = texturePack;
 		m_BlendMap = blendMap;
 		x = gridX * SIZE;
 		z = gridZ * SIZE;
-		m_Mesh = generateTerrain(loader);
+		m_Mesh = generateTerrain();
 	}
 	
 	@Override
@@ -53,12 +51,12 @@ public class Terrain extends Renderable{
 	}
 	
 	@Override
-	public void render(RenderEngine renderer) {
-		renderer.submit(this);
+	public void render() {
+		RenderEngine.getInstance().submit(this);
 	}
 	
-	private Model generateTerrain(Loader loader, String heightmap){
-		BufferedImage image = ImageManager.getImage(heightmap);
+	private Model generateTerrain(String heightmap){
+		BufferedImage image = ImageManager.getInstance().getImage(heightmap);
 		int VERTEX_COUNT = image.getHeight();
 		
 		m_Heights = new float[VERTEX_COUNT][VERTEX_COUNT];
@@ -114,10 +112,10 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return Loader.loadModel(vertices, textureCoords, normals, indices);
+		return ModelManager.getInstance().loadModel(vertices, textureCoords, normals, indices);
 	}
 	
-	private Model generateTerrain(Loader loader){
+	private Model generateTerrain(){
 		int VERTEX_COUNT = 64;
 		
 		int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -170,7 +168,7 @@ public class Terrain extends Renderable{
 			}
 		}
 		
-		return Loader.loadModel(vertices, textureCoords, normals, tangents, indices);
+		return ModelManager.getInstance().loadModel(vertices, textureCoords, normals, tangents, indices);
 	}
 	
 	public float getHeightOfTerrain(float worldX, float worldZ){

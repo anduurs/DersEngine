@@ -2,6 +2,7 @@ package com.dersgames.engine.components;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.dersgames.engine.core.Component;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.MouseCursor;
@@ -86,5 +87,9 @@ public class Camera extends Component{
 
 	public void invertPitch(){
 		m_Entity.getTransform().getRotation().x = -m_Entity.getTransform().getRotation().x;
+	}
+	
+	public void invertYaw(){
+		m_Entity.getTransform().getRotation().y = -m_Entity.getTransform().getRotation().y;
 	}
 }

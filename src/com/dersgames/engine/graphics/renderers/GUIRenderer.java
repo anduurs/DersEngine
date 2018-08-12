@@ -13,18 +13,17 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.GUIComponent;
-import com.dersgames.engine.graphics.Loader;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.shaders.GUIShader;
+import com.dersgames.engine.graphics.shaders.ShaderManager;
 
 public class GUIRenderer {
 	
@@ -35,9 +34,9 @@ public class GUIRenderer {
 	
 	public GUIRenderer(){
 		float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
-		m_Quad = Loader.loadModel(positions, 2);
+		m_Quad = ModelManager.getInstance().loadModel(positions, 2);
 		
-		m_Shader = new GUIShader();
+		m_Shader = (GUIShader) ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_GUI_SHADER);
 		m_GUIComponents = new ArrayList<>();
 	}
 	
@@ -47,7 +46,7 @@ public class GUIRenderer {
 	
 	public void begin(){
 		m_Shader.enable();
-		RenderEngine.disableFaceCulling();
+		RenderEngine.getInstance().disableFaceCulling();
 		glBindVertexArray(m_Quad.getVaoID());
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -70,7 +69,7 @@ public class GUIRenderer {
 	}
 
 	public void end(){
-		RenderEngine.enableFaceCulling();
+		RenderEngine.getInstance().enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 		glActiveTexture(GL_TEXTURE0);

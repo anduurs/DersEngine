@@ -16,7 +16,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.entities.Entity;
+import com.dersgames.engine.core.Entity;
 import com.dersgames.engine.maths.Matrix4f;
 import com.dersgames.engine.maths.Vector2f;
 import com.dersgames.engine.maths.Vector3f;
@@ -156,6 +156,10 @@ public abstract class Shader {
 	
 	public void deleteShaderProgram(){
 		glDeleteProgram(m_ShaderProgram);
+	}
+	
+	public int getShaderProgramID() {
+		return m_ShaderProgram;
 	}
 	
 	private static String loadShader(String fileName){

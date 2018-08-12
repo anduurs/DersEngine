@@ -1,4 +1,4 @@
-package com.dersgames.engine.utils;
+package com.dersgames.engine.graphics;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,16 +8,28 @@ import javax.imageio.ImageIO;
 
 public class ImageManager {
 	
-	private static HashMap<String, BufferedImage> m_ImageLib = 
+	private HashMap<String, BufferedImage> m_ImageLib = 
 			new HashMap<String, BufferedImage>();
 	
-	public ImageManager(){}
+	private static ImageManager instance;
 	
-	public static void addImage(String tag, String fileName){
+	public static ImageManager getInstance() {
+		if (instance == null) {
+			instance = new ImageManager();
+		}
+		
+		return instance;
+	}
+	
+	private ImageManager(){
+		
+	}
+	
+	public void addImage(String tag, String fileName){
 		m_ImageLib.put(tag, loadImage(fileName));
 	}
 	
-	private static synchronized BufferedImage loadImage(String path){
+	private synchronized BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(Class.class.getResourceAsStream("/textures/" + path));
@@ -28,7 +40,7 @@ public class ImageManager {
 		return img;
 	}
 	
-	public static BufferedImage getImage(String name){
+	public BufferedImage getImage(String name){
 		return m_ImageLib.get(name);
 	}
 
