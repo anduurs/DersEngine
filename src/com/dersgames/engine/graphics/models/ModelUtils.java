@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
 
 public class ModelUtils {
 	

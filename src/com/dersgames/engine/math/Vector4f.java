@@ -1,4 +1,4 @@
-package com.dersgames.engine.maths;
+package com.dersgames.engine.math;
 
 /**
  * Created by Anders on 6/4/2017.

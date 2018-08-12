@@ -1,4 +1,4 @@
-package com.dersgames.engine.maths;
+package com.dersgames.engine.math;
 
 /**
  * Class for representing a 4x4 matrix

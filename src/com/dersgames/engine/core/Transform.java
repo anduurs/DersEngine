@@ -1,8 +1,8 @@
 package com.dersgames.engine.core;
 
-import com.dersgames.engine.maths.Matrix4f;
-import com.dersgames.engine.maths.Quaternion;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Matrix4f;
+import com.dersgames.engine.math.Quaternion;
+import com.dersgames.engine.math.Vector3f;
 
 public class Transform{
 	

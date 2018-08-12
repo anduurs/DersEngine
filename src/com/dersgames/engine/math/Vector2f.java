@@ -1,4 +1,4 @@
-package com.dersgames.engine.maths;
+package com.dersgames.engine.math;
 
 import java.awt.Point;
 

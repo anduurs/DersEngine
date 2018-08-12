@@ -6,8 +6,8 @@ import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.input.MouseCursor;
-import com.dersgames.engine.maths.Matrix4f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Matrix4f;
+import com.dersgames.engine.math.Vector3f;
 
 public class GUIComponent extends Renderable{
 	

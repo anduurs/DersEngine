@@ -24,8 +24,8 @@ import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.shaders.TerrainShader;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
-import com.dersgames.engine.maths.Vector4f;
-import com.dersgames.engine.terrains.Terrain;
+import com.dersgames.engine.math.Vector4f;
+import com.dersgames.engine.terrain.Terrain;
 import com.dersgames.examplegame.Game;
 
 public class TerrainRenderer implements Renderer3D{

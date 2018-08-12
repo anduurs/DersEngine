@@ -1,11 +1,10 @@
 package com.dersgames.engine.graphics.materials;
 
-import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.shaders.Shader;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
 import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector3f;
 
 public class Material {
 	

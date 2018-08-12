@@ -1,4 +1,4 @@
-package com.dersgames.engine.terrains;
+package com.dersgames.engine.terrain;
 
 import java.awt.image.BufferedImage;
 
@@ -9,9 +9,9 @@ import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
-import com.dersgames.engine.maths.MathUtil;
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.MathUtil;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
 
 public class Terrain extends Renderable{
 	

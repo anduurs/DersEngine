@@ -8,7 +8,7 @@ import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.lights.DirectionalLight;
 import com.dersgames.engine.graphics.lights.PointLight;
 import com.dersgames.engine.graphics.lights.SpotLight;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector3f;
 
 public abstract class Scene {
 	private String m_SceneName;

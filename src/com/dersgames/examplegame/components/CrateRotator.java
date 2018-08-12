@@ -1,13 +1,13 @@
 package com.dersgames.examplegame.components;
 
 import com.dersgames.engine.core.Component;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector3f;
 
-public class RotatorComponent extends Component{
+public class CrateRotator extends Component{
 	
 	private float m_Speed;
 	
-	public RotatorComponent(String tag, float speed){
+	public CrateRotator(String tag, float speed){
 		super(tag);
 		m_Speed = speed;
 	}

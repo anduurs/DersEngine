@@ -4,8 +4,8 @@ import com.dersgames.engine.core.Scene;
 import com.dersgames.engine.graphics.lights.DirectionalLight;
 import com.dersgames.engine.graphics.lights.PointLight;
 import com.dersgames.engine.graphics.lights.SpotLight;
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
 import com.dersgames.examplegame.Game;
 
 import java.util.List;

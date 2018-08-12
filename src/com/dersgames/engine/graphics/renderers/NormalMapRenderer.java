@@ -16,8 +16,8 @@ import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.NormalMapShader;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
-import com.dersgames.engine.maths.Vector4f;
-import com.dersgames.engine.utils.Pair;
+import com.dersgames.engine.math.Vector4f;
+import com.dersgames.engine.util.Pair;
 
 /**
  * Created by Anders on 5/28/2017.

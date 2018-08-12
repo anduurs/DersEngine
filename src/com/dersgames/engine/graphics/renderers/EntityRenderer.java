@@ -23,8 +23,8 @@ import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.shaders.EntityShader;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.utils.Pair;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.util.Pair;
 import com.dersgames.examplegame.Game;
 
 public class EntityRenderer implements Renderer3D {

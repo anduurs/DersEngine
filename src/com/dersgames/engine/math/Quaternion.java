@@ -1,4 +1,4 @@
-package com.dersgames.engine.maths;
+package com.dersgames.engine.math;
 
 public class Quaternion{
 	

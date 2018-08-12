@@ -1,8 +1,8 @@
 package com.dersgames.engine.graphics.shaders;
 
 import com.dersgames.engine.components.Camera;
-import com.dersgames.engine.maths.Matrix4f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Matrix4f;
+import com.dersgames.engine.math.Vector3f;
 
 public class SkyboxShader extends Shader{
 

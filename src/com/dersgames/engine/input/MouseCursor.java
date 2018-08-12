@@ -3,7 +3,7 @@ package com.dersgames.engine.input;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
-import com.dersgames.engine.maths.Vector2f;
+import com.dersgames.engine.math.Vector2f;
 
 public class MouseCursor extends GLFWCursorPosCallback{
 

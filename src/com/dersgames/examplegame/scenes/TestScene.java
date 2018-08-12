@@ -18,11 +18,11 @@ import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
 import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.graphics.water.WaterUpdate;
-import com.dersgames.engine.maths.Quaternion;
-import com.dersgames.engine.maths.Vector3f;
-import com.dersgames.engine.terrains.Terrain;
+import com.dersgames.engine.math.Quaternion;
+import com.dersgames.engine.math.Vector3f;
+import com.dersgames.engine.terrain.Terrain;
 import com.dersgames.examplegame.components.BarrelRotator;
-import com.dersgames.examplegame.components.RotatorComponent;
+import com.dersgames.examplegame.components.CrateRotator;
 
 public class TestScene extends Scene {
 
@@ -132,7 +132,7 @@ public class TestScene extends Scene {
 		Model crateModel = ModelManager.getInstance().loadModelFromObjFile("crate", true);
 		
 		crate.addRenderableComponent(new StaticMesh("CrateStaticMesh", crateModel, crateMaterial));
-		crate.addComponent(new RotatorComponent("CrateMovement", 15.0f));
+		crate.addComponent(new CrateRotator("CrateMovement", 15.0f));
 		
 		addEntity(crate);
 	}

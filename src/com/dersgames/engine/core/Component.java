@@ -1,7 +1,7 @@
 package com.dersgames.engine.core;
 
-import com.dersgames.engine.maths.Quaternion;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Quaternion;
+import com.dersgames.engine.math.Vector3f;
 
 public abstract class Component {
 	

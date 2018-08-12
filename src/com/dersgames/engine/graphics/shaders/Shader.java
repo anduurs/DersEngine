@@ -11,15 +11,15 @@ import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
-import com.dersgames.engine.maths.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.core.Entity;
-import com.dersgames.engine.maths.Matrix4f;
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Matrix4f;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
+import com.dersgames.engine.math.Vector4f;
 
 public abstract class Shader {
 	

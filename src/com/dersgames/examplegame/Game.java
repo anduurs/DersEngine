@@ -63,7 +63,7 @@ public class Game extends GameApplication {
 	@Override
 	public void initGame() {
 		setWindowWidthAndHeight(800, 600);
-		setGameTitle("Engine test");
+		setGameTitle("Test Game");
 		setVsync(false);
 		setFullScreen(false);
 		loadScene(new TestScene("TestScene"));

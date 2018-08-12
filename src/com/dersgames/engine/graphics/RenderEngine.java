@@ -17,9 +17,9 @@ import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Entity;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.water.WaterTile;
-import com.dersgames.engine.maths.Vector3f;
-import com.dersgames.engine.maths.Vector4f;
-import com.dersgames.engine.terrains.Terrain;
+import com.dersgames.engine.math.Vector3f;
+import com.dersgames.engine.math.Vector4f;
+import com.dersgames.engine.terrain.Terrain;
 
 import java.util.ArrayList;
 import java.util.List;

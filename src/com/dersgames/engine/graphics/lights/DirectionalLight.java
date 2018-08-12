@@ -1,7 +1,7 @@
 package com.dersgames.engine.graphics.lights;
 
 import com.dersgames.engine.core.Transform;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector3f;
 
 public class DirectionalLight extends Light{
 

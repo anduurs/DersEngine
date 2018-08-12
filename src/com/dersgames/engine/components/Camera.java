@@ -6,8 +6,8 @@ import com.dersgames.engine.core.Component;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.MouseCursor;
-import com.dersgames.engine.maths.Matrix4f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Matrix4f;
+import com.dersgames.engine.math.Vector3f;
 
 public class Camera extends Component{
 

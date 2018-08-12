@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
 
 public class ModelManager {
 	

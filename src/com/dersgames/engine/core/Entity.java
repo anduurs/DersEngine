@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.graphics.RenderEngine;
-import com.dersgames.engine.maths.Quaternion;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Quaternion;
+import com.dersgames.engine.math.Vector3f;
 
 public class Entity {
 	

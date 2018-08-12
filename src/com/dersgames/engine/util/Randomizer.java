@@ -1,4 +1,4 @@
-package com.dersgames.engine.utils;
+package com.dersgames.engine.util;
 
 import java.util.Random;
 

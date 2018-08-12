@@ -1,4 +1,4 @@
-package com.dersgames.engine.utils;
+package com.dersgames.engine.util;
 
 public class Pair<FIRST, SECOND> implements Comparable<Pair<FIRST, SECOND>> {
 

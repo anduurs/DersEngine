@@ -1,7 +1,7 @@
 package com.dersgames.examplegame.components;
 
 import com.dersgames.engine.core.Component;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector3f;
 
 public class BarrelRotator extends Component {
 

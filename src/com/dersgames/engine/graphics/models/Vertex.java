@@ -1,7 +1,7 @@
 package com.dersgames.engine.graphics.models;
 
-import com.dersgames.engine.maths.Vector2f;
-import com.dersgames.engine.maths.Vector3f;
+import com.dersgames.engine.math.Vector2f;
+import com.dersgames.engine.math.Vector3f;
 
 public class Vertex {
 	
