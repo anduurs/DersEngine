@@ -1,10 +1,7 @@
 package com.dersgames.engine.graphics.renderers;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -17,17 +14,17 @@ import java.util.Map;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.StaticMesh;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.shaders.EntityShader;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.math.Vector2f;
 import com.dersgames.engine.util.Pair;
 import com.dersgames.examplegame.Game;
 
-public class EntityRenderer implements Renderer3D {
+public class EntityRenderer implements IRenderer<StaticMesh> {
 
 	protected PhongShader m_Shader;
 	protected Map<Pair<Model, Material>, List<StaticMesh>> m_Renderables;
@@ -37,21 +34,22 @@ public class EntityRenderer implements Renderer3D {
 		m_Renderables = new HashMap<>();
 	}
 	
-	public void addStaticMesh(StaticMesh staticMesh){
-		Model model  = staticMesh.getModel();
-		Material mat = staticMesh.getMaterial();
+	@Override
+	public void submit(StaticMesh renderable) {
+		Model model  = renderable.getModel();
+		Material mat = renderable.getMaterial();
 		
 		Pair<Model, Material> staticMeshKey = Pair.of(model, mat);
 		
-		if(m_Renderables.containsKey(staticMeshKey))
-			m_Renderables.get(staticMeshKey).add(staticMesh);
-		else{
+		if(m_Renderables.containsKey(staticMeshKey)) {
+			m_Renderables.get(staticMeshKey).add(renderable);
+		} else{
 			List<StaticMesh> batch = new ArrayList<>();
-			batch.add(staticMesh);
+			batch.add(renderable);
 			m_Renderables.put(staticMeshKey, batch);
 		}
 	}
-
+	
 	protected void clear(){
 		m_Renderables.clear();
 	}
@@ -76,18 +74,18 @@ public class EntityRenderer implements Renderer3D {
 			List<StaticMesh> batch = m_Renderables.get(staticMeshData);
 			for(StaticMesh staticMesh : batch){
 				updateStaticMeshSpecificData(staticMesh);
-				glDrawElements(GL_TRIANGLES, staticMesh.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+				GLRenderUtils.drawElements(staticMesh.getModel().getVertexCount());
 			}
 			unbind();
 		}
 	}
-	
+
 	protected void bind(Pair<Model, Material> staticMeshData){
 		glBindVertexArray(staticMeshData.first.getVaoID());
 		Material material = staticMeshData.second;
 		
 		if(material.hasTransparency()) 
-			RenderEngine.getInstance().disableFaceCulling();
+			GLRenderUtils.disableFaceCulling();
 		
 		material.updateUniforms();
 	
@@ -114,7 +112,7 @@ public class EntityRenderer implements Renderer3D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		RenderEngine.getInstance().enableFaceCulling();
+		GLRenderUtils.enableFaceCulling();
 		glBindVertexArray(0);
 	}
 

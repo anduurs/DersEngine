@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dersgames.engine.components.GUIComponent;
-import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.shaders.GUIShader;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
 
-public class GUIRenderer {
+public class GUIRenderer implements IRenderer<GUIComponent>{
 	
 	private final Model m_Quad;
 	private GUIShader m_Shader;
@@ -40,13 +40,14 @@ public class GUIRenderer {
 		m_GUIComponents = new ArrayList<>();
 	}
 	
-	public void addGUIComponent(GUIComponent guiComponent){
-		m_GUIComponents.add(guiComponent);
+	@Override
+	public void submit(GUIComponent renderable) {
+		m_GUIComponents.add(renderable);
 	}
 	
 	public void begin(){
 		m_Shader.enable();
-		RenderEngine.getInstance().disableFaceCulling();
+		GLRenderUtils.disableFaceCulling();
 		glBindVertexArray(m_Quad.getVaoID());
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -68,8 +69,9 @@ public class GUIRenderer {
 		}
 	}
 
-	public void end(){
-		RenderEngine.getInstance().enableFaceCulling();
+	@Override
+	public void end(boolean lastRenderPass) {
+		GLRenderUtils.enableFaceCulling();
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 		glActiveTexture(GL_TEXTURE0);
@@ -90,5 +92,4 @@ public class GUIRenderer {
 	public GUIShader getShader(){
 		return m_Shader;
 	}
-
 }

@@ -1,21 +1,15 @@
 package com.dersgames.engine.graphics.renderers.postprocessing;
 
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.renderers.ImageRenderer;
 
-/**
- * Created by Anders on 5/28/2017.
- */
 public class PostProcessRenderer {
 
     private ImageRenderer m_ImageRenderer;
@@ -44,8 +38,8 @@ public class PostProcessRenderer {
 
     private void begin(){
         glBindVertexArray(m_Quad.getVaoID());
-        glDisable(GL_DEPTH_TEST);
-        RenderEngine.getInstance().disableFaceCulling();
+        GLRenderUtils.disableDepthTest();
+        GLRenderUtils.disableFaceCulling();
     }
 
     public void renderPostProcessingEffects(int colorTexture, int brightColor){
@@ -63,8 +57,8 @@ public class PostProcessRenderer {
     private void end(){
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
-        glEnable(GL_DEPTH_TEST);
-        RenderEngine.getInstance().enableFaceCulling();
+        GLRenderUtils.enableDepthTest();
+        GLRenderUtils.enableFaceCulling();
     }
 
     public void dispose(){

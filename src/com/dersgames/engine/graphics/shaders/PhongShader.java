@@ -11,7 +11,7 @@ import com.dersgames.engine.math.Vector3f;
 import com.dersgames.engine.math.Vector4f;
 import com.dersgames.examplegame.Game;
 
-public abstract class PhongShader extends Shader{
+public abstract class PhongShader extends GLShader{
 	
 	public static final int MAX_POINT_LIGHTS = 4;
 	public static final int MAX_SPOT_LIGHTS  = 4;

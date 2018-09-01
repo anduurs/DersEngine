@@ -10,10 +10,9 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.HashMap;
 
-import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
-import com.dersgames.engine.graphics.shaders.NormalMapShader;
 import com.dersgames.engine.graphics.shaders.PhongShader;
 import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.math.Vector4f;
@@ -38,7 +37,7 @@ public class NormalMapRenderer extends EntityRenderer {
         Material material = staticMeshData.second;
 
         if(material.hasTransparency())
-            RenderEngine.getInstance().disableFaceCulling();
+        	GLRenderUtils.disableFaceCulling();
 
         material.updateUniforms();
 

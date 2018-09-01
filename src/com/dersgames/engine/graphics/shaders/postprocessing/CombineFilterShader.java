@@ -1,11 +1,11 @@
 package com.dersgames.engine.graphics.shaders.postprocessing;
 
-import com.dersgames.engine.graphics.shaders.Shader;
+import com.dersgames.engine.graphics.shaders.GLShader;
 
 /**
  * Created by Anders on 5/29/2017.
  */
-public class CombineFilterShader extends Shader {
+public class CombineFilterShader extends GLShader {
 
     public CombineFilterShader() {
         super("postprocessing/postProcessVertexShader", "postprocessing/combineFilterFragmentShader");

@@ -1,11 +1,11 @@
 package com.dersgames.engine.graphics.shaders.postprocessing;
 
-import com.dersgames.engine.graphics.shaders.Shader;
+import com.dersgames.engine.graphics.shaders.GLShader;
 
 /**
  * Created by Anders on 5/29/2017.
  */
-public class VerticalBlurShader extends Shader{
+public class VerticalBlurShader extends GLShader{
 
     public VerticalBlurShader() {
         super("postprocessing/verticalBlurVertexShader", "postprocessing/blurFragmentShader");

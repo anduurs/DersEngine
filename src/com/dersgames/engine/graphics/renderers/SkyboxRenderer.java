@@ -10,6 +10,8 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import com.dersgames.engine.components.Camera;
+import com.dersgames.engine.components.Renderable;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.ModelManager;
@@ -17,7 +19,7 @@ import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.shaders.SkyboxShader;
 import com.dersgames.engine.graphics.textures.TextureManager;
 
-public class SkyboxRenderer implements Renderer3D{
+public class SkyboxRenderer implements IRenderer<Renderable>{
 	
 	private static final float SIZE = 1000f;
 	
@@ -95,7 +97,7 @@ public class SkyboxRenderer implements Renderer3D{
 	public void render(){
 		glBindVertexArray(m_Cube.getVaoID());
 		bindTextures();
-		glDrawArrays(GL_TRIANGLES, 0, m_Cube.getVertexCount());
+		GLRenderUtils.drawArrays(m_Cube.getVertexCount());
 		glBindVertexArray(0);
 	}
 
@@ -122,5 +124,11 @@ public class SkyboxRenderer implements Renderer3D{
 	@Override
 	public SkyboxShader getShader() {
 		return m_Shader;
+	}
+
+	@Override
+	public void submit(Renderable renderable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -3,6 +3,7 @@ package com.dersgames.engine.core;
 import org.lwjgl.glfw.GLFW;
 
 import com.dersgames.engine.graphics.RenderEngine;
+import com.dersgames.engine.graphics.RenderingStats;
 import com.dersgames.engine.graphics.Window;
 import com.dersgames.engine.graphics.models.ModelManager;
 import com.dersgames.engine.graphics.textures.TextureManager;
@@ -24,6 +25,8 @@ public abstract class GameApplication implements Runnable {
 	private boolean m_FullScreen;
 
 	public static float deltaTime;
+	
+	public static int fps = 0;
 
 	public GameApplication(){
 		m_Width = 800;
@@ -106,8 +109,6 @@ public abstract class GameApplication implements Runnable {
 		double accumulator = 0;
 		double frameCounter = 0;
 		
-		int fps = 0;
-		
 		final double TARGET_UPS = 60.0;
 		final double SECONDS_PER_UPDATE = 1.0 / TARGET_UPS;
 		float dt = (float) SECONDS_PER_UPDATE;
@@ -134,7 +135,8 @@ public abstract class GameApplication implements Runnable {
 				
 			if(frameCounter >= 1){
 				m_Window.setTitle(m_Title + " || " + fps + " fps");
-//				Debug.log(fps + " fps");
+				RenderingStats.printStats();
+				RenderingStats.clear();
 				fps = 0;
 				frameCounter = 0;
 			}

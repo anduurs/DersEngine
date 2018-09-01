@@ -18,20 +18,15 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWErrorCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
 
+import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.input.KeyInput;
 import com.dersgames.engine.input.Mouse;
 import com.dersgames.engine.input.MouseCursor;
@@ -54,7 +49,7 @@ public class Window {
 		if(!glfwInit())
 			System.err.println("GLFW initialization failed!");
 		
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GLRenderUtils.FALSE);
 		glfwWindowHint(GLFW.GLFW_STENCIL_BITS, 4);
 		//glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 	
@@ -74,8 +69,6 @@ public class Window {
 			          (vidmode.height() - height) / 2);
 		}
 		
-
-
 		glfwSetKeyCallback(window, keyCallback = new KeyInput());
 		glfwSetMouseButtonCallback(window, mouseCallback = new Mouse());
 		glfwSetCursorPosCallback(window, mouseCursorCallback = new MouseCursor());
@@ -88,9 +81,9 @@ public class Window {
 		
 		glfwShowWindow(window);
 		
-		GL.createCapabilities();
+		GLRenderUtils.createCapabilities();
 		
-		System.out.println("OpenGL version: " + glGetString(GL_VERSION) + "\n");
+		Debug.log("OpenGL version: " + GLRenderUtils.getOpenGLVersion() + "\n");
 	}
 	
 	public void setTitle(String title){

@@ -1,14 +1,9 @@
 package com.dersgames.engine.graphics.renderers;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
@@ -16,8 +11,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.core.Debug;
-import com.dersgames.engine.core.Scene;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
@@ -28,7 +22,7 @@ import com.dersgames.engine.math.Vector4f;
 import com.dersgames.engine.terrain.Terrain;
 import com.dersgames.examplegame.Game;
 
-public class TerrainRenderer implements Renderer3D{
+public class TerrainRenderer implements IRenderer<Terrain>{
 	
 	private TerrainShader m_TerrainShader;
 	private List<Terrain> m_Terrains;
@@ -43,7 +37,8 @@ public class TerrainRenderer implements Renderer3D{
 		m_TerrainShader.disable();
 	}
 	
-	public void addTerrain(Terrain terrain){
+	@Override
+	public void submit(Terrain terrain){
 		m_Terrains.add(terrain);
 	}
 	
@@ -64,11 +59,12 @@ public class TerrainRenderer implements Renderer3D{
 		m_TerrainShader.loadClippingPlane(renderEngine.getCurrentClippingPlane());
 	}
 
+	@Override
 	public void render(){
 		for(Terrain terrain : m_Terrains){
 			loadTexturedMeshData(terrain);
 			loadRenderableData(terrain);
-			glDrawElements(GL_TRIANGLES, terrain.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			GLRenderUtils.drawElements(terrain.getModel().getVertexCount());
 			unbindTexturedModel();
 		}
 	}
@@ -108,7 +104,7 @@ public class TerrainRenderer implements Renderer3D{
 	}
 	
 	private void unbindTexturedModel(){
-		RenderEngine.getInstance().enableFaceCulling();
+		GLRenderUtils.enableFaceCulling();
 		glBindVertexArray(0);
 	}
 	

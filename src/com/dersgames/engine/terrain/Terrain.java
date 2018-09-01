@@ -52,7 +52,7 @@ public class Terrain extends Renderable{
 	
 	@Override
 	public void render() {
-		RenderEngine.getInstance().submit(this);
+		m_RenderEngine.getTerrainRenderer().submit(this);
 	}
 	
 	private Model generateTerrain(String heightmap){

@@ -13,7 +13,7 @@ public class ShaderManager {
 	public static final String DEFAULT_TERRAIN_SHADER 	= "default_terrain_shader";
 	public static final String DEFAULT_WATER_SHADER 	= "default_water_shader";
 	
-	private Map<String, Shader> m_Shaders;
+	private Map<String, IShader> m_Shaders;
 	
 	private static ShaderManager instance;
 	
@@ -36,7 +36,7 @@ public class ShaderManager {
 		m_Shaders.put(DEFAULT_WATER_SHADER, new WaterShader());
 	}
 	
-	public void addShader(String id, Shader shader) {
+	public void addShader(String id, GLShader shader) {
 		if (m_Shaders.containsKey(id)) {
 			Debug.log("A shader with id: " + id + " already exists.");
 			return;
@@ -45,7 +45,7 @@ public class ShaderManager {
 		m_Shaders.put(id, shader);
 	}
 	
-	public Shader getShader(String id) {
+	public IShader getShader(String id) {
 		if (m_Shaders.containsKey(id)) {
 			return m_Shaders.get(id);
 		}

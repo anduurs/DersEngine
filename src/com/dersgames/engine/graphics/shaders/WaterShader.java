@@ -9,7 +9,7 @@ import com.dersgames.engine.math.Vector3f;
 
 import java.util.List;
 
-public class WaterShader extends Shader{
+public class WaterShader extends GLShader{
 
 	public WaterShader() {
 		super("water/waterVertexShader", "water/waterFragmentShader");

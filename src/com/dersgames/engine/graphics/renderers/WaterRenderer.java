@@ -4,11 +4,9 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
@@ -23,6 +21,7 @@ import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.graphics.FrameBuffer;
+import com.dersgames.engine.graphics.GLRenderUtils;
 import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.models.Model;
 import com.dersgames.engine.graphics.models.ModelManager;
@@ -34,7 +33,7 @@ import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.graphics.water.WaterUpdate;
 import com.dersgames.examplegame.Game;
 
-public class WaterRenderer implements Renderer3D{
+public class WaterRenderer implements IRenderer<WaterTile>{
 	
 	private float[] m_Vertices = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
 	
@@ -64,11 +63,24 @@ public class WaterRenderer implements Renderer3D{
 		m_Shader.disable();
 	}
 	
-	public void addWaterTile(WaterTile tile){
+	@Override
+	public void submit(WaterTile tile){
 		m_WaterTiles.add(tile);
 	}
 	
-	private void bind(){
+	@Override
+	public void begin() {
+		m_Shader.enable();
+		Camera camera = RenderEngine.getInstance().getCamera();
+		m_Shader.loadViewMatrix(camera);
+		m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+		m_Shader.loadCameraPosition(camera.getPosition());
+		m_Shader.loadLightSources(Game.currentScene.getDirectionalLight().getPosition(), 
+				Game.currentScene.getDirectionalLight().getLightColor());
+	}
+
+	@Override
+	public void render(){
 		glBindVertexArray(m_Quad.getVaoID());
 
 		glActiveTexture(GL_TEXTURE0);
@@ -84,34 +96,14 @@ public class WaterRenderer implements Renderer3D{
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-
-	@Override
-	public void begin() {
-		m_Shader.enable();
-		Camera camera = RenderEngine.getInstance().getCamera();
-		m_Shader.loadViewMatrix(camera);
-		m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-		m_Shader.loadCameraPosition(camera.getPosition());
-		m_Shader.loadLightSources(Game.currentScene.getDirectionalLight().getPosition(), 
-				Game.currentScene.getDirectionalLight().getLightColor());
-	}
-
-	@Override
-	public void render(){
-		bind();
 
 		for(WaterTile tile : m_WaterTiles){
 			WaterUpdate waterUpdate = (WaterUpdate)tile.getEntity().findComponentByTag("WaterUpdate");
 			m_Shader.loadMoveFactor(waterUpdate.getMoveFactor());
 			m_Shader.loadModelMatrix(tile.getEntity());
-			glDrawArrays(GL_TRIANGLES, 0, m_Quad.getVertexCount());
+			GLRenderUtils.drawArrays(m_Quad.getVertexCount());
 		}
 
-		unbind();
-	}
-	
-	private void unbind(){
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE1);
@@ -124,7 +116,7 @@ public class WaterRenderer implements Renderer3D{
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 	}
-
+	
 	@Override
 	public void end(boolean lastRenderPass){
 		m_Shader.disable();
@@ -132,6 +124,16 @@ public class WaterRenderer implements Renderer3D{
 		if(lastRenderPass){
 			clear();
 		}
+	}
+	
+	@Override
+	public void dispose(){
+		m_Shader.deleteShaderProgram();
+	}
+	
+	@Override
+	public WaterShader getShader() {
+		return m_Shader;
 	}
 
 	public WaterTile getWaterTile(){
@@ -143,16 +145,8 @@ public class WaterRenderer implements Renderer3D{
 	public int getNumberOfWaterTiles(){
 		return m_WaterTiles.size();
 	}
+	
 	public void clear(){
 		m_WaterTiles.clear();
 	}
-	
-	public void dispose(){
-		m_Shader.deleteShaderProgram();
-	}
-	
-	public WaterShader getShader() {
-		return m_Shader;
-	}
-
 }

@@ -1,13 +1,10 @@
 package com.dersgames.engine.graphics;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
+import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT1;
 
-import com.dersgames.engine.core.Scene;
-import com.dersgames.engine.graphics.renderers.*;
-import com.dersgames.engine.graphics.renderers.postprocessing.PostProcessRenderer;
-import com.dersgames.engine.graphics.shaders.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.components.GUIComponent;
@@ -15,19 +12,24 @@ import com.dersgames.engine.components.Renderable;
 import com.dersgames.engine.components.StaticMesh;
 import com.dersgames.engine.core.Debug;
 import com.dersgames.engine.core.Entity;
-import com.dersgames.engine.graphics.textures.Texture;
+import com.dersgames.engine.graphics.renderers.EntityRenderer;
+import com.dersgames.engine.graphics.renderers.GUIRenderer;
+import com.dersgames.engine.graphics.renderers.IRenderer;
+import com.dersgames.engine.graphics.renderers.NormalMapRenderer;
+import com.dersgames.engine.graphics.renderers.SkyboxRenderer;
+import com.dersgames.engine.graphics.renderers.TerrainRenderer;
+import com.dersgames.engine.graphics.renderers.WaterRenderer;
+import com.dersgames.engine.graphics.renderers.postprocessing.PostProcessRenderer;
+import com.dersgames.engine.graphics.shaders.NormalMapShader;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.math.Vector3f;
 import com.dersgames.engine.math.Vector4f;
 import com.dersgames.engine.terrain.Terrain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RenderEngine {
 	private Camera m_Camera;
 
-	private List<Renderer3D> m_Renderers;
+	private List<IRenderer<?>> m_Renderers;
 	
 	private TerrainRenderer m_TerrainRenderer;
 	private EntityRenderer m_EntityRenderer;
@@ -53,6 +55,8 @@ public class RenderEngine {
     private Vector4f m_ClippingPlane_Default;
     private Vector4f m_CurrentClippingPlane;
     
+    private boolean m_IsMeasuringPerfomance = true;
+
     public Vector4f getCurrentClippingPlane() {
     	return m_CurrentClippingPlane;
     }
@@ -100,10 +104,10 @@ public class RenderEngine {
 
 	private void debugWater(){
 		Entity guiEntity = new Entity("gui", 0.5f, 0.5f, 200f, 200f);
-		guiEntity.addComponent(new GUIComponent("Gui", new Texture(m_WaterReflectionFrameBuffer.getColorTexture())));
+//		guiEntity.addComponent(new GUIComponent("Gui", new Texture(m_WaterReflectionFrameBuffer.getColorTexture())));
 
 		Entity guiEntity2 = new Entity("gui", -0.5f, 0.5f, 200f, 200f);
-		guiEntity2.addComponent(new GUIComponent("Gui", new Texture(m_WaterRefractionFrameBuffer.getColorTexture())));
+//		guiEntity2.addComponent(new GUIComponent("Gui", new Texture(m_WaterRefractionFrameBuffer.getColorTexture())));
 
 		//REFLECTION TEXTURE
 		//Scene.addEntity(guiEntity);
@@ -143,37 +147,10 @@ public class RenderEngine {
 	}
 
 	private void glSetup(){
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_TEXTURE_2D);
-		glEnable(GL_MULTISAMPLE);
-
-		enableFaceCulling();
-	}
-
-	public void enableFaceCulling(){
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
-	}
-	
-	public void disableFaceCulling(){
-		glDisable(GL_CULL_FACE);
-	}
-	
-	public void submit(Renderable renderable){
-		if(renderable instanceof Terrain)
-			m_TerrainRenderer.addTerrain((Terrain)renderable);
-		else if(renderable instanceof StaticMesh) {
-			if(((StaticMesh) renderable).getMaterial().getShader() instanceof NormalMapShader){
-				m_NormalMapRenderer.addStaticMesh((StaticMesh)renderable);
-			}else{
-				m_EntityRenderer.addStaticMesh((StaticMesh) renderable);
-			}
-		}
-		else if(renderable instanceof WaterTile)
-			m_WaterRenderer.addWaterTile((WaterTile)renderable);
-		else if(renderable instanceof GUIComponent){
-			m_GUIRenderer.addGUIComponent((GUIComponent)renderable);
-		}
+		GLRenderUtils.enableDepthTest();
+		GLRenderUtils.enableTexture2D();
+		GLRenderUtils.enableMultiSampling();
+		GLRenderUtils.enableFaceCulling();
 	}
 	
 	public void render(){
@@ -183,8 +160,10 @@ public class RenderEngine {
 		
 		m_MultiSampledFrameBuffer.bind();
 
-		clearFrameBuffer();
+		GLRenderUtils.clearColorAndDepthBuffer();
+		
 		m_CurrentClippingPlane = m_ClippingPlane_Default;
+		
 		renderScene(true);
 		renderWater(true);
 
@@ -196,10 +175,14 @@ public class RenderEngine {
 				m_OutputFrameBuffer2.getColorTexture());
 
 		renderGUI();
+		
+		if (m_IsMeasuringPerfomance) {
+			
+		}
 	}
 	
 	private void renderScene(boolean lastRenderPass){
-		for(Renderer3D renderer : m_Renderers){
+		for(IRenderer<?> renderer : m_Renderers){
 			renderer.begin();
 			renderer.render();
 			renderer.end(lastRenderPass);
@@ -207,7 +190,7 @@ public class RenderEngine {
 	}
 	
 	private void renderWaterReflectionAndRefraction(){
-		glEnable(GL_CLIP_DISTANCE0);
+		GLRenderUtils.enableClipDistance();
 
 		m_WaterReflectionFrameBuffer.bind();
 
@@ -216,7 +199,7 @@ public class RenderEngine {
 		m_Camera.getPosition().y -= distance;
 		m_Camera.invertPitch();
 
-		clearFrameBuffer();
+		GLRenderUtils.clearColorAndDepthBuffer();
 		m_CurrentClippingPlane = new Vector4f(0.0f,1.0f,0.0f, -water.getHeight() - 18f);
 		renderScene(false);
 
@@ -227,10 +210,10 @@ public class RenderEngine {
 		m_WaterReflectionFrameBuffer.unbind();
 
 		m_WaterRefractionFrameBuffer.bind();
-		clearFrameBuffer();
+		GLRenderUtils.clearColorAndDepthBuffer();
 		m_CurrentClippingPlane = new Vector4f(0.0f,-1.0f,0.0f, water.getHeight() + 1f);
 		renderScene(false);
-		glDisable(GL_CLIP_DISTANCE0);
+		GLRenderUtils.disableClipDistance();
 		m_WaterRefractionFrameBuffer.unbind();
 	}
 
@@ -243,7 +226,7 @@ public class RenderEngine {
 	private void renderGUI(){
 		m_GUIRenderer.begin();
 		m_GUIRenderer.render();
-		m_GUIRenderer.end();
+		m_GUIRenderer.end(false);
 	}
 	
 	public void addCamera(Camera camera){
@@ -251,7 +234,7 @@ public class RenderEngine {
 	}
 	
 	public void dispose(){
-		for(Renderer3D renderer : m_Renderers)
+		for(IRenderer<?> renderer : m_Renderers)
 		    renderer.dispose();
 
 		m_WaterRenderer.dispose();
@@ -265,11 +248,6 @@ public class RenderEngine {
         m_Renderers.clear();
 	}
 	
-	private void clearFrameBuffer(){
-		glClearColor(0,0,0, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
 	public TerrainRenderer getTerrainRenderer() { return m_TerrainRenderer; }
 	public EntityRenderer getEntityRenderer() { return m_EntityRenderer; }
 	public NormalMapRenderer getNormalMapRenderer(){ return m_NormalMapRenderer; }
@@ -279,4 +257,12 @@ public class RenderEngine {
 	public PostProcessRenderer getPostProcessRenderer(){ return m_PostProcessRenderer; }
 	public Camera getCamera(){ return m_Camera; }
 	public Vector3f getSkyColor(){ return m_SkyColor; }
+
+	public boolean isMeasuringPerformance() {
+		return m_IsMeasuringPerfomance;
+	}
+
+	public void enablePerfomanceMeasurement(boolean enable) {
+		m_IsMeasuringPerfomance = enable;
+	}
 }

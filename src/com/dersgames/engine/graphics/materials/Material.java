@@ -1,17 +1,18 @@
 package com.dersgames.engine.graphics.materials;
 
-import com.dersgames.engine.graphics.shaders.Shader;
+import java.util.List;
+
+import com.dersgames.engine.graphics.shaders.IShader;
 import com.dersgames.engine.graphics.textures.Texture;
-import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
-import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
 import com.dersgames.engine.math.Vector3f;
 
 public class Material {
 	
-	private Shader m_Shader;
+	private IShader m_Shader;
 	private Texture m_TextureAtlas;
-	private SpecularMap m_SpecularMap;
-	private NormalMap m_NormalMap;
+	private List<Texture> m_Textures;
+	private Texture m_SpecularMap;
+	private Texture m_NormalMap;
 	
 	private boolean m_UseSpecularMap;
 	private boolean m_UseNormalMap;
@@ -29,7 +30,7 @@ public class Material {
 		return m_Shader.getShaderProgramID();
 	}
 	
-	public Material(Texture textureAtlas, Shader shader){
+	public Material(Texture textureAtlas, IShader shader){
 		this(   textureAtlas, 
 				new Vector3f(1.0f, 1.0f, 1.0f),
 				new Vector3f(0.2f, 0.2f, 0.2f), 
@@ -42,7 +43,7 @@ public class Material {
 	}
 	
 	public Material(Texture textureAtlas, 
-			float baseColor, float specular, float emissive, float shininess, Shader shader){
+			float baseColor, float specular, float emissive, float shininess, IShader shader){
 		this(   textureAtlas, 
 				new Vector3f(baseColor, baseColor, baseColor),
 				new Vector3f(specular, specular, specular), 
@@ -55,7 +56,7 @@ public class Material {
 	}
 	
 	public Material(Texture textureAtlas, 
-			float baseColor, float specular, float emissive, float shininess, boolean transparency, boolean useFakeLight, Shader shader){
+			float baseColor, float specular, float emissive, float shininess, boolean transparency, boolean useFakeLight, IShader shader){
 		this(   textureAtlas, 
 				new Vector3f(baseColor, baseColor, baseColor),
 				new Vector3f(specular, specular, specular), 
@@ -67,8 +68,8 @@ public class Material {
 			);
 	}
 
-	public Material(Texture textureAtlas, SpecularMap specularMap,
-					float baseColor, float specular, float emissive, float shininess, Shader shader){
+	public Material(Texture textureAtlas, Texture specularMap,
+					float baseColor, float specular, float emissive, float shininess, IShader shader){
 		this(   textureAtlas, specularMap,
 				new Vector3f(baseColor, baseColor, baseColor),
 				new Vector3f(specular, specular, specular),
@@ -80,8 +81,8 @@ public class Material {
 		);
 	}
 	
-	public Material(Texture textureAtlas, SpecularMap specularMap,
-			float baseColor, float specular, float emissive, float shininess,boolean transparency, boolean useFakeLight, Shader shader){
+	public Material(Texture textureAtlas, Texture specularMap,
+			float baseColor, float specular, float emissive, float shininess,boolean transparency, boolean useFakeLight, IShader shader){
 		this(   textureAtlas, specularMap,
 		new Vector3f(baseColor, baseColor, baseColor),
 		new Vector3f(specular, specular, specular),
@@ -95,14 +96,14 @@ public class Material {
 	
 	public Material(Texture textureAtlas, Vector3f baseColor, 
 			 Vector3f specular, Vector3f emissive, 
-			float shininess, Shader shader){
+			float shininess, IShader shader){
 		
 		this(textureAtlas, baseColor, specular, emissive, shininess, false, false, shader);
 	}
 	
 	public Material(Texture textureAtlas, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
-			boolean transparency, boolean useFakeLighting, Shader shader){
+			boolean transparency, boolean useFakeLighting, IShader shader){
 		
 		m_UseSpecularMap = false;
 		m_UseNormalMap = false;
@@ -120,43 +121,55 @@ public class Material {
 		addUniforms();
 	}
 	
-	public Material(Texture textureAtlas, SpecularMap specularMap, Vector3f baseColor, 
+//	public Material(Texture textureAtlas, Texture specularMap, Vector3f baseColor, 
+//			Vector3f specular, Vector3f emissive, float shininess, 
+//			boolean transparency, boolean useFakeLighting, Shader shader){
+//		
+//		this(textureAtlas, baseColor, specular, emissive, 
+//				shininess, transparency, useFakeLighting, shader);
+//		
+//		m_UseSpecularMap = true;
+//		m_SpecularMap = specularMap;
+//		
+//		m_Shader.addUniform("material.specularMap");
+//	}
+	
+	public Material(Texture textureAtlas, Texture normalMap, Vector3f baseColor, 
 			Vector3f specular, Vector3f emissive, float shininess, 
-			boolean transparency, boolean useFakeLighting, Shader shader){
+			boolean transparency, boolean useFakeLighting, IShader shader){
 		
 		this(textureAtlas, baseColor, specular, emissive, 
 				shininess, transparency, useFakeLighting, shader);
+		
+		m_UseNormalMap = true;
+		m_NormalMap = normalMap;
+	
+		m_Shader.addUniform("material.normalMap");
+	}
+	
+	public Material(Texture textureAtlas, Texture specularMap, Texture normalMap, Vector3f baseColor, 
+			Vector3f specular, Vector3f emissive, float shininess, 
+			boolean transparency, boolean useFakeLighting, IShader shader){
+		
+		m_BaseColor = baseColor;
+		m_Specular = specular;
+		m_Emissive = emissive;
+		
+		m_Shininess = shininess;
+		m_HasTransparency = transparency;
+		m_UseFakeLighting = useFakeLighting;
+		m_Shader = shader;
+		
+		m_UseNormalMap = true;
+		m_NormalMap = normalMap;
+		m_Shader.addUniform("material.normalMap");
 		
 		m_UseSpecularMap = true;
 		m_SpecularMap = specularMap;
-		
 		m_Shader.addUniform("material.specularMap");
-	}
-	
-	public Material(Texture textureAtlas, NormalMap normalMap, Vector3f baseColor, 
-			Vector3f specular, Vector3f emissive, float shininess, 
-			boolean transparency, boolean useFakeLighting, Shader shader){
+		m_TextureAtlas = textureAtlas;
 		
-		this(textureAtlas, baseColor, specular, emissive, 
-				shininess, transparency, useFakeLighting, shader);
-		
-		m_UseNormalMap = true;
-		m_NormalMap = normalMap;
-	
-		m_Shader.addUniform("material.normalMap");
-	}
-	
-	public Material(Texture textureAtlas, SpecularMap specularMap, NormalMap normalMap, Vector3f baseColor, 
-			Vector3f specular, Vector3f emissive, float shininess, 
-			boolean transparency, boolean useFakeLighting, Shader shader){
-		
-		this(textureAtlas, specularMap, baseColor, specular, emissive, 
-				shininess, transparency, useFakeLighting, shader);
-		
-		m_UseNormalMap = true;
-		m_NormalMap = normalMap;
-	
-		m_Shader.addUniform("material.normalMap");
+		addUniforms();
 	}
 	
 	private void addUniforms(){
@@ -271,7 +284,7 @@ public class Material {
 		return m_UseNormalMap;
 	}
 
-	public Shader getShader(){
+	public IShader getShader(){
 		return m_Shader;
 	}
 

@@ -1,10 +1,12 @@
 package com.dersgames.engine.components;
 
-import com.dersgames.engine.graphics.RenderEngine;
 import com.dersgames.engine.graphics.materials.Material;
 import com.dersgames.engine.graphics.models.Model;
+import com.dersgames.engine.graphics.renderers.IRenderer;
 
 public class StaticMesh extends Renderable {
+	
+	private IRenderer<StaticMesh> m_Renderer;
 	
 	private Model m_Model;
 	private Material m_Material;
@@ -17,6 +19,12 @@ public class StaticMesh extends Renderable {
 		m_Model = model;
 		m_Material = material;
 		m_TextureIndex = 0;
+		
+		if (m_Material.isUsingNormalMap()) {
+			m_Renderer = m_RenderEngine.getNormalMapRenderer();
+		} else {
+			m_Renderer = m_RenderEngine.getEntityRenderer();
+		}
 	}
 	
 	public StaticMesh(String tag, Model model, Material material, int textureIndex){
@@ -25,11 +33,17 @@ public class StaticMesh extends Renderable {
 		m_Model = model;
 		m_Material = material;
 		m_TextureIndex = textureIndex;
+		
+		if (m_Material.isUsingNormalMap()) {
+			m_Renderer = m_RenderEngine.getNormalMapRenderer();
+		} else {
+			m_Renderer = m_RenderEngine.getEntityRenderer();
+		}
 	}
 	
 	@Override
 	public void render() {
-		RenderEngine.getInstance().submit(this);
+		m_Renderer.submit(this);
 	}
 	
 	public float getTextureXOffset() {

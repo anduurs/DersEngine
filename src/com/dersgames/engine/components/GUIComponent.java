@@ -75,7 +75,7 @@ public class GUIComponent extends Renderable{
 	
 	@Override
 	public void render() {
-		RenderEngine.getInstance().submit(this);
+		m_RenderEngine.getGUIRenderer().submit(this);
 	}
 	
 	public boolean isUsingColor(){

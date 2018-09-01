@@ -4,7 +4,7 @@ import com.dersgames.engine.components.Camera;
 import com.dersgames.engine.math.Matrix4f;
 import com.dersgames.engine.math.Vector3f;
 
-public class SkyboxShader extends Shader{
+public class SkyboxShader extends GLShader{
 
 	public SkyboxShader() {
 		super("skybox/skyboxVertexShader", "skybox/skyboxFragmentShader");

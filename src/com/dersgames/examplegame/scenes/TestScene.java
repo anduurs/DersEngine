@@ -14,13 +14,12 @@ import com.dersgames.engine.graphics.shaders.ShaderManager;
 import com.dersgames.engine.graphics.textures.TerrainTexturePack;
 import com.dersgames.engine.graphics.textures.Texture;
 import com.dersgames.engine.graphics.textures.TextureManager;
-import com.dersgames.engine.graphics.textures.lightingmaps.NormalMap;
-import com.dersgames.engine.graphics.textures.lightingmaps.SpecularMap;
 import com.dersgames.engine.graphics.water.WaterTile;
 import com.dersgames.engine.graphics.water.WaterUpdate;
 import com.dersgames.engine.math.Quaternion;
 import com.dersgames.engine.math.Vector3f;
 import com.dersgames.engine.terrain.Terrain;
+import com.dersgames.engine.util.Randomizer;
 import com.dersgames.examplegame.components.BarrelRotator;
 import com.dersgames.examplegame.components.CrateRotator;
 
@@ -34,9 +33,9 @@ public class TestScene extends Scene {
 	public void initEntities() {
 		initCamera();
 		initTerrain();
-		initWater();
-		initCrate();
-		initBarrel();
+//		initWater();
+		initCrate(50);
+		initBarrel(50);
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class TestScene extends Scene {
 	}
 	
 	private void initCamera() {
-		Entity camera = new Entity("MainCamera", 200, 0, 100);
+		Entity camera = new Entity("MainCamera", 200, 50, 100);
 		Camera cameraComponent = new Camera(2.0f);
 		camera.addComponent(cameraComponent);
 		RenderEngine.getInstance().addCamera(cameraComponent);
@@ -86,17 +85,16 @@ public class TestScene extends Scene {
 		
 		TerrainTexturePack texturePack   = new TerrainTexturePack();
 		
-		texturePack.addTerrainMaterial(backgroundMaterial);
-		texturePack.addTerrainMaterial(rMaterial);
-		texturePack.addTerrainMaterial(gMaterial);
+//		texturePack.addTerrainMaterial(backgroundMaterial);
+//		texturePack.addTerrainMaterial(rMaterial);
+//		texturePack.addTerrainMaterial(gMaterial);
 		texturePack.addTerrainMaterial(bMaterial);
 		
 		Entity terrainEntity = new Entity("Terrain", 0, 0, 0);
 		//terrainEntity.getTransform().scale(2.0f, 2.0f, 2.0f);
-		Terrain terrain 	 = new Terrain("Terrain", 0, 0, texturePack, blendMap, "heightmap");
-		//Terrain terrain 	 = new Terrain("Terrain", 0, 0, m_Loader, texturePack, blendMap);
+//		Terrain terrain 	 = new Terrain("Terrain", 0, 0, texturePack, blendMap, "heightmap");
+		Terrain terrain 	 = new Terrain("Terrain", 0, 0, texturePack, blendMap);
 		terrainEntity.addRenderableComponent(terrain);
-
 		
 		addEntity(terrainEntity);
 	}
@@ -112,54 +110,63 @@ public class TestScene extends Scene {
 		RenderEngine.getInstance().water = tile;
 	}
 	
-	private void initCrate() {
-		Transform crateTransform = new Transform(new Vector3f(160.0f, 80.0f, 200.0f),
-			     new Quaternion(new Vector3f(0,0,0), 0.0f), 
-			     new Vector3f(0.2f,0.2f,0.2f));
+	private void initCrate(int num) {
+		Model crateModel = ModelManager.getInstance().loadModelFromObjFile("crate", true);
 		
-		Entity crate = new Entity("crate", crateTransform);
-		
-		Texture crateTexture = new Texture(TextureManager.getInstance().loadModelTexture("crate"), 1);
-		NormalMap crateNormalMap = new NormalMap(TextureManager.getInstance().loadModelTexture("crateNormalMap"));
+		Texture crateTexture   = new Texture(TextureManager.getInstance().loadModelTexture("crate"));
+		Texture crateNormalMap = new Texture(TextureManager.getInstance().loadModelTexture("crateNormalMap"));
 		
 		Material crateMaterial = new Material(crateTexture, crateNormalMap,
 				   new Vector3f(0.6f, 0.6f, 0.6f),
 				   new Vector3f(0.8f, 0.8f, 0.8f),
 				   new Vector3f(0.02f, 0.02f, 0.02f),
 				   8.0f, false, false,
-				   ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_ENTITY_SHADER));
-		
-		Model crateModel = ModelManager.getInstance().loadModelFromObjFile("crate", true);
-		
-		crate.addRenderableComponent(new StaticMesh("CrateStaticMesh", crateModel, crateMaterial));
-		crate.addComponent(new CrateRotator("CrateMovement", 15.0f));
-		
-		addEntity(crate);
+				   ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_NORMALMAP_SHADER));
+
+		for (int i = 0; i < num; i++) {
+			float x = Randomizer.getFloat(0, 380);
+			float z = Randomizer.getFloat(0, 380);
+			
+			Transform crateTransform = new Transform(new Vector3f(x, 7, z),
+				     new Quaternion(new Vector3f(0,0,0), 0.0f), 
+				     new Vector3f(0.07f,0.07f,0.07f));
+			
+			Entity crate = new Entity("crate", crateTransform);
+			crate.addRenderableComponent(new StaticMesh("CrateStaticMesh", crateModel, crateMaterial));
+			crate.addComponent(new BarrelRotator("CrateMovement", 15.0f));
+			
+			addEntity(crate);
+		}
 	}
 	
-	private void initBarrel() {
-		Transform barrelTransform = new Transform(new Vector3f(300.0f, 80.0f, 200.0f),
-			     new Quaternion(new Vector3f(0,0,0), 0.0f), 
-			     new Vector3f(5f,5f,5f));
-		
-		Entity barrel = new Entity("barrel", barrelTransform);
-		
-		Texture barrelTexture = new Texture(TextureManager.getInstance().loadModelTexture("barrel"));
-		SpecularMap barrelSpecularMap  = new SpecularMap(TextureManager.getInstance().loadModelTexture("barrelSpecularMap"));
-		NormalMap barrelNormalMap = new NormalMap(TextureManager.getInstance().loadModelTexture("barrelNormalMap"));
-		
+	private void initBarrel(int num) {
 		Model barrelModel = ModelManager.getInstance().loadModelFromObjFile("barrel", true);
 		
-       Material barrelMaterial = new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
+		Texture barrelTexture 	   = new Texture(TextureManager.getInstance().loadModelTexture("barrel"));
+		Texture barrelSpecularMap  = new Texture(TextureManager.getInstance().loadModelTexture("barrelSpecularMap"));
+		Texture barrelNormalMap    = new Texture(TextureManager.getInstance().loadModelTexture("barrelNormalMap"));
+		
+		Material barrelMaterial = new Material(barrelTexture, barrelSpecularMap, barrelNormalMap,
 					   new Vector3f(0.6f, 0.6f, 0.6f),
 					   new Vector3f(0.8f, 0.8f, 0.8f),
 					   new Vector3f(0.02f, 0.02f, 0.02f),
 					   16.0f, false, false,
 					   ShaderManager.getInstance().getShader(ShaderManager.DEFAULT_NORMALMAP_SHADER));
-       
-       barrel.addRenderableComponent(new StaticMesh("BarrelStaticMesh", barrelModel, barrelMaterial));
-       barrel.addComponent(new BarrelRotator("BarrelMovement", 10.0f));
-       
-       addEntity(barrel);
+		
+		for (int i = 0; i < num; i++) {
+			float x = Randomizer.getFloat(0, 380);
+			float z = Randomizer.getFloat(0, 380);
+			
+			Transform barrelTransform = new Transform(new Vector3f(x, 6, z),
+				     new Quaternion(new Vector3f(0,0,0), 0.0f), 
+				     new Vector3f(1f,1f,1f));
+			
+			Entity barrel = new Entity("barrel", barrelTransform);
+
+			barrel.addRenderableComponent(new StaticMesh("BarrelStaticMesh", barrelModel, barrelMaterial));
+			barrel.addComponent(new BarrelRotator("BarrelMovement", 10.0f));
+	       
+			addEntity(barrel);
+		}
 	}
 }

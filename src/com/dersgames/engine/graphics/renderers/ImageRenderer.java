@@ -4,9 +4,9 @@ package com.dersgames.engine.graphics.renderers;
  * Created by Anders on 5/28/2017.
  */
 import com.dersgames.engine.graphics.FrameBuffer;
-import static org.lwjgl.opengl.GL11.*;
+import com.dersgames.engine.graphics.GLRenderUtils;
 
-public class ImageRenderer {
+public class ImageRenderer{
 
     private FrameBuffer m_FrameBuffer;
 
@@ -21,8 +21,8 @@ public class ImageRenderer {
             m_FrameBuffer.bind();
         }
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        GLRenderUtils.clearColorBuffer();
+        GLRenderUtils.drawArrays(GLRenderUtils.TRIANGLE_STRIP, 4);
 
         if (m_FrameBuffer != null) {
             m_FrameBuffer.unbind();

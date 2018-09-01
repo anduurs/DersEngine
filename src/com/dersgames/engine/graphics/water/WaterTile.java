@@ -1,7 +1,6 @@
 package com.dersgames.engine.graphics.water;
 
 import com.dersgames.engine.components.Renderable;
-import com.dersgames.engine.graphics.RenderEngine;
 
 public class WaterTile extends Renderable {
 	
@@ -14,7 +13,7 @@ public class WaterTile extends Renderable {
 
 	@Override
 	public void render() {
-		RenderEngine.getInstance().submit(this);
+		m_RenderEngine.getWaterRenderer().submit(this);
 	}
 	
     public float getHeight() {

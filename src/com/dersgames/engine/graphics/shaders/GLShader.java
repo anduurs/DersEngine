@@ -1,13 +1,29 @@
 package com.dersgames.engine.graphics.shaders;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glBindAttribLocation;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -21,12 +37,12 @@ import com.dersgames.engine.math.Vector2f;
 import com.dersgames.engine.math.Vector3f;
 import com.dersgames.engine.math.Vector4f;
 
-public abstract class Shader {
+public abstract class GLShader implements IShader {
 	
 	private int m_ShaderProgram;
 	private HashMap<String, Integer> m_Uniforms;
 	
-	public Shader(String vertShader, String fragShader){
+	public GLShader(String vertShader, String fragShader){
 		m_Uniforms = new HashMap<String, Integer>();
 		m_ShaderProgram = glCreateProgram();
 		
@@ -38,13 +54,15 @@ public abstract class Shader {
 	
 	protected abstract void bindAttributes();
 	
-	protected void bindAttribute(int attribute, String name){
+	@Override
+	public void bindAttribute(int attribute, String name){
 		glBindAttribLocation(m_ShaderProgram, attribute, name);
 	}
 	
-	private void addVertexShader(String fileName){
+	@Override
+	public void addVertexShader(String fileName){
 		int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		String vertexShaderSource = loadShader(fileName + ".vert");
+		String vertexShaderSource = ShaderParser.loadShader(fileName + ".vert");
 		
 		glShaderSource(vertexShader, vertexShaderSource);
 		glCompileShader(vertexShader);
@@ -61,9 +79,10 @@ public abstract class Shader {
 		glDeleteShader(vertexShader);
 	}
 	
-	private void addFragmentShader(String fileName){
+	@Override
+	public void addFragmentShader(String fileName){
 		int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		String fragmentShaderSource = loadShader(fileName + ".frag");
+		String fragmentShaderSource = ShaderParser.loadShader(fileName + ".frag");
 		
 		glShaderSource(fragmentShader, fragmentShaderSource);
 		glCompileShader(fragmentShader);
@@ -80,7 +99,8 @@ public abstract class Shader {
 		glDeleteShader(fragmentShader);
 	}
 	
-	private void createShaderProgram(){
+	@Override
+	public void createShaderProgram(){
 		glLinkProgram(m_ShaderProgram);
 		if(GL20.glGetProgrami(m_ShaderProgram, GL20.GL_LINK_STATUS) == GL_FALSE){
 			System.err.println("Failed to link shaderprogram.\nError log: " + 
@@ -90,6 +110,7 @@ public abstract class Shader {
 		glValidateProgram(m_ShaderProgram);
 	}
 	
+	@Override
 	public void addUniform(String uniform){
 		int uniformLocation = glGetUniformLocation(m_ShaderProgram, uniform);
 		m_Uniforms.put(uniform, uniformLocation);
@@ -103,26 +124,32 @@ public abstract class Shader {
 		}
 	}
 	
+	@Override
 	public void loadInteger(String uniformName, int value){
 		glUniform1i(m_Uniforms.get(uniformName), value);
 	}
 	
+	@Override
 	public void loadFloat(String uniformName, float value){
 		glUniform1f(m_Uniforms.get(uniformName), value);
 	}
 	
+	@Override
 	public void loadVector2f(String uniformName, Vector2f v){
 		glUniform2f(m_Uniforms.get(uniformName), v.x, v.y);
 	}
 	
+	@Override
 	public void loadVector3f(String uniformName, Vector3f v){
 		glUniform3f(m_Uniforms.get(uniformName), v.x, v.y, v.z);
 	}
 
+	@Override
 	public void loadVector4f(String uniformName, Vector4f v){
 		glUniform4f(m_Uniforms.get(uniformName), v.x, v.y, v.z, v.w);
 	}
 	
+	@Override
 	public void loadMatrix4f(String uniformName, Matrix4f value){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
 		
@@ -146,40 +173,23 @@ public abstract class Shader {
 		loadMatrix4f("projectionMatrix", projection);
 	}
 	
+	@Override
 	public void enable(){
 		glUseProgram(m_ShaderProgram);
 	}
 	
+	@Override
 	public void disable(){
 		glUseProgram(0);
 	}
 	
+	@Override
 	public void deleteShaderProgram(){
 		glDeleteProgram(m_ShaderProgram);
 	}
 	
+	@Override
 	public int getShaderProgramID() {
 		return m_ShaderProgram;
 	}
-	
-	private static String loadShader(String fileName){
-		StringBuilder shaderSource = new StringBuilder();
-		
-		try {
-			InputStream in = Class.class.getResourceAsStream("/shaders/" + fileName);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			String line;
-			while((line = reader.readLine()) != null)
-				shaderSource.append(line).append('\n');
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.exit(0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return shaderSource.toString();
-	}
-
 }
